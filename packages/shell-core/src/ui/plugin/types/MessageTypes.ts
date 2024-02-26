@@ -1,0 +1,6 @@
+/**@format */
+
+export const MESSAGE_DEFAULT_TIMESTAMP = 5000;
+
+export const MESSAGE_DEFAULT_HORIZONTAL_RATE = 70;
+export const MESSAGE_DEFAULT_VERTICAL_RATE = 90;

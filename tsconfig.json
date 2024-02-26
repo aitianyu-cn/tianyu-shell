@@ -1,0 +1,40 @@
+{
+    "include": [
+        "packages/index.ts",
+        "packages/shell-core",
+        "packages/shell-react",
+        "packages/shell-ui",
+        "packages/infra",
+        "packages/webpack",
+        "script",
+        "*.d.ts",
+        "__test__"
+    ],
+    "exclude": [],
+    "compilerOptions": {
+        "composite": true,
+        "target": "ES2022",
+        "module": "CommonJS",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "jsx": "preserve",
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": false,
+        "baseUrl": ".",
+        "outDir": "./build",
+        "paths": {
+            "shell-core/*": ["packages/shell-core/*"],
+            "shell-react/*": ["packages/shell-react/*"],
+            "shell-ui/*": ["packages/shell-ui/*"],
+            "infra/*": ["packages/infra/*"]
+        }
+    }
+}
