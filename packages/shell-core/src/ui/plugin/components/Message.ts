@@ -61,7 +61,8 @@ function _updateMessageLayer(): void {
         );
         messageLayer.style.zIndex = `${TianyuShellUIMessageZIndex}`;
         messageLayer.style.width = isMobile ? "100%" : `${_messageHelperMap.rate.horizontal}%`;
-        messageLayer.style.height = isMobile ? "100%" : `${_messageHelperMap.rate.vertical}%`;
+        messageLayer.style.maxHeight = isMobile ? "100%" : `${_messageHelperMap.rate.vertical}%`;
+        messageLayer.style.height = "fit-content";
         messageLayer.style.left = leftAlign
             ? "0px"
             : rightAlign
