@@ -10,7 +10,7 @@ import { LanguageParseException } from "../declares/Exception";
 import { LANGUAGE_COOKIE_ID, getLanguage } from "../../../../infra/Language";
 import { languageDef } from "infra/Compatibility";
 
-const languageConfig = languageDef();
+const languageConfig = ((window as any).tianyuShell as ITianyuShell)?.runtime?.sync?.language || languageDef();
 
 function generateLanguage(type: string): string[] {
     const list: string[] = [];

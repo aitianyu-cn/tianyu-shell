@@ -8,6 +8,7 @@ import { ITianyuShellCoreConsole } from "./Console";
 import { ITianyuRouterProvider } from "./Router";
 import { ITianyuShellUI } from "./ui/UserInterface";
 import { ITianyuShellGlobalCache } from "./IStorage";
+import { ITianyuShellGlobalSyncs } from "./Sync";
 
 /** Tianyu Shell Core APIs */
 export interface ITianyuShellCore {
@@ -33,6 +34,8 @@ export interface ITianyuShellCore {
 export interface ITianyuShellRuntime {
     /** Tianyu Shell Global Cache Interface */
     cache: ITianyuShellGlobalCache;
+    /** Tianyu Shell Global Synced Data Cache */
+    sync: ITianyuShellGlobalSyncs;
 }
 
 /**

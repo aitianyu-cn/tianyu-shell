@@ -10,6 +10,7 @@ export * from "./src/core/declares/Features";
 export * from "./src/core/declares/IStorage";
 export * from "./src/core/declares/Language";
 export * from "./src/core/declares/Router";
+export * from "./src/core/declares/Sync";
 export * from "./src/core/declares/ui/UserInterface";
 
 /** Export Implementations */

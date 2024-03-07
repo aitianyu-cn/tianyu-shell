@@ -33,10 +33,12 @@ export function initialTianyuShell(config?: ITianyuShellInitial, callback?: Call
         if (config?.runtime?.globalCache) {
             require.ensure(
                 [],
-                () => {
+                async () => {
                     try {
                         const { initTianyuShellGlobalCache } = require("./utils/RuntimeInitial");
+                        const { compatibilityLoader } = require("./utils/CompatibilityLoader");
 
+                        await compatibilityLoader();
                         initTianyuShellGlobalCache();
                     } finally {
                         resolve();
@@ -83,10 +85,12 @@ export async function initialTianyuShellAsync(config?: ITianyuShellInitial): Pro
         if (config?.runtime?.globalCache) {
             require.ensure(
                 [],
-                () => {
+                async () => {
                     try {
                         const { initTianyuShellGlobalCache } = require("./utils/RuntimeInitial");
+                        const { compatibilityLoader } = require("./utils/CompatibilityLoader");
 
+                        await compatibilityLoader();
                         initTianyuShellGlobalCache();
                     } finally {
                         resolve();
