@@ -1,6 +1,6 @@
 /**@format */
 
-import { CallbackActionT, MapOfType } from "@aitianyu.cn/types";
+import { CallbackActionT, Exception, MapOfType } from "@aitianyu.cn/types";
 import {
     EventRemoveResult,
     IEventInvokeData,
@@ -13,11 +13,69 @@ import {
     TianyuShellHashChangedCallback,
     TianyuShellGenericEventCallback,
     ITianyuShellCorePageResizeEvent,
+    IEventCheckListHandler,
+    EventCheckListType,
 } from "../declares/Event";
 import { ITianyuShellPluginSetting } from "../declares/Core";
 import { TianyuShellProcessor } from "../utils/Processor";
 import { ITianyuShell } from "../declares/Declare";
 import { getText } from "./i18n/Message";
+
+class EventCheckerHandler implements IEventCheckListHandler {
+    private allowList: Map<string, () => boolean>;
+    private rejectList: Map<string, () => boolean>;
+
+    public constructor() {
+        this.allowList = new Map<string, () => boolean>();
+        this.rejectList = new Map<string, () => boolean>();
+    }
+
+    register(owner: string, checkCallback: () => boolean, type?: EventCheckListType | undefined): void {
+        const checkType = type ?? "allow";
+        if (checkType === "allow") {
+            this.allowList.set(owner, checkCallback);
+        } else {
+            this.rejectList.set(owner, checkCallback);
+        }
+    }
+    contains(owner: string, type?: EventCheckListType | undefined): boolean {
+        if (!type) {
+            return this.allowList.has(owner) || this.rejectList.has(owner);
+        } else {
+            return type === "allow" ? this.allowList.has(owner) : this.rejectList.has(owner);
+        }
+    }
+    unregister(owner: string, type?: EventCheckListType | undefined): void {
+        if (!type) {
+            this.allowList.delete(owner);
+            this.rejectList.delete(owner);
+        } else if (type === "allow") {
+            this.allowList.delete(owner);
+        } else {
+            this.rejectList.delete(owner);
+        }
+    }
+
+    public check(): boolean {
+        if (this.allowList.size === 0 && this.rejectList.size === 0) {
+            return true;
+        }
+
+        for (const item of this.rejectList) {
+            if (item[1]()) {
+                return false;
+            }
+        }
+
+        for (const item of this.allowList) {
+            if (!item[1]()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
 
 /** Invalid event entity to avoid null object checking */
 const _InvalidEventEntity: IEventTriggerEntity = {
@@ -50,19 +108,29 @@ const _InvalidEventEntity: IEventTriggerEntity = {
             ],
         };
     },
+    checker: function (): IEventCheckListHandler {
+        throw new Exception(getText("EVENT_CHECK_LIST_FOR_INVALID_EVENT"));
+    },
 };
 
 /** Event Entity Implementation */
 class EventEntity implements IEventTriggerEntity {
     /** event listener list */
     private triggerList: MapOfType<CallbackActionT<IEventInvokeData>>;
+    private checkHandler: EventCheckerHandler;
 
     public constructor() {
         this.triggerList = {};
+        this.checkHandler = new EventCheckerHandler();
     }
 
     invoke(ev: IEventInvokeData): Promise<void> {
         return new Promise<void>((resolve, reject) => {
+            if (!this.checkHandler.check()) {
+                reject(getText("EVENT_NOT_INVIOKED_CHECK_LIST"));
+                return;
+            }
+
             const listeners = Object.keys(this.triggerList);
             if (listeners.length === 0) {
                 resolve();
@@ -92,6 +160,14 @@ class EventEntity implements IEventTriggerEntity {
         });
     }
     invokeSync(ev: IEventInvokeData): IEventTriggerResult {
+        if (!this.checkHandler.check()) {
+            return {
+                success: false,
+                errors: [],
+                message: [getText("EVENT_NOT_INVIOKED_CHECK_LIST")],
+            };
+        }
+
         const listeners = Object.keys(this.triggerList);
         if (listeners.length === 0) {
             return {
@@ -143,6 +219,9 @@ class EventEntity implements IEventTriggerEntity {
     }
     isValid(): boolean {
         return true;
+    }
+    checker(): IEventCheckListHandler {
+        return this.checkHandler;
     }
 }
 

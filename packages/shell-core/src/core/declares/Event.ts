@@ -96,6 +96,40 @@ export interface ITianyuShellCoreEventController {
     event(name: string): IEventEntity;
 }
 
+/** Event Check List */
+export type EventCheckListType = "allow" | "reject";
+
+/** Event invoke check list handler */
+export interface IEventCheckListHandler {
+    /**
+     * To register a checker to control current event is enabled or not temply.
+     *
+     * IMPORTANT
+     * The priority of REJECT list is higher than allow list.
+     *
+     * @param owner owner of the checker
+     * @param checkCallback check callback
+     * @param type check list type
+     */
+    register(owner: string, checkCallback: () => boolean, type?: EventCheckListType): void;
+    /**
+     * Get the specified checker does exist.
+     *
+     * @param owner owner of the checker
+     * @param type check list type
+     *
+     * @returns return true if the checker exists, otherwise false.
+     */
+    contains(owner: string, type?: EventCheckListType): boolean;
+    /**
+     * Unregister a checker
+     *
+     * @param owner owner of the checker
+     * @param type check list type
+     */
+    unregister(owner: string, type?: EventCheckListType): void;
+}
+
 /** Event Entity for each event */
 export interface IEventEntity {
     /**
@@ -130,6 +164,8 @@ export interface IEventEntity {
      * @returns return true if the entity is valid, otherwise false
      */
     isValid(): boolean;
+    /** Event check list hander */
+    checker(): IEventCheckListHandler;
 }
 
 /** Event callback data */
