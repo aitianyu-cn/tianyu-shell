@@ -3,6 +3,7 @@
 import { getBoolean } from "@aitianyu.cn/types";
 import {
     CoreEnvironment,
+    ITianyuShellCookieConfigure,
     ITianyuShellCoreBaseConfigure,
     ITianyuShellPluginSetting,
     ITianyuShellRuntimeSetting,
@@ -45,6 +46,8 @@ export class TianyuShellProcessor {
                         : Number.isNaN(colorDef) || colorDef < 0 || colorDef > 1
                         ? Default_UI_Configure_DefaultThemeColor
                         : colorDef,
+                domain: ((window as any).tianyuShell?.env?.config as ITianyuShellInitial)?.ui?.theme?.domain,
+                path: ((window as any).tianyuShell?.env?.config as ITianyuShellInitial)?.ui?.theme?.path,
             },
             core: {
                 support: getBoolean(((window as any).tianyuShell?.env?.config as ITianyuShellInitial)?.ui?.core?.support),
@@ -59,6 +62,18 @@ export class TianyuShellProcessor {
         }
 
         return configure;
+    }
+
+    /**
+     * Get tianyu shell language configure
+     *
+     * @returns return config
+     */
+    public static getLanguageConfigures(): ITianyuShellCookieConfigure {
+        return {
+            domain: ((window as any).tianyuShell?.env?.config as ITianyuShellInitial)?.core?.language?.domain,
+            path: ((window as any).tianyuShell?.env?.config as ITianyuShellInitial)?.core?.language?.path,
+        };
     }
 
     /**

@@ -3,21 +3,22 @@
 import { TianyuShellProcessor } from "../utils/Processor";
 import { ITianyuShellLanguage, TianyuShellLanguageRegisterType } from "../declares/Language";
 import { AreaCode, ArrayHelper, parseAreaCode, parseAreaString } from "@aitianyu.cn/types";
-import { Cookie } from "./Cookie";
+import { Cookie, ICookieSetOptions } from "./Cookie";
 import { ITianyuShell } from "../declares/Declare";
 import { ITianyuShellPluginSetting } from "../declares/Core";
 import { LanguageParseException } from "../declares/Exception";
 import { LANGUAGE_COOKIE_ID, getLanguage } from "../../../../infra/Language";
 import { languageDef } from "infra/Compatibility";
 
-const languageConfig = ((window as any).tianyuShell as ITianyuShell)?.runtime?.sync?.language || languageDef();
+const languageCompatibility = ((window as any).tianyuShell as ITianyuShell)?.runtime?.sync?.language || languageDef();
+const languageConfig = TianyuShellProcessor.getLanguageConfigures();
 
 function generateLanguage(type: string): string[] {
     const list: string[] = [];
-    const languageTypeList = languageConfig[type];
+    const languageTypeList = languageCompatibility[type];
 
     if (Array.isArray(languageTypeList)) {
-        for (const langItem of languageConfig[type]) {
+        for (const langItem of languageCompatibility[type]) {
             const area = parseAreaString(langItem);
             AreaCode.unknown !== area && list.push(langItem);
         }
@@ -40,7 +41,16 @@ const _language: ITianyuShellLanguage = {
         // save language to local storage and valid date is 30 days
         const date = new Date(Date.now());
         const expires = new Date(date.setDate(date.getDate() + 30));
-        Cookie.set(LANGUAGE_COOKIE_ID, areaString, { expires: expires });
+        const cookieOption: ICookieSetOptions = {
+            expires: expires,
+        };
+        if (languageConfig.domain) {
+            cookieOption.domain = languageConfig.domain;
+        }
+        if (languageConfig.path) {
+            cookieOption.path = languageConfig.path;
+        }
+        Cookie.set(LANGUAGE_COOKIE_ID, areaString, cookieOption);
     },
     get: function (): AreaCode {
         return parseAreaString(getLanguage());

@@ -8,7 +8,7 @@ import {
     TianyuShellUIThemeColor,
 } from "../../../core/declares/ui/UserInterface";
 import { ITianyuShell } from "../../../core/declares/Declare";
-import { Cookie } from "../../../core/plugin/Cookie";
+import { Cookie, ICookieSetOptions } from "../../../core/plugin/Cookie";
 import {
     TianyuShellUIThemeCustomID,
     TianyuShellUICustomAppliedPreious,
@@ -83,8 +83,17 @@ function _change_theme_internal(theme: string, color: TianyuShellUIThemeColor, s
         if (setCookie) {
             const date = new Date(Date.now());
             const expires = new Date(date.setDate(date.getDate() + 30));
-            Cookie.set(TianyuShellUIThemeCustomCookieTheme, theme, { expires: expires });
-            Cookie.set(TianyuShellUIThemeCustomCookieColor, color, { expires: expires });
+            const cookieOption: ICookieSetOptions = {
+                expires: expires,
+            };
+            if (_runtimeUIConfigure.theme.domain) {
+                cookieOption.domain = _runtimeUIConfigure.theme.domain;
+            }
+            if (_runtimeUIConfigure.theme.path) {
+                cookieOption.path = _runtimeUIConfigure.theme.path;
+            }
+            Cookie.set(TianyuShellUIThemeCustomCookieTheme, theme, cookieOption);
+            Cookie.set(TianyuShellUIThemeCustomCookieColor, color, cookieOption);
         }
     }
 }
@@ -113,8 +122,8 @@ function _reset_theme(): void {
         if (!!ui) {
             ui.theme.custom.valid = false;
 
-            Cookie.remove(TianyuShellUIThemeCustomCookieTheme);
-            Cookie.remove(TianyuShellUIThemeCustomCookieColor);
+            Cookie.remove(TianyuShellUIThemeCustomCookieTheme, _runtimeUIConfigure.theme.path, _runtimeUIConfigure.theme.domain);
+            Cookie.remove(TianyuShellUIThemeCustomCookieColor, _runtimeUIConfigure.theme.path, _runtimeUIConfigure.theme.domain);
         }
     }
 

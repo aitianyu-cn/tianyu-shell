@@ -3,6 +3,7 @@
 import { CallbackAction, CallbackActionT } from "@aitianyu.cn/types";
 import { TianyuUIStyleDeclaration } from "shell-core/src/core/declares/ui/TianyuUIStyle";
 import { TianyuUI } from "./TianyuUI";
+import { ITianyuShellCookieConfigure } from "../Core";
 
 /** Tianyu Shell UI Theme Color */
 export type TianyuShellUIThemeColor = "light" | "dark";
@@ -616,7 +617,7 @@ export interface ITianyuShellUIConfigureCore {
 }
 
 /** Tianyu Shell Core UI Configuration of Theme */
-export interface ITianyuUIThemeConfigure {
+export interface ITianyuUIThemeConfigure extends ITianyuShellCookieConfigure {
     /**
      * Tianyu Shell Customized Theme URL
      * The URL is the customized theme resources link and other style will be gotten by this url.

@@ -85,3 +85,11 @@ export interface ITianyuShellRuntimeSupport {
      */
     router: boolean;
 }
+
+/** Tianyu Shell Cookie Saved Configure */
+export interface ITianyuShellCookieConfigure {
+    /** The cookie saved domain url */
+    domain?: string;
+    /** The cookie saved path url */
+    path?: string;
+}
