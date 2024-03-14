@@ -1,0 +1,12 @@
+<svg id="i1" data-name="waiting" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 488">
+<defs>
+    <style>.cls-1{fill: var(--ts_ui_blk_4);fill-rule:evenodd;color:none;stroke: var(--ts_ui_blk_4);}</style>
+    <style>.cls-2{fill:white;fill-rule:evenodd;}</style>
+    <mask>
+        
+    </mask>
+</defs>
+<path class="cls-1" d="M948,296h27v1h3v1h2v1l6,2,1,2h2l1,2h2l1,2,5,4v2l2,1v2l2,1v2h1v2h1v3h1v3h1v5h1c1.25,4.36-.12,16.08-1,19l-1,9h-1v2h-1l-2,6-3,2v2l-2,1-3,4h-2v1l-3,1-2,3h-2v1h-2v1h-3v1h-3v1h-3v1h-5v1c-6.31,1.81-15.12-.72-19-2l-7-1v-1l-6-2v-1h-2l-3-4h-2l-1-2-4-3v-2l-2-1v-2l-2-1-1-4h-1v-2h-1v-3h-1v-4h-1v-8h-1l2-19h1v-3h1l1-4h1v-2l2-1v-2l3-2v-2l2-2,3-1,3-4h2l2-2h2v-1h2l1-2h2v-1h4Z" transform="translate(-800 -296)"/>
+<path class="cls-1" d="M911,419h97c.8,5,3.52,9,5,13v4h1v3h1v4h1v3h1v3h1v3h1v3h1v3h1v4h1v3h1v3h1v3h1l1,8h1v4h1l1,6h1v2h1v3h1l5,21h1v2h1v3h1v4h1v3h1v4h1l1,6h1v2h1v4h1l1,9,2,1,4,18h1v3h1v3h1v3h1v2h1l1,8h1v3h1v3h1v4h1v2h1l1,6h1l2,10h1l4,19h1v3h1v2h1l3,14h1v3h1v3h1v3h1v2h1l1,7h1v3h1l2,10h1l4,18h1v2h1v3h1v4h1v4h1v3h1v4h1v3h1v2h1l1,6h1l3,14h1v2h1v3h1l1,8h1v2h1l1,8h1l1,7h1l1,4H800v-5l2-1v-4h1l1-7h1v-4h1v-3h1v-3h1v-4h1v-3h1v-4h1v-2h1l4-17h1v-3h1v-2h1l1-6h1l4-18,2-1,2-13h1v-2h1v-3h1v-4h1v-3h1v-4h1v-3h1v-3h1v-3h1v-2h1v-4h1v-3h1v-4h1v-3h1l1-7h1v-2h1v-3h1l1-7h1l1-8h1v-3h1v-3h1l1-7h1l1-7h1v-2h1v-3h1l4-17h1v-2h1v-3h1l5-22h1v-3h1v-3h1l1-7h1v-2h1v-3h1v-4h1l1-7h1v-3h1v-3h1v-3h1v-2h1l5-22,2-1v-3h1v-4h1l1-8h1v-3h1v-3h1v-4h1l1-7h1v-3h1v-2h1l1-6h1v-4h1v-3h1v-4h1l1-7h1C910.84,421.56,910.68,421.28,911,419Z" transform="translate(-800 -296)"/>
+<path class="cls-2" d="M957,490c-.47,7.76-3.86,16.56-6,23v5h-1v4h-1v5h-1l-1,9h-1v2h-1v4h-1v5h-1v4h-1v5h-1v5h-1v4h-1v5h-1l-2,12h-1v3h-1v3h-1v3h-1v3h-1l-1,7h-1l-1,8h-1v2h-1v3h-1v3h-1v3h-1v4h-1v4h-1v3h-1v4l-2,1,1,2-2,1v4h-1v6h-1v2h-1v3h-1v4h-1l-2,10h-1v3h-1v3h-1v3h-1v3h-1v3h-1l-3,14h-1v2h-1l-1,6h-1v4l-5,15h131v-1c-3.14-2.94-1.55-3.84-3-8h-1v-4h-1v-4h-1v-3h-1v-3h-1v-4h-1v-2h-1l-1-6h-1l-2-11h-1v-3h-1v-2h-1l-1-8h-1v-4h-1v-2h-1v-4h-1v-3h-1l-2-12h-1v-3h-1v-3h-1v-3h-1v-2h-1v-4h-1v-4h-1v-3h-1v-4h-1l-1-6h-1v-2h-1v-4h-1v-3h-1l-1-7h-1l-2-12h-1v-4h-1v-4h-1v-4h-1v-4h-1v-2h-1l-1-8h-1l-3-17h-1v-2h-1l-1-9h-1v-4h-1v-4h-1v-4h-1v-5h-1v-3h-1v-6h-1C957.86,496.3,959.23,492.4,957,490Z" transform="translate(-800 -296)"/>
+</svg>

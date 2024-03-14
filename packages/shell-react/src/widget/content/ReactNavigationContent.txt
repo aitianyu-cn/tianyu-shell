@@ -1,0 +1,133 @@
+/**@format */
+
+import React from "react";
+import { IReactState } from "../../model/React";
+import { IReactContentProperty } from "../../model/Content";
+import { IRouterCallbackEvent, Router } from "shell-core/index";
+import { HashHelper } from "shell-ui/src/common/HashHelper";
+import { IAnimationIndex } from "shell-ui/src/common/Declaration";
+import {
+    REACT_NAVIGATION_CONTENT_ID,
+    createAnimation,
+    handle_basicContainer,
+    handle_containerTop,
+    handle_contentContainer,
+} from "shell-react/src/style/content/NavigationContentHandler";
+import { GlobalStyling } from "shell-ui/src/common/GlobalStyling";
+
+export class ReactNavigationContent extends React.Component<IReactContentProperty, IReactState> {
+    private default: string;
+    private isLoaded: boolean;
+
+    private currentHash: string;
+    private inFallback: boolean;
+
+    private animations: IAnimationIndex;
+
+    public constructor(props: IReactContentProperty) {
+        super(props);
+
+        this.animations = {};
+        this.isLoaded = false;
+        this.handleRouterPath();
+
+        this.inFallback = false;
+
+        this.default = this.props.default;
+        if (!this.default.startsWith("/")) this.default = `/${this.default}`;
+        if (!this.default.endsWith("/")) this.default = `${this.default}/`;
+
+        this.currentHash = Router.getHash();
+        this.onFirstLoaded();
+    }
+
+    private handleRouterPath(): void {
+        const router = this.props.router;
+        for (const path of Object.keys(router)) {
+            Router.addPath(path, this.onRouterCallback.bind(this));
+        }
+
+        if (this.props.fallback) {
+            Router.setFail(this.onRouterFallback.bind(this));
+        }
+    }
+
+    private onFirstLoaded(): void {
+        const matchedItem = HashHelper.getHashMappedItem(this.props.router, this.default);
+
+        this.inFallback = !matchedItem.value;
+        if (!this.inFallback) {
+            // check the first loaded should into fallback page
+            return;
+        }
+    }
+
+    public override componentDidMount(): void {
+        this.animations = createAnimation();
+        this.isLoaded = true;
+    }
+
+    public override componentWillUnmount(): void {
+        this.isLoaded = false;
+        GlobalStyling.removeStylingSheet(this.animations);
+    }
+
+    public override forceUpdate(callback?: (() => void) | undefined): void {
+        if (!this.isLoaded) {
+            return;
+        }
+
+        super.forceUpdate(callback);
+    }
+
+    public override render(): React.ReactNode {
+        return (
+            <div id={REACT_NAVIGATION_CONTENT_ID} style={{ ...handle_basicContainer(), ...this.props.style }}>
+                <div id={`${REACT_NAVIGATION_CONTENT_ID}_top`} style={handle_containerTop()}></div>
+                <div id={`${REACT_NAVIGATION_CONTENT_ID}_container`} style={handle_contentContainer()}>
+                    {this.renderComponent()}
+                </div>
+            </div>
+        );
+    }
+
+    private renderComponent(): React.ReactNode {
+        if (this.inFallback) {
+            return (
+                (this.props.fallback && <this.props.fallback.component {...this.props.fallback.paramGenerater()} />) || (
+                    <div></div>
+                )
+            );
+        }
+
+        const componentItem = this.props.router[this.currentHash];
+        if (!!!componentItem) {
+            return (
+                (this.props.fallback && <this.props.fallback.component {...this.props.fallback.paramGenerater()} />) || (
+                    <div></div>
+                )
+            );
+        }
+
+        return <componentItem.component {...componentItem.paramGenerater()} />;
+    }
+
+    private onRouterCallback(ev: IRouterCallbackEvent): void {
+        const matchedItem = HashHelper.getHashMappedItem(this.props.router, this.default);
+
+        const fallbackChanged = this.inFallback && (matchedItem.value || this.props.fallback?.forceUpdate);
+
+        const isSelectionChanged =
+            fallbackChanged || (!!matchedItem.value && (this.currentHash !== matchedItem.key || matchedItem.value.forceUpdate));
+        if (isSelectionChanged) {
+            this.inFallback = !matchedItem.value;
+            this.currentHash = matchedItem.key;
+            this.forceUpdate();
+        }
+    }
+
+    private onRouterFallback(ev: IRouterCallbackEvent): void {
+        this.inFallback = true;
+        this.forceUpdate();
+    }
+}

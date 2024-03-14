@@ -6,6 +6,7 @@
         "packages/shell-ui",
         "packages/infra",
         "packages/webpack",
+        "packages/resources.d.ts",
         "script",
         "*.d.ts",
         "__test__"

@@ -30,6 +30,20 @@
             "require": "./dist/lib/webpack/index.js",
             "node": "./dist/lib/webpack/index.js",
             "default": "./dist/lib/webpack/index.js"
+        },
+        "./react": {
+            "types": "./dist/types/shell-react/index.d.ts",
+            "import": "./dist/lib/shell-react/index.js",
+            "require": "./dist/lib/shell-react/index.js",
+            "node": "./dist/lib/shell-react/index.js",
+            "default": "./dist/lib/shell-react/index.js"
+        },
+        "./ui": {
+            "types": "./dist/types/shell-ui/index.d.ts",
+            "import": "./dist/lib/shell-ui/index.js",
+            "require": "./dist/lib/shell-ui/index.js",
+            "node": "./dist/lib/shell-ui/index.js",
+            "default": "./dist/lib/shell-ui/index.js"
         }
     },
     "typesVersions": {
@@ -45,6 +59,14 @@
             ],
             "webpack": [
                 "./dist/types/webpack/index.d.ts"
+            ],
+            "react": [
+                "./dist/types/shell-react/index.d.ts",
+                "./dist/types/resources.d.ts"
+            ],
+            "ui": [
+                "./dist/types/shell-ui/index.d.ts",
+                "./dist/types/resources.d.ts"
             ]
         }
     },

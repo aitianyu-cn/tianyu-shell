@@ -17,24 +17,24 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                         /\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message.properties$/,
                     ),
                 );
-                // setI18nModuleCache(
-                //     DEFAULT_LANGUAGE,
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message.properties$/,
-                //     ),
-                // );
-                // setI18nModuleCache(
-                //     DEFAULT_LANGUAGE,
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message.properties$/,
-                //     ),
-                // );
+                setI18nModuleCache(
+                    DEFAULT_LANGUAGE,
+                    "react",
+                    require.context(
+                        "../../shell-react/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message.properties$/,
+                    ),
+                );
+                setI18nModuleCache(
+                    DEFAULT_LANGUAGE,
+                    "ui",
+                    require.context(
+                        "../../shell-ui/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message.properties$/,
+                    ),
+                );
             },
             "tianyu-shell/i18n/default",
         ),
@@ -51,24 +51,24 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                         /\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_zh_CN.properties$/,
                     ),
                 );
-                // setI18nModuleCache(
-                //     "zh_CN",
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_zh_CN.properties$/,
-                //     ),
-                // );
-                // setI18nModuleCache(
-                //     "zh_CN",
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_zh_CN.properties$/,
-                //     ),
-                // );
+                setI18nModuleCache(
+                    "zh_CN",
+                    "react",
+                    require.context(
+                        "../../shell-react/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_zh_CN.properties$/,
+                    ),
+                );
+                setI18nModuleCache(
+                    "zh_CN",
+                    "ui",
+                    require.context(
+                        "../../shell-ui/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_zh_CN.properties$/,
+                    ),
+                );
             },
             "tianyu-shell/i18n/zh_CN",
         ),
@@ -85,24 +85,24 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                         /\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_en_US.properties$/,
                     ),
                 );
-                // setI18nModuleCache(
-                //     "en_US",
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_en_US.properties$/,
-                //     ),
-                // );
-                // setI18nModuleCache(
-                //     "en_US",
-                //     "react",
-                //     require.context(
-                //         "../../shell-react/src",
-                //         true,
-                //         /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_en_US.properties$/,
-                //     ),
-                // );
+                setI18nModuleCache(
+                    "en_US",
+                    "react",
+                    require.context(
+                        "../../shell-react/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_en_US.properties$/,
+                    ),
+                );
+                setI18nModuleCache(
+                    "en_US",
+                    "ui",
+                    require.context(
+                        "../../shell-ui/src",
+                        true,
+                        /^\.\/[a-z\-0-9]+(\/resources)?((\/i18n)|(\/strings))?\/message_en_US.properties$/,
+                    ),
+                );
             },
             "tianyu-shell/i18n/en_US",
         ),
