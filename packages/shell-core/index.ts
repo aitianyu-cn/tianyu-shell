@@ -61,12 +61,15 @@ export * from "./src/ui/plugin/MajorHelper";
 // Export UI Utils
 import * as UIHelperImport from "./src/ui/utils/Helper";
 import * as UIThemeTranslatorImport from "./src/ui/utils/ThemeTranslator";
+import * as UIGlobalStylingImport from "./src/ui/utils/Styling";
 
 export namespace Utils {
     export import TianyuShellUIHelper = UIHelperImport.TianyuShellUIHelper;
 
     export import translateThemeColor = UIThemeTranslatorImport.translateThemeColor;
     export import translateThemeColorToId = UIThemeTranslatorImport.translateThemeColorToId;
+
+    export import GlobalStyling = UIGlobalStylingImport.GlobalStyling;
 }
 
 import * as ControllerCreatorImport from "./src/ui/plugin/handler/Creator";

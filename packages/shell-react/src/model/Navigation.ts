@@ -9,6 +9,8 @@ export const REACT_NATIGATION_CLASSIFY = "(React-Navigation)";
 
 export type ReactNavigationSourceIconType = "url" | "inline";
 
+export type ReactNavigationViewMode = "auto" | "horizontal" | "vertical";
+
 export interface IReactNavigationSourceItem {
     key: string;
     icon: any;
@@ -22,8 +24,22 @@ export interface IReactNavigationSource {
     [router: string]: IReactNavigationSourceItem;
 }
 
+export type ReactNavigationViewResize = {
+    width: number;
+    heigh: number;
+    mode: ReactNavigationViewMode;
+    narrow: boolean;
+}[];
+
+export interface IReactNavigationViewProps {
+    mode?: ReactNavigationViewMode;
+    resize?: ReactNavigationViewResize;
+    fontMap?: Record<number, number>;
+}
+
 export interface IReactNavigationProps {
     props: IReactProperty;
     source: IReactNavigationSource;
-    fontMap: Record<number, number>;
+    title?: string;
+    view?: IReactNavigationViewProps;
 }

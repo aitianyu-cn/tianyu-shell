@@ -1,7 +1,6 @@
 /**@format */
 
-import { IAnimationIndex } from "shell-ui/src/common/Declaration";
-import { GlobalStyling } from "shell-ui/src/common/GlobalStyling";
+import { IGlobalStyleSheetIndex, Utils } from "shell-core/index";
 
 export const UI_WAITING_DIALOG_ID = "ts_global_ui_wait_dialog";
 
@@ -48,7 +47,7 @@ export function handle_imageAnimation(elem: HTMLElement): void {
     elem.style.animation = `${IMAGE_ANIMATION_KEY} 2.5s infinite`;
 }
 
-export function createAnimation(): IAnimationIndex {
+export function createAnimation(): IGlobalStyleSheetIndex {
     const animations = {
         image: `@keyframes ${IMAGE_ANIMATION_KEY} {
                     0% {
@@ -79,5 +78,5 @@ export function createAnimation(): IAnimationIndex {
             }`,
     };
 
-    return GlobalStyling.insertStylingSheet(animations);
+    return Utils.GlobalStyling.insertStylingSheet(animations);
 }

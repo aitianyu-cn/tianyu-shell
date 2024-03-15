@@ -1,5 +1,6 @@
 /**@format */
 
-export interface IAnimationIndex {
-    [key: string]: number | undefined;
+export interface IImageData {
+    data: any;
+    type: "base64" | "svg";
 }

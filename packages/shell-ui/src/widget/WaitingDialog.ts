@@ -2,7 +2,7 @@
 
 import { guid } from "@aitianyu.cn/types";
 import { Log, isMobile } from "shell-core/index";
-import { IWaitingDialogImage, IWaitingDialogOptions } from "../model/widget/Waiting";
+import { IWaitingDialogProps } from "../model/widget/WaitingDialog";
 import * as MessageBundle from "../i18n/Message";
 import {
     handle_text,
@@ -13,24 +13,18 @@ import {
     handle_imageAnimation,
     UI_WAITING_DIALOG_ID,
 } from "../style/widget/WaitingDialogHandler";
-import { GlobalStyling } from "../common/GlobalStyling";
+import { Component } from "../TianyuComponent";
+import { Utils } from "shell-core/index";
 
 import WAITING_DIALOG_IMG from "../res/waiting.svg";
 
-export class WaitingDialog {
-    private waitingText?: string;
-
-    protected waitingImg?: IWaitingDialogImage;
-    protected options?: IWaitingDialogOptions;
-
-    private constructor(text?: string, waitingImg?: IWaitingDialogImage, options?: IWaitingDialogOptions) {
-        this.waitingText = text;
-        this.waitingImg = waitingImg;
-        this.options = options;
+export class WaitingDialog extends Component<IWaitingDialogProps> {
+    private constructor(props: IWaitingDialogProps) {
+        super(props);
     }
 
     public render(): HTMLElement {
-        return this.options?.onePlat || !isMobile ? this.renderNor() : this.renderMob();
+        return this.props.onePlat || !isMobile ? this.renderNor() : this.renderMob();
     }
 
     private renderMob(): HTMLElement {
@@ -41,7 +35,7 @@ export class WaitingDialog {
         const header = document.createElement("h4");
         header.id = `${UI_WAITING_DIALOG_ID}_header`;
         handle_text(header);
-        header.textContent = this.waitingText ?? MessageBundle.getText("TIANYU_SHELL_UI_WAITING_DIALOG_TEXT");
+        header.textContent = this.props.text ?? MessageBundle.getText("TIANYU_SHELL_UI_WAITING_DIALOG_TEXT");
 
         content.appendChild(header);
 
@@ -54,17 +48,17 @@ export class WaitingDialog {
         handle_basicContainer(content);
 
         let img;
-        if (this.waitingImg?.type === "base64" && this.waitingImg?.data) {
+        if (this.props.image?.type === "base64" && this.props.image?.data) {
             img = document.createElement("img");
-            img.src = this.waitingImg.data;
+            img.src = this.props.image.data;
             img.alt = MessageBundle.getText("TIANYU_SHELL_UI_WAITING_DIALOG_AI_ALT");
         } else {
             img = document.createElement("div");
-            img.innerHTML = this.waitingImg?.data ?? WAITING_DIALOG_IMG;
+            img.innerHTML = this.props.image?.data ?? WAITING_DIALOG_IMG;
         }
         img.id = `${UI_WAITING_DIALOG_ID}_img`;
-        if (this.options?.styles) {
-            img.classList.add(...this.options?.styles);
+        if (this.props?.styles) {
+            img.classList.add(...this.props.styles);
         } else {
             handle_waitingIcon(img);
             handle_imageAnimation(img);
@@ -72,13 +66,13 @@ export class WaitingDialog {
 
         const header = document.createElement("h4");
         header.id = `${UI_WAITING_DIALOG_ID}_header`;
-        if (this.options?.fontStyles) {
-            header.classList.add(...this.options.fontStyles);
+        if (this.props?.fontStyles) {
+            header.classList.add(...this.props.fontStyles);
         } else {
             handle_text(header);
             handle_textAnimation(header);
         }
-        header.textContent = this.waitingText ?? MessageBundle.getText("TIANYU_SHELL_UI_WAITING_DIALOG_TEXT");
+        header.textContent = this.props.text ?? MessageBundle.getText("TIANYU_SHELL_UI_WAITING_DIALOG_TEXT");
 
         content.appendChild(img);
         content.appendChild(header);
@@ -86,16 +80,11 @@ export class WaitingDialog {
         return content;
     }
 
-    public static withDialog(
-        fnRunner: () => Promise<any>,
-        text?: string,
-        img?: IWaitingDialogImage,
-        options?: IWaitingDialogOptions,
-    ): void {
+    public static withDialog(fnRunner: () => Promise<any>, props: IWaitingDialogProps): void {
         const animations = createAnimation();
 
         const dialogId: string = guid();
-        const dialog = new WaitingDialog(text, img, options);
+        const dialog = new WaitingDialog(props);
         const content = dialog.render();
         content.id = dialogId;
 
@@ -106,7 +95,7 @@ export class WaitingDialog {
 
         const fnFinishWait = () => {
             document.body.removeChild(content);
-            GlobalStyling.removeStylingSheet(animations);
+            Utils.GlobalStyling.removeStylingSheet(animations);
             Log.debug("TIANYU_SHELL_UI_WAITING_DIALOG_CLOSED", true);
         };
 
