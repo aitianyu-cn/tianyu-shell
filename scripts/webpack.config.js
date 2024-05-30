@@ -14,7 +14,7 @@ const baseDir = path.resolve(__dirname, "..");
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, "app/index.js"),
+        index: path.resolve(__dirname, "app/index.ts"),
     },
     output: {
         path: path.join(__dirname, "/webpack-build"),

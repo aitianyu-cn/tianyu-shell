@@ -15,7 +15,7 @@
     "compilerOptions": {
         "composite": true,
         "target": "ESNext",
-        "module": "ESNext",
+        "module": "CommonJS",
         "sourceMap": true,
         "strict": true,
         "esModuleInterop": true,

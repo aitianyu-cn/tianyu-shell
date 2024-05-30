@@ -1,10 +1,10 @@
 /** @format */
 
-const i18n = require("../../dist/lib/infra/resource/MessageLoader");
+import { loadI18n } from "infra/resource/MessageLoader";
 
-i18n.loadI18n().then(() => {
-    const tianyuShell = require("../../dist/lib");
-    tianyuShell.default({
+loadI18n().then(async () => {
+    const { initialTianyuShellAsync } = await import("shell");
+    initialTianyuShellAsync({
         core: {
             runtime: {
                 console: true,
@@ -31,6 +31,9 @@ i18n.loadI18n().then(() => {
         },
     });
 
+    const { waitLoading } = await import("shell-core");
+    await waitLoading();
+
     // const language = require("../../dist/lib/shell-core/src/core/plugin/Language");
     // const cookie = require("../../dist/lib/shell-core/src/core/plugin/Cookie");
     // const event = require("../../dist/lib/shell-core/src/core/plugin/Event");
@@ -38,11 +41,11 @@ i18n.loadI18n().then(() => {
     // const runtime = require("../../dist/lib/shell-core/src/core/plugin/Runtime");
     // const console = require("../../dist/lib/shell-core/src/core/plugin/Console");
     // const featureToggle = require("../../dist/lib/shell-core/src/core/plugin/FeatureToggle");
-    const shellCore = require("../../dist/lib/shell-core");
+    // const shellCore = require("../../dist/lib/shell-core");
 
-    try {
-        shellCore.Core.Plugin.Language.parse("abcde");
-    } catch (e) {
-        shellCore.Core.Plugin.Log.log(e);
-    }
+    // try {
+    //     shellCore.Core.Plugin.Language.parse("abcde");
+    // } catch (e) {
+    //     shellCore.Core.Plugin.Log.log(e);
+    // }
 });

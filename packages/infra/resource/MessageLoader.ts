@@ -36,7 +36,7 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                     ),
                 );
             },
-            "tianyu-shell/i18n/default",
+            "aitianyu.cn/tianyu-shell/i18n/default",
         ),
     ["zh_CN"]: async () =>
         require.ensure(
@@ -70,7 +70,7 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                     ),
                 );
             },
-            "tianyu-shell/i18n/zh_CN",
+            "aitianyu.cn/tianyu-shell/i18n/zh_CN",
         ),
     ["en_US"]: async () =>
         require.ensure(
@@ -104,7 +104,7 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
                     ),
                 );
             },
-            "tianyu-shell/i18n/en_US",
+            "aitianyu.cn/tianyu-shell/i18n/en_US",
         ),
 };
 

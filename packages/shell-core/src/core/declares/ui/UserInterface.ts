@@ -4,6 +4,7 @@ import { CallbackAction, CallbackActionT } from "@aitianyu.cn/types";
 import { TianyuUIStyleDeclaration } from "shell-core/src/core/declares/ui/TianyuUIStyle";
 import { TianyuUI } from "./TianyuUI";
 import { ITianyuShellCookieConfigure } from "../Core";
+import { IStore, InstanceId } from "@aitianyu.cn/tianyu-store";
 
 /** Tianyu Shell UI Theme Color */
 export type TianyuShellUIThemeColor = "light" | "dark";
@@ -592,6 +593,14 @@ export interface ITianyuShellCoreUIStyle {
     remove(key: string, path?: string): void;
 }
 
+/** Tianyu Store APIs */
+export interface ITianyuShellUIStore {
+    /** Tianyu Store */
+    store: IStore;
+    /** Base Instance Id */
+    instanceId: InstanceId;
+}
+
 /** Tianyu Shell Core UI APIs */
 export interface ITianyuShellUI {
     /** Tianyu Shell Core UI Background APIs */
@@ -606,6 +615,8 @@ export interface ITianyuShellUI {
     theme: ITianyuShellCoreUITheme;
     /** Tianyu Shell Core UI Styling APIs */
     style: ITianyuShellCoreUIStyle;
+    /** Tianyu Store */
+    store: ITianyuShellUIStore;
 }
 
 /** Tianyu Shell Core UI Configuration base */

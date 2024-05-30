@@ -13,54 +13,18 @@ import {
 import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
 import * as MessageBundle from "../resources/i18n/Message";
 import { Log } from "shell-core/src/core/plugin/Console";
+import { loadingTianyuShellCore, loadingTianyuStore } from "./CoreResolve";
 
 const _runtimeUIConfigure = TianyuShellProcessor.getUIConfigures();
-
-const fnInitHtmlBasic = (): void => {
-    const htmlPageScale = document.createElement("meta");
-    htmlPageScale.name = "viewport";
-    htmlPageScale.content = "width=device-width,initial-scale=1,shrink-to-fit=no";
-
-    document.head.appendChild(htmlPageScale);
-};
 
 let loadingPromise: Promise<void> | undefined = undefined;
 
 if (!_runtimeUIConfigure.core.support) {
     throw new RuntimeNotSupportException(MessageBundle.getText("TIANYU_UI_RUNTIME_NOT_SUPPORT"));
 } else {
-    loadingPromise = new Promise<void>((resolve, reject) => {
-        require.ensure(
-            [],
-            () => {
-                const { initTianyuShellCoreUIStyle } = require("./components/Style");
-                const { initTianyuShellCoreUITheme } = require("./components/Theme");
-                const { initTianyuShellCoreUIMessage } = require("./components/Message");
-                const { initTianyuShellCoreUIDialog } = require("./components/Dialog");
-                const { initTianyuShellCoreUIBackground } = require("./components/Background");
-                const { initTianyuShellCoreUIMajor } = require("./components/Major");
-                const { staticLoader } = require("../resources/Loader");
-
-                try {
-                    initTianyuShellCoreUITheme();
-                    initTianyuShellCoreUIMessage();
-                    initTianyuShellCoreUIStyle();
-                    initTianyuShellCoreUIDialog();
-                    initTianyuShellCoreUIBackground();
-                    initTianyuShellCoreUIMajor();
-
-                    staticLoader();
-
-                    fnInitHtmlBasic();
-
-                    resolve();
-                } catch (e) {
-                    Log.error((e as any)?.message || "error loading tianyu shell ui core");
-                    reject;
-                }
-            },
-            "tianyu-shell/ui/core",
-        );
+    loadingPromise = new Promise<void>(async () => {
+        await loadingTianyuStore();
+        await loadingTianyuShellCore();
     }).catch(() => {
         // this is an error handling when the promise.reject is not handled in outside
         Log.error(MessageBundle.getText("TIANYU_UI_CORE_LOADING_FAILED"));
