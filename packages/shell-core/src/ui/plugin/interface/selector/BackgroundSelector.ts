@@ -1,7 +1,7 @@
 /** @format */
 
 import { SelectorFactor } from "@aitianyu.cn/tianyu-store";
-import { IBackgroundInfo, IBackgroundState } from "../state/BackgroundState";
+import { BACKGROUND_ELEMENT_MAP, IBackgroundInfo, IBackgroundState } from "../state/BackgroundState";
 
 export const GetBackgroundColorSelector = SelectorFactor.makeSelector<IBackgroundState, string>(function (
     state,
@@ -61,7 +61,7 @@ export const GetBackgroundCurrentHTMLElement = SelectorFactor.makeParameterSelec
         return id ? map?.get(id) : undefined;
     },
     function (register): Map<string, HTMLElement> | undefined {
-        const map = register.get("BACKGROUND_ELEMENT_MAP") as Map<string, HTMLElement> | undefined;
+        const map = register.get(BACKGROUND_ELEMENT_MAP) as Map<string, HTMLElement> | undefined;
         return map;
     },
 );

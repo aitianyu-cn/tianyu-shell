@@ -1,253 +1,269 @@
-/**@format */
+/** @format */
 
+import { InstanceId, IStore, ListenerFactor, Missing, StoreUtils } from "@aitianyu.cn/tianyu-store";
+import { MapOfType, ObjectCalculater, ObjectHelper } from "@aitianyu.cn/types";
 import { ITianyuShell } from "shell-core/src/core/declares/Declare";
 import {
-    ITianyuShellUIHorizontalAlignment as TianyuShellUIHorizontalAlignment,
-    TianyuShellUIHyperLink,
     ITianyuShellCoreUIMessage,
+    ITianyuShellUIHorizontalAlignment,
     ITianyuShellUIMessageHelper,
-    ITianyuShellUIVerticalAlignment as TianyuShellUIVerticalAlignment,
+    ITianyuShellUIVerticalAlignment,
+    TianyuShellUIHyperLink,
     TianyuShellUIMessageType,
 } from "shell-core/src/core/declares/ui/UserInterface";
+import { isMobile } from "shell-core/src/core/plugin/Runtime";
+import { getStore } from "shell-core/src/core/utils/Store";
+import { TianyuShellUIMessageZIndex } from "../../common/Declare";
+import { getMessageInstanceId } from "../../tools/InstanceHelper";
+import { MessageInterface } from "../interface/MessageInterfaceExpose";
+import { DEFAULT_MESSAGE_HELPER, IMessageHelper, IMessageTipState } from "../interface/state/MessageState";
+import { StoreType } from "../interface/StoreTypes";
 import { MessageTip } from "../types/MessageTip";
-import { MESSAGE_DEFAULT_TIMESTAMP, MESSAGE_DEFAULT_HORIZONTAL_RATE, MESSAGE_DEFAULT_VERTICAL_RATE } from "../types/MessageTypes";
-import { guid } from "@aitianyu.cn/types";
-import { TianyuShellUIMessagePreious, TianyuShellUIMessageZIndex } from "../../common/Declare";
 import * as MessageBundle from "../../resources/i18n/Message";
 import { Log } from "shell-core/src/core/plugin/Console";
-import { isMobile } from "shell-core/src/core/plugin/Runtime";
 
-const MESSAGE_MINIMUM_TIMESTAMP = 2000;
-
-interface IMessageHelper {
-    align: {
-        horizontal: TianyuShellUIHorizontalAlignment;
-        vertical: TianyuShellUIVerticalAlignment;
-    };
-    rate: {
-        horizontal: number;
-        vertical: number;
-    };
-    timestamp: number;
-    layerId: string;
-}
-
-const _messageHelperMap: IMessageHelper = {
-    align: {
-        horizontal: TianyuShellUIHorizontalAlignment.CENTER,
-        vertical: TianyuShellUIVerticalAlignment.BOTTOM,
+const messageHelperGlobalAPIs: ITianyuShellUIMessageHelper = {
+    setVerticalAlign: function (align: ITianyuShellUIVerticalAlignment): void {
+        void getStore().dispatch(MessageInterface.helper.setVerticalAlign(getMessageInstanceId(), align));
     },
-    rate: {
-        horizontal: MESSAGE_DEFAULT_HORIZONTAL_RATE,
-        vertical: MESSAGE_DEFAULT_VERTICAL_RATE,
+    setVerticalRate: function (rate: number): void {
+        void getStore().dispatch(MessageInterface.helper.setVerticalRate(getMessageInstanceId(), rate));
     },
-    timestamp: MESSAGE_DEFAULT_TIMESTAMP,
-    layerId: "",
-};
-
-function _updateMessageLayer(): void {
-    // to setup message layer setting.
-    const messageLayer = document.getElementById(_messageHelperMap.layerId);
-    if (messageLayer) {
-        const leftAlign = _messageHelperMap.align.horizontal === TianyuShellUIHorizontalAlignment.LEFT;
-        const rightAlign = _messageHelperMap.align.horizontal === TianyuShellUIHorizontalAlignment.RIGHT;
-        const topAlign = _messageHelperMap.align.vertical === TianyuShellUIVerticalAlignment.TOP;
-        const bottomAlign = _messageHelperMap.align.vertical === TianyuShellUIVerticalAlignment.BOTTOM;
-
-        messageLayer.id = _messageHelperMap.layerId;
-        messageLayer.classList.add(
-            "tys_message_layer_styling",
-            topAlign ? "tys_message_layer_styling_vtop" : "tys_message_layer_styling_vntop",
-        );
-        messageLayer.style.zIndex = `${TianyuShellUIMessageZIndex}`;
-        messageLayer.style.width = isMobile ? "100%" : `${_messageHelperMap.rate.horizontal}%`;
-        messageLayer.style.maxHeight = isMobile ? "100%" : `${_messageHelperMap.rate.vertical}%`;
-        messageLayer.style.height = "fit-content";
-        messageLayer.style.left = leftAlign
-            ? "0px"
-            : rightAlign
-            ? "auto"
-            : isMobile
-            ? "0px"
-            : `${(100 - _messageHelperMap.rate.horizontal) / 2}%`;
-        messageLayer.style.right = leftAlign
-            ? "auto"
-            : rightAlign
-            ? "0px"
-            : isMobile
-            ? "0px"
-            : `${(100 - _messageHelperMap.rate.horizontal) / 2}%`;
-
-        messageLayer.style.top = topAlign
-            ? "0px"
-            : bottomAlign
-            ? "auto"
-            : isMobile
-            ? "0px"
-            : `${(100 - _messageHelperMap.rate.vertical) / 2}%`;
-        messageLayer.style.bottom = topAlign
-            ? "auto"
-            : bottomAlign
-            ? "0px"
-            : isMobile
-            ? "0px"
-            : `${(100 - _messageHelperMap.rate.vertical) / 2}%`;
-        messageLayer.style.alignItems = leftAlign ? "flex-start" : rightAlign ? "flex-end" : "center";
-    }
-}
-
-const _messageMap: Map<string, MessageTip> = new Map<string, MessageTip>();
-
-function _messageIsOpen(id: string): boolean {
-    return _messageMap.has(id);
-}
-
-function _messageCount(): number {
-    return _messageMap.size;
-}
-
-function _messageCloseInner(id: string): MessageTip | undefined {
-    let removed = false;
-    const messageTip = _messageMap.get(id);
-    if (messageTip) {
-        const layer = document.getElementById(_messageHelperMap.layerId);
-        const uiElem = document.getElementById(id);
-        if (layer && uiElem) {
-            layer.removeChild(uiElem);
-            removed = true;
-        }
-    }
-    if (removed && _messageMap.delete(id)) {
-        Log.debug(MessageBundle.getText("TIANYU_UI_MESSAGE_CLOSED", id));
-
-        // only removed success should to remove the messageTip
-        return messageTip;
-    }
-}
-
-function _messageClose(id: string): void {
-    const messageTip = _messageCloseInner(id);
-    if (messageTip) {
-        messageTip.close();
-    }
-}
-
-function _messagePost(
-    type: TianyuShellUIMessageType,
-    code: string,
-    message: string,
-    title: string,
-    detail?: string[],
-    isTech?: boolean,
-    moreInfo?: TianyuShellUIHyperLink | undefined,
-    troubleShot?: TianyuShellUIHyperLink | undefined,
-): string {
-    const id = guid();
-    const tip = new MessageTip(
-        {
-            id: id,
-            type: type,
-            code: code,
-            message: message,
-            title: title,
-            detail: detail || [],
-            timestamp: _messageHelperMap.timestamp,
-            isTechError: !!isTech,
-            moreInfo: moreInfo,
-            troubleShot: troubleShot,
-        },
-        _messageCloseInner,
-    );
-    _messageMap.set(id, tip);
-
-    const layer = document.getElementById(_messageHelperMap.layerId);
-    if (layer) {
-        const renderElement = tip.render();
-        layer.appendChild(renderElement);
-        Log.debug(MessageBundle.getText("TIANYU_UI_MESSAGE_POST_SUCCESS", id));
-    } else {
-        Log.error(MessageBundle.getText("TIANYU_UI_MESSAGE_POST_NO_LAYER", id));
-    }
-
-    return id;
-}
-
-function _validateMessageTimestamp(value: number): number {
-    return value > MESSAGE_MINIMUM_TIMESTAMP ? value : MESSAGE_MINIMUM_TIMESTAMP;
-}
-
-const _messageHelper: ITianyuShellUIMessageHelper = {
-    setVerticalAlign: function (value: TianyuShellUIVerticalAlignment): void {
-        _messageHelperMap.align.vertical = value;
-        _updateMessageLayer();
+    setHorizontalAlign: function (align: ITianyuShellUIHorizontalAlignment): void {
+        void getStore().dispatch(MessageInterface.helper.setHorizontalAlign(getMessageInstanceId(), align));
     },
-    setVerticalRate: function (value: number): void {
-        _messageHelperMap.rate.vertical = value;
-        _updateMessageLayer();
+    setHorizontalRate: function (rate: number): void {
+        void getStore().dispatch(MessageInterface.helper.setHorizontalRate(getMessageInstanceId(), rate));
     },
-    setHorizontalAlign: function (value: TianyuShellUIHorizontalAlignment): void {
-        _messageHelperMap.align.horizontal = value;
-        _updateMessageLayer();
+    setTimestamp: function (stamp: number): void {
+        void getStore().dispatch(MessageInterface.helper.setTimestamp(getMessageInstanceId(), stamp));
     },
-    setHorizontalRate: function (value: number): void {
-        _messageHelperMap.rate.horizontal = value;
-        _updateMessageLayer();
-    },
-    setTimestamp: function (value: number): void {
-        _messageHelperMap.timestamp = _validateMessageTimestamp(value);
-    },
-
-    getVerticalAlign: function (): TianyuShellUIVerticalAlignment {
-        return _messageHelperMap.align.vertical;
+    getVerticalAlign: function (): ITianyuShellUIVerticalAlignment {
+        const align = getStore().selecte(MessageInterface.helper.getVerticalAlign(getMessageInstanceId()));
+        return align instanceof Missing ? DEFAULT_MESSAGE_HELPER.align.vertical : align;
     },
     getVerticalRate: function (): number {
-        return _messageHelperMap.rate.vertical;
+        const rate = getStore().selecte(MessageInterface.helper.getVerticalRate(getMessageInstanceId()));
+        return rate instanceof Missing ? DEFAULT_MESSAGE_HELPER.rate.vertical : rate;
     },
-    getHorizontalAlign: function (): TianyuShellUIHorizontalAlignment {
-        return _messageHelperMap.align.horizontal;
+    getHorizontalAlign: function (): ITianyuShellUIHorizontalAlignment {
+        const align = getStore().selecte(MessageInterface.helper.getHorizontalAlign(getMessageInstanceId()));
+        return align instanceof Missing ? DEFAULT_MESSAGE_HELPER.align.horizontal : align;
     },
     getHorizontalRate: function (): number {
-        return _messageHelperMap.rate.horizontal;
+        const rate = getStore().selecte(MessageInterface.helper.getHorizontalRate(getMessageInstanceId()));
+        return rate instanceof Missing ? DEFAULT_MESSAGE_HELPER.rate.horizontal : rate;
     },
     getTimestamp: function (): number {
-        return _messageHelperMap.timestamp;
+        const stamp = getStore().selecte(MessageInterface.helper.getTimestamp(getMessageInstanceId()));
+        return stamp instanceof Missing ? DEFAULT_MESSAGE_HELPER.timestamp : stamp;
     },
 };
 
-const _message: ITianyuShellCoreUIMessage = {
-    post: _messagePost,
-    close: _messageClose,
-    isOpen: _messageIsOpen,
-    count: _messageCount,
-    helper: _messageHelper,
+const messageGlobalAPIs: ITianyuShellCoreUIMessage = {
+    post: function (
+        type: TianyuShellUIMessageType,
+        code: string,
+        message: string,
+        title: string,
+        detail?: string[],
+        isTech?: boolean | undefined,
+        moreInfo?: TianyuShellUIHyperLink | undefined,
+        troubleShot?: TianyuShellUIHyperLink | undefined,
+    ): void {
+        void getStore().dispatch(
+            MessageInterface.message.post(getMessageInstanceId(), {
+                type,
+                code,
+                message,
+                title,
+                detail,
+                isTech,
+                moreInfo,
+                troubleShot,
+            }),
+        );
+    },
+    close: function (id: string): void {
+        void getStore().dispatch(MessageInterface.message.close(getMessageInstanceId(), id));
+    },
+    isOpen: function (id: string): boolean {
+        const isOpen = getStore().selecte(MessageInterface.message.isOpen(getMessageInstanceId(), id));
+        return isOpen instanceof Missing ? false : isOpen;
+    },
+    count: function (): number {
+        const count = getStore().selecte(MessageInterface.message.count(getMessageInstanceId()));
+        return count instanceof Missing ? 0 : count;
+    },
+    helper: messageHelperGlobalAPIs,
 };
 
-function _init_message_layout_base(): void {
-    _messageHelperMap.layerId = `${TianyuShellUIMessagePreious}_${guid()}`;
+function updateMessageLayer(messageLayer: HTMLElement, messageHelper: IMessageHelper): void {
+    // to setup message layer setting.
+    const leftAlign = messageHelper.align.horizontal === ITianyuShellUIHorizontalAlignment.LEFT;
+    const rightAlign = messageHelper.align.horizontal === ITianyuShellUIHorizontalAlignment.RIGHT;
+    const topAlign = messageHelper.align.vertical === ITianyuShellUIVerticalAlignment.TOP;
+    const bottomAlign = messageHelper.align.vertical === ITianyuShellUIVerticalAlignment.BOTTOM;
 
-    const messageLayer = document.createElement("div");
-    messageLayer.id = _messageHelperMap.layerId;
-    document.body.appendChild(messageLayer);
+    messageLayer.id = messageHelper.layerId;
+    messageLayer.classList.add(
+        "tys_message_layer_styling",
+        topAlign ? "tys_message_layer_styling_vtop" : "tys_message_layer_styling_vntop",
+    );
+    messageLayer.style.zIndex = `${TianyuShellUIMessageZIndex}`;
+    messageLayer.style.width = isMobile ? "100%" : `${messageHelper.rate.horizontal}%`;
+    messageLayer.style.maxHeight = isMobile ? "100%" : `${messageHelper.rate.vertical}%`;
+    messageLayer.style.height = "fit-content";
+    messageLayer.style.left = leftAlign
+        ? "0px"
+        : rightAlign
+        ? "auto"
+        : isMobile
+        ? "0px"
+        : `${(100 - messageHelper.rate.horizontal) / 2}%`;
+    messageLayer.style.right = leftAlign
+        ? "auto"
+        : rightAlign
+        ? "0px"
+        : isMobile
+        ? "0px"
+        : `${(100 - messageHelper.rate.horizontal) / 2}%`;
 
-    _updateMessageLayer();
+    messageLayer.style.top = topAlign
+        ? "0px"
+        : bottomAlign
+        ? "auto"
+        : isMobile
+        ? "0px"
+        : `${(100 - messageHelper.rate.vertical) / 2}%`;
+    messageLayer.style.bottom = topAlign
+        ? "auto"
+        : bottomAlign
+        ? "0px"
+        : isMobile
+        ? "0px"
+        : `${(100 - messageHelper.rate.vertical) / 2}%`;
+    messageLayer.style.alignItems = leftAlign ? "flex-start" : rightAlign ? "flex-end" : "center";
 }
 
-export function initTianyuShellCoreUIMessage(): void {
-    const windowObj = window as any;
-    if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.message) {
-        (windowObj.tianyuShell as ITianyuShell) = {
-            ...(windowObj.tianyuShell || {}),
-            core: {
-                ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
-                ui: {
-                    ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
-                    message: _message,
-                },
-            },
-        };
+function initLayout(): void {
+    const store = getStore();
+    const instanceId = getMessageInstanceId();
 
-        _init_message_layout_base();
+    const layerId = store.selecte(MessageInterface.control.getId(instanceId));
+    const messageLayer = document.createElement("div");
+    messageLayer.id = layerId instanceof Missing ? "" : layerId;
+    document.body.appendChild(messageLayer);
 
-        // CssHelper.loadGlobalStyle("test_message_stype");
+    const messageHelperWithMissing = store.selecte(MessageInterface.control.getHelper(instanceId));
+    const messageHelper =
+        messageHelperWithMissing instanceof Missing ? DEFAULT_MESSAGE_HELPER : messageHelperWithMissing;
+    updateMessageLayer(messageLayer, messageHelper);
+}
+
+function onMessagePost(
+    oldMessages: MapOfType<IMessageTipState> | undefined,
+    newMessage: MapOfType<IMessageTipState> | undefined,
+): void {
+    oldMessages = oldMessages || {};
+    newMessage = newMessage || {};
+
+    const store = getStore();
+    const instanceId = getMessageInstanceId();
+
+    const layerId = store.selecte(MessageInterface.control.getId(instanceId));
+    if (layerId instanceof Missing) {
+        return;
     }
+
+    const messageLayer = document.getElementById(layerId);
+    if (!messageLayer) {
+        Log.error(MessageBundle.getText("TIANYU_UI_MESSAGE_POST_NO_LAYER", layerId));
+        return;
+    }
+
+    const oldMessageIds = Object.keys(oldMessages);
+    const newMessageIds = Object.keys(newMessage);
+    for (const id of newMessageIds) {
+        if (!oldMessageIds.includes(id)) {
+            // to open
+            const tip = new MessageTip(id);
+            const renderElement = tip.render();
+            messageLayer.appendChild(renderElement);
+            Log.debug(MessageBundle.getText("TIANYU_UI_MESSAGE_POST_SUCCESS", id));
+        }
+    }
+}
+
+function onLayerSettingChanged(oldState: IMessageHelper | undefined, newState: IMessageHelper | undefined): void {
+    const messageHelper = newState
+        ? newState
+        : ObjectHelper.compareObjects(oldState, DEFAULT_MESSAGE_HELPER) === "different"
+        ? DEFAULT_MESSAGE_HELPER
+        : undefined;
+
+    if (!messageHelper) {
+        return;
+    }
+
+    const store = getStore();
+    const instanceId = getMessageInstanceId();
+
+    const layerId = store.selecte(MessageInterface.control.getId(instanceId));
+    if (layerId instanceof Missing) {
+        return;
+    }
+
+    const messageLayer = document.getElementById(layerId);
+    if (!messageLayer) {
+        return;
+    }
+
+    updateMessageLayer(messageLayer, messageHelper);
+}
+
+let layerSettingListener = null;
+let messagePostListener = null;
+
+export async function initTianyuShellCoreUIMessage(): Promise<void> {
+    const windowObj = window as any;
+    if (!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.background) {
+        return;
+    }
+
+    const store = getStore();
+    const instanceId = getMessageInstanceId();
+
+    store.registerInterface(StoreType.MESSAGE_STORE_TYPE, MessageInterface);
+
+    await store.dispatch(
+        StoreUtils.createBatchAction([
+            MessageInterface.core.creator(instanceId),
+            MessageInterface.control.init(instanceId),
+        ]),
+    );
+
+    layerSettingListener = ListenerFactor.createListener(
+        MessageInterface.control.getHelper(instanceId),
+        onLayerSettingChanged,
+    );
+    messagePostListener = ListenerFactor.createListener(
+        MessageInterface.control.allMessages(instanceId),
+        onMessagePost,
+    );
+    store.startListen(layerSettingListener);
+    store.startListen(messagePostListener);
+
+    (windowObj.tianyuShell as ITianyuShell) = {
+        ...(windowObj.tianyuShell || {}),
+        core: {
+            ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
+            ui: {
+                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
+                message: messageGlobalAPIs,
+            },
+        },
+    };
+
+    initLayout();
 }

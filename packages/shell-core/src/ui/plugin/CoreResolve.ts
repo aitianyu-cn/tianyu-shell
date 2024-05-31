@@ -36,7 +36,7 @@ export async function loadingTianyuShellCore(): Promise<void> {
         );
 
         initTianyuShellCoreUITheme();
-        initTianyuShellCoreUIMessage();
+        await initTianyuShellCoreUIMessage();
         initTianyuShellCoreUIStyle();
         initTianyuShellCoreUIDialog();
         await initTianyuShellCoreUIBackground();
@@ -57,11 +57,21 @@ export async function loadingTianyuStore(): Promise<void> {
         if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.store) {
             const { createStore, StoreHelper, TianyuStoreEntityInterfaceExpose, TIANYU_STORE_ENTITY_CORE } =
                 await import(/*webpackChunkName: "aitianyu.cn/tianyu-store" */ "@aitianyu.cn/tianyu-store");
-            const instanceId = StoreHelper.generateStoreInstanceId();
+            const redoUndoSupportedInstanceId = StoreHelper.generateStoreInstanceId();
+            const unReodoUndoInstanceId = StoreHelper.generateStoreInstanceId();
+            const genericInstanceId = StoreHelper.generateStoreInstanceId();
 
             const tianyuStore = createStore();
             await tianyuStore.dispatch(
-                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(instanceId),
+                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(genericInstanceId),
+            );
+            await tianyuStore.dispatch(
+                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(redoUndoSupportedInstanceId),
+            );
+            await tianyuStore.dispatch(
+                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(unReodoUndoInstanceId, {
+                    redoUndo: false,
+                }),
             );
 
             (windowObj.tianyuShell as ITianyuShell) = {
@@ -72,7 +82,9 @@ export async function loadingTianyuStore(): Promise<void> {
                         ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
                         store: {
                             store: tianyuStore,
-                            instanceId,
+                            instanceId: genericInstanceId,
+                            histroyInstance: redoUndoSupportedInstanceId,
+                            nonHisInstance: unReodoUndoInstanceId,
                         },
                     },
                 },

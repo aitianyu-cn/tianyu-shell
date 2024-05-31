@@ -48,6 +48,8 @@ import * as InstanceHelperImport from "./src/ui/tools/InstanceHelper";
 export namespace TianyuShellStore {
     export import getStore = StoreImport.getStore;
     export import getInstanceId = StoreImport.getInstanceId;
+    export import getHistroySupportedIns = StoreImport.getHistroySupportedIns;
+    export import getNoHisSupportedIns = StoreImport.getNoHisSupportedIns;
 
     export import InterfaceExpose = InterfaceExposeImport.StoreInterfaceExpose;
     export import StoreType = StoreTypeImport.StoreType;

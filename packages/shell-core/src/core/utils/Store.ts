@@ -21,3 +21,21 @@ export function getInstanceId(): InstanceId {
 
     return store.instanceId;
 }
+
+export function getHistroySupportedIns(): InstanceId {
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    if (!store) {
+        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+    }
+
+    return store.histroyInstance;
+}
+
+export function getNoHisSupportedIns(): InstanceId {
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    if (!store) {
+        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+    }
+
+    return store.nonHisInstance;
+}

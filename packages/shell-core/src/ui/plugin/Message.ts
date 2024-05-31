@@ -28,8 +28,8 @@ export class Message {
         isTech?: boolean,
         moreInfo?: TianyuShellUIHyperLink | undefined,
         troubleShot?: TianyuShellUIHyperLink | undefined,
-    ): string {
-        return MessageBase().post(type, code, message, title, detail, isTech, moreInfo, troubleShot);
+    ): void {
+        MessageBase().post(type, code, message, title, detail, isTech, moreInfo, troubleShot);
     }
 
     /**

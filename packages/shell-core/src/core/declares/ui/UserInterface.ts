@@ -376,8 +376,6 @@ export interface ITianyuShellCoreUIMessage {
      * @param isTech a flag of the message is technical message or not
      * @param moreInfo message more info hyper link
      * @param troubleShot message trouble shot info hyper link
-     *
-     * @returns message id
      */
     post(
         type: TianyuShellUIMessageType,
@@ -388,7 +386,7 @@ export interface ITianyuShellCoreUIMessage {
         isTech?: boolean,
         moreInfo?: TianyuShellUIHyperLink | undefined,
         troubleShot?: TianyuShellUIHyperLink | undefined,
-    ): string;
+    ): void;
     /**
      * Close a message
      *
@@ -599,6 +597,10 @@ export interface ITianyuShellUIStore {
     store: IStore;
     /** Base Instance Id */
     instanceId: InstanceId;
+    /** Instance Supports Redo Undo Operation */
+    histroyInstance: InstanceId;
+    /** Instance Not support redo undo */
+    nonHisInstance: InstanceId;
 }
 
 /** Tianyu Shell Core UI APIs */
