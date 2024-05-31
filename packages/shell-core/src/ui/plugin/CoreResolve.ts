@@ -39,7 +39,7 @@ export async function loadingTianyuShellCore(): Promise<void> {
         initTianyuShellCoreUIMessage();
         initTianyuShellCoreUIStyle();
         initTianyuShellCoreUIDialog();
-        initTianyuShellCoreUIBackground();
+        await initTianyuShellCoreUIBackground();
         initTianyuShellCoreUIMajor();
 
         staticLoader();
@@ -55,13 +55,14 @@ export async function loadingTianyuStore(): Promise<void> {
     try {
         const windowObj = window as any;
         if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.store) {
-            const { createStore, StoreHelper, TianyuStoreEntityInterfaceExpose, TIANYU_STORE_ENTITY_CORE } = await import(
-                /*webpackChunkName: "aitianyu.cn/tianyu-store" */ "@aitianyu.cn/tianyu-store"
-            );
+            const { createStore, StoreHelper, TianyuStoreEntityInterfaceExpose, TIANYU_STORE_ENTITY_CORE } =
+                await import(/*webpackChunkName: "aitianyu.cn/tianyu-store" */ "@aitianyu.cn/tianyu-store");
             const instanceId = StoreHelper.generateStoreInstanceId();
 
             const tianyuStore = createStore();
-            await tianyuStore.dispatch(TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(instanceId));
+            await tianyuStore.dispatch(
+                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(instanceId),
+            );
 
             (windowObj.tianyuShell as ITianyuShell) = {
                 ...(windowObj.tianyuShell || {}),

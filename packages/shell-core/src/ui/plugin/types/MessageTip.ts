@@ -1,7 +1,7 @@
 /**@format */
 
 import { TianyuShellUIHyperLink, TianyuShellUIMessageType } from "shell-core/src/core/declares/ui/UserInterface";
-import { IMessage } from "../interface/IMessage";
+import { IMessage } from "./IMessage";
 import { CallbackActionT } from "@aitianyu.cn/types";
 import { MessageTipHelper } from "./MessageTipHelper";
 

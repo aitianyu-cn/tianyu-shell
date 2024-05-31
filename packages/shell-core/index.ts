@@ -37,6 +37,26 @@ export namespace Utils {
     export import AutomaticStorage = CommonAutomaticStorage.AutomaticStorage;
 }
 
+import * as StoreImport from "./src/core/utils/Store";
+
+import * as InterfaceExposeImport from "./src/ui/plugin/interface/InterfaceExpose";
+
+import * as StoreTypeImport from "./src/ui/plugin/interface/StoreTypes";
+
+import * as InstanceHelperImport from "./src/ui/tools/InstanceHelper";
+
+export namespace TianyuShellStore {
+    export import getStore = StoreImport.getStore;
+    export import getInstanceId = StoreImport.getInstanceId;
+
+    export import InterfaceExpose = InterfaceExposeImport.StoreInterfaceExpose;
+    export import StoreType = StoreTypeImport.StoreType;
+
+    export namespace InstanceHelper {
+        export import getBackgroundInstanceId = InstanceHelperImport.getBackgroundInstanceId;
+    }
+}
+
 // Export UI Interfaces
 export * from "./src/ui/common/Declare";
 export * from "./src/ui/common/Interface";

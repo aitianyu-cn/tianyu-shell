@@ -1,104 +1,118 @@
-/**@format */
-import { ITianyuShell } from "shell-core/src/core/declares/Declare";
-import { TianyuShellUIBackgroundPreious, TianyuShellUIBackgroundZIndex } from "../../common/Declare";
-import { guid } from "@aitianyu.cn/types";
+/** @format */
+
+import { getStore } from "shell-core/src/core/utils/Store";
+import { getBackgroundInstanceId } from "../../tools/InstanceHelper";
+import { ListenerFactor, Missing, StoreUtils } from "@aitianyu.cn/tianyu-store";
+import { BackgroundInterface } from "../interface/BackgroundInterfaceExpose";
+import { TianyuShellUIBackgroundZIndex } from "../../common/Declare";
 import { ITianyuShellCoreUIBackground } from "shell-core/src/core/declares/ui/UserInterface";
-import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
+import { ITianyuShell } from "shell-core/src/core/declares/Declare";
+import { IBackgroundInfo } from "../interface/state/BackgroundState";
+import { StoreType } from "../interface/StoreTypes";
 
-interface IBackgroundMap {
-    layerId: string;
-    color: string;
-    defaultColor: string;
-    element: HTMLElement | null;
-}
+const VERY_DEFAULT_COLOR = "#ffffff";
 
-const _backgroundMap: IBackgroundMap = {
-    layerId: "",
-    color: "#FFFFFF",
-    defaultColor: "#FFFFFF",
-    element: null,
-};
+function initLayout(): void {
+    const store = getStore();
+    const instanceId = getBackgroundInstanceId();
 
-function _setColor(color: string): void {
-    const backgroundLayer = document.getElementById(_backgroundMap.layerId);
-    if (backgroundLayer) {
-        _backgroundMap.color = color;
-        backgroundLayer.style.background = _backgroundMap.color;
-    }
-}
-
-function _getColor(): string {
-    return _backgroundMap.color;
-}
-function _removeColor(): void {
-    _setColor(_backgroundMap.defaultColor);
-}
-
-function _setElement(html: HTMLElement): void {
-    _removeElement();
-    const backgroundLayer = document.getElementById(_backgroundMap.layerId);
-    if (backgroundLayer) {
-        backgroundLayer.appendChild(html);
-        _backgroundMap.element = html;
-    }
-}
-
-function _removeElement(): void {
-    const backgroundLayer = document.getElementById(_backgroundMap.layerId);
-    if (backgroundLayer) {
-        if (_backgroundMap.element) {
-            backgroundLayer.removeChild(_backgroundMap.element);
-        }
-    }
-}
-
-function _clear(): void {
-    const backgroundLayer = document.getElementById(_backgroundMap.layerId);
-    if (backgroundLayer) {
-        if (_backgroundMap.element) {
-            backgroundLayer.removeChild(_backgroundMap.element);
-        }
-        _backgroundMap.color = _backgroundMap.defaultColor;
-        backgroundLayer.style.background = _backgroundMap.color;
-    }
-}
-
-function _init_background_layout_base(): void {
-    _backgroundMap.layerId = `${TianyuShellUIBackgroundPreious}_${guid()}`;
-    _backgroundMap.defaultColor = TianyuShellProcessor.getUIConfigures().core.background;
-    _backgroundMap.color = _backgroundMap.defaultColor;
+    const layerId = store.selecte(BackgroundInterface.control.getId(instanceId));
+    const color = store.selecte(BackgroundInterface.color.get(instanceId));
 
     const backgroundLayer = document.createElement("div");
     backgroundLayer.style.zIndex = `${TianyuShellUIBackgroundZIndex}`;
-    backgroundLayer.style.background = _backgroundMap.color;
+    backgroundLayer.style.background = color instanceof Missing ? VERY_DEFAULT_COLOR : color;
     backgroundLayer.classList.add("tys_basic_layer_styling", "tys_background_layer_styling");
-    backgroundLayer.id = _backgroundMap.layerId;
+    backgroundLayer.id = layerId instanceof Missing ? "" : layerId;
     document.body.appendChild(backgroundLayer);
 }
 
-const _background: ITianyuShellCoreUIBackground = {
-    setColor: _setColor,
-    getColor: _getColor,
-    removeColor: _removeColor,
-    setElement: _setElement,
-    removeElement: _removeElement,
-    clear: _clear,
+function onBackgroundChanged(oldState: IBackgroundInfo | undefined, newState: IBackgroundInfo | undefined): void {
+    const store = getStore();
+    const instanceId = getBackgroundInstanceId();
+
+    const layerId = store.selecte(BackgroundInterface.control.getId(instanceId));
+    if (layerId instanceof Missing) {
+        return;
+    }
+
+    const backgroundLayer = document.getElementById(layerId);
+    if (!backgroundLayer) {
+        return;
+    }
+
+    if (oldState?.elementId !== newState?.elementId) {
+        if (oldState?.elementId) {
+            const oldElement = store.selecte(BackgroundInterface.html.current(instanceId, oldState.elementId));
+            if (oldElement && !(oldElement instanceof Missing)) {
+                backgroundLayer.removeChild(oldElement);
+            }
+        }
+
+        if (newState?.elementId) {
+            const newElement = store.selecte(BackgroundInterface.html.current(instanceId, newState.elementId));
+            if (newElement && !(newElement instanceof Missing)) {
+                backgroundLayer.appendChild(newElement);
+            }
+        }
+    }
+
+    if (oldState?.color !== newState?.color) {
+        backgroundLayer.style.background = newState?.color || VERY_DEFAULT_COLOR;
+    }
+}
+
+let listener = null;
+
+const backgroundGlobalAPI: ITianyuShellCoreUIBackground = {
+    setColor: (color: string) =>
+        void getStore().dispatch(BackgroundInterface.color.set(getBackgroundInstanceId(), color)),
+    getColor: () => {
+        const color = getStore().selecte(BackgroundInterface.color.get(getBackgroundInstanceId()));
+        return color instanceof Missing ? VERY_DEFAULT_COLOR : color;
+    },
+    removeColor: () => void getStore().dispatch(BackgroundInterface.color.remove(getBackgroundInstanceId())),
+
+    setElement: (element: HTMLElement, id?: string) =>
+        void getStore().dispatch(BackgroundInterface.html.set(getBackgroundInstanceId(), { element, id })),
+    removeElement: () => void getStore().dispatch(BackgroundInterface.html.clear(getBackgroundInstanceId())),
+    clear: () => void getStore().dispatch(BackgroundInterface.control.reset(getBackgroundInstanceId())),
 };
 
-export function initTianyuShellCoreUIBackground(): void {
+export async function initTianyuShellCoreUIBackground(): Promise<void> {
     const windowObj = window as any;
-    if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.background) {
-        (windowObj.tianyuShell as ITianyuShell) = {
-            ...(windowObj.tianyuShell || {}),
-            core: {
-                ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
-                ui: {
-                    ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
-                    background: _background,
-                },
-            },
-        };
-
-        _init_background_layout_base();
+    if (!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.background) {
+        return;
     }
+
+    const store = getStore();
+    const instanceId = getBackgroundInstanceId();
+
+    store.registerInterface(StoreType.BACKGROUND_STORE_TYPE, BackgroundInterface);
+
+    await store.dispatch(
+        StoreUtils.createBatchAction([
+            BackgroundInterface.core.creator(instanceId),
+            BackgroundInterface.control.externalCreator(instanceId),
+        ]),
+    );
+
+    listener = ListenerFactor.createListener(
+        BackgroundInterface.control.getBackground(getBackgroundInstanceId()),
+        onBackgroundChanged,
+    );
+    store.startListen(listener);
+
+    (windowObj.tianyuShell as ITianyuShell) = {
+        ...(windowObj.tianyuShell || {}),
+        core: {
+            ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
+            ui: {
+                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
+                background: backgroundGlobalAPI,
+            },
+        },
+    };
+
+    initLayout();
 }
