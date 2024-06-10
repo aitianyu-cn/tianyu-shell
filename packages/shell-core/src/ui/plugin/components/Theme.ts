@@ -122,39 +122,21 @@ function _reset_theme(): void {
         if (!!ui) {
             ui.theme.custom.valid = false;
 
-            Cookie.remove(TianyuShellUIThemeCustomCookieTheme, _runtimeUIConfigure.theme.path, _runtimeUIConfigure.theme.domain);
-            Cookie.remove(TianyuShellUIThemeCustomCookieColor, _runtimeUIConfigure.theme.path, _runtimeUIConfigure.theme.domain);
+            Cookie.remove(
+                TianyuShellUIThemeCustomCookieTheme,
+                _runtimeUIConfigure.theme.path,
+                _runtimeUIConfigure.theme.domain,
+            );
+            Cookie.remove(
+                TianyuShellUIThemeCustomCookieColor,
+                _runtimeUIConfigure.theme.path,
+                _runtimeUIConfigure.theme.domain,
+            );
         }
     }
 
     // to remove custom applied theme
     __reset_custom_theme();
-}
-
-function _get_custom_theme(): string[] {
-    return _customAppliedThemes.concat();
-}
-
-function _contains_custom_theme(id: string): boolean {
-    return _customAppliedThemes.includes(id);
-}
-
-function _remove_custom_theme(id: string): void {
-    if (!_customAppliedThemes.includes(id)) {
-        return;
-    }
-
-    const themeId = `${TianyuShellUICustomAppliedPreious}_${id}`;
-    const element = document.getElementById(themeId);
-    if (element) {
-        document.head.removeChild(element);
-    }
-
-    const newAppliedThemes: string[] = [];
-    for (const theme of _customAppliedThemes) {
-        theme !== id && newAppliedThemes.push(theme);
-    }
-    _customAppliedThemes = newAppliedThemes;
 }
 
 function __init_default_theme_from_configure(): void {
@@ -191,66 +173,9 @@ function __init_customer_theme_from_cookie(): void {
     }
 }
 
-function _custom_theme_getter_add(themeId: string, style: string): void {
-    if (!!_customThemes[themeId]) {
-        return;
-    }
-
-    _customThemes[themeId] = `${_runtimeUIConfigure.theme.themeUrl}/${style}`;
-}
-
-function _custom_theme_getter_update(themeId: string, style: string): void {
-    _customThemes[themeId] = `${_runtimeUIConfigure.theme.themeUrl}/${style}`;
-
-    // if the updated theme is not in using, not to do further things.
-    if (!_customAppliedThemes.includes(themeId)) {
-        return;
-    }
-
-    const customThmemId = `${TianyuShellUICustomAppliedPreious}_${themeId}`;
-    const oldElement = document.getElementById(customThmemId);
-    if (!oldElement) {
-        // if the element is not found, to remove the theme from applied list.
-        const newAppliedThemes: string[] = [];
-        for (const theme of _customAppliedThemes) {
-            theme !== themeId && newAppliedThemes.push(theme);
-        }
-        _customAppliedThemes = newAppliedThemes;
-        return;
-    }
-
-    const newCustomThemeElement = document.createElement("link");
-    newCustomThemeElement.href = _customThemes[themeId];
-    newCustomThemeElement.rel = "stylesheet";
-    newCustomThemeElement.type = "text/css";
-    newCustomThemeElement.id = customThmemId;
-    document.head.replaceChild(newCustomThemeElement, oldElement);
-}
-
-function _custom_theme_getter_delete(themeId: string): void {
-    if (!!_customThemes[themeId]) {
-        delete _customThemes[themeId];
-
-        // to remove the theme from ui if it is using.
-        _remove_custom_theme(themeId);
-    }
-}
-
-function _custom_theme_getter_getThemes(): string[] {
-    return Object.keys(_customThemes);
-}
-
-function _custom_theme_getter_getUrl(themeId: string): string {
-    return _customThemes[themeId] || "";
-}
-
-const _customThemeGetter: ITianyuShellCoreUIThemeCustomManager = {
-    add: _custom_theme_getter_add,
-    update: _custom_theme_getter_update,
-    delete: _custom_theme_getter_delete,
-    getThemes: _custom_theme_getter_getThemes,
-    getUrl: _custom_theme_getter_getUrl,
-};
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 
 const _theme: ITianyuShellCoreUITheme = {
     default: {

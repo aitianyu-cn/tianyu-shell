@@ -28,3 +28,14 @@ export function getMessageInstanceId(): InstanceId {
     }
     return InstanceMap[StoreType.MESSAGE_STORE_TYPE];
 }
+
+export function getStylingInstanceId(): InstanceId {
+    if (!InstanceMap[StoreType.STYLING_STORE_TYPE]) {
+        InstanceMap[StoreType.STYLING_STORE_TYPE] = StoreHelper.generateInstanceId(
+            getHistroySupportedIns(),
+            StoreType.STYLING_STORE_TYPE,
+            "styling",
+        );
+    }
+    return InstanceMap[StoreType.STYLING_STORE_TYPE];
+}
