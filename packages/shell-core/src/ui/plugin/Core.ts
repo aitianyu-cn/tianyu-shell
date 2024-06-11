@@ -22,9 +22,10 @@ let loadingPromise: Promise<void> | undefined = undefined;
 if (!_runtimeUIConfigure.core.support) {
     throw new RuntimeNotSupportException(MessageBundle.getText("TIANYU_UI_RUNTIME_NOT_SUPPORT"));
 } else {
-    loadingPromise = new Promise<void>(async () => {
+    loadingPromise = new Promise<void>(async (resolve) => {
         await loadingTianyuStore();
         await loadingTianyuShellCore();
+        resolve();
     }).catch(() => {
         // this is an error handling when the promise.reject is not handled in outside
         Log.error(MessageBundle.getText("TIANYU_UI_CORE_LOADING_FAILED"));
