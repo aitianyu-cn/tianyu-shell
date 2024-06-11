@@ -6,7 +6,7 @@ import { StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { BackgroundInterface } from "../interface/BackgroundInterfaceExpose";
 import { ITianyuShell } from "shell-core/src/core/declares/Declare";
 import { StoreType } from "../interface/StoreTypes";
-import { initLayout } from "../handler/MessageHandler";
+import { initLayout } from "../handler/BackgroundHandler";
 import { BackgroundChangedListener } from "../listener/BackgroundListener";
 import { BackgroundGlobalAPI } from "../apis/BackgroundAPIs";
 

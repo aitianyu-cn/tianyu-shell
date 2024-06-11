@@ -6,7 +6,7 @@ import { StoreType } from "./StoreTypes";
 import { StylingExpose } from "./StylingInterfaceExpose";
 
 export const StoreInterfaceExpose = {
-    [StoreType.BACKGROUND_STORE_TYPE]: BackgroundExpose,
-    [StoreType.MESSAGE_STORE_TYPE]: MessageExpose,
-    [StoreType.STYLING_STORE_TYPE]: StylingExpose,
+    ["tianyu-shell-ui-background"]: BackgroundExpose,
+    ["tianyu-shell-ui-message"]: MessageExpose,
+    ["tianyu-shell-ui-styling"]: StylingExpose,
 };

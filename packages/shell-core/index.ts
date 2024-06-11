@@ -56,6 +56,8 @@ export namespace TianyuShellStore {
 
     export namespace InstanceHelper {
         export import getBackgroundInstanceId = InstanceHelperImport.getBackgroundInstanceId;
+        export import getMessageInstanceId = InstanceHelperImport.getMessageInstanceId;
+        export import getStylingInstanceId = InstanceHelperImport.getStylingInstanceId;
     }
 }
 
