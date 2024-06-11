@@ -10,11 +10,7 @@ export class Theme {
      *
      * @returns return default theme
      */
-    public static getDefault(): ITheme | null {
-        if (!ThemeBase().default.valid) {
-            return null;
-        }
-
+    public static getDefault(): ITheme {
         return {
             theme: ThemeBase().default.theme,
             color: ThemeBase().default.color,
@@ -26,14 +22,14 @@ export class Theme {
      * @returns return customized theme
      */
     public static getCustome(): ITheme | null {
-        if (!ThemeBase().custom.valid) {
-            return null;
-        }
-
-        return {
-            theme: ThemeBase().custom.theme,
-            color: ThemeBase().custom.color,
-        };
+        const theme = ThemeBase().custom?.theme;
+        const color = ThemeBase().custom?.color;
+        return theme && color
+            ? {
+                  theme,
+                  color,
+              }
+            : null;
     }
     /**
      * To change system customized theme or add a custom customized theme

@@ -1,8 +1,8 @@
 /** @format */
 
-import { CreateStylingInstanceActionCreator, DestroyStylingInstanceActionCreator } from "./StylingBaseActionCreator";
+import { CreateStylingInstanceActionCreator } from "./StylingBaseActionCreator";
 
-export const CreateStylingInstanceAction = CreateStylingInstanceActionCreator.withReducer(function (_state) {
+export const CreateStylingInstanceAction = CreateStylingInstanceActionCreator.withReducer(function (_state, initTheme) {
     return {
         css: [],
         theme: {
@@ -11,14 +11,10 @@ export const CreateStylingInstanceAction = CreateStylingInstanceActionCreator.wi
                 using: [],
             },
             default: {
-                valid: false,
-                theme: "",
-                color: "light",
+                ...initTheme.default,
             },
             custom: {
-                valid: false,
-                theme: "",
-                color: "light",
+                ...initTheme.custom,
             },
         },
     };

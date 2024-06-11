@@ -1,10 +1,11 @@
 /** @format */
 
 import { loadI18n } from "infra/resource/MessageLoader";
+import { ITianyuShellInitial } from "shell";
 
 loadI18n().then(async () => {
     const { initialTianyuShellAsync } = await import("shell");
-    initialTianyuShellAsync({
+    const initial: ITianyuShellInitial = {
         core: {
             runtime: {
                 console: true,
@@ -13,6 +14,10 @@ loadI18n().then(async () => {
             version: "1.1.1.1",
             plugin: {
                 globalize: true,
+            },
+            sync: {
+                compatibility: true,
+                proxy: "/remote-resources",
             },
         },
         runtime: {
@@ -29,8 +34,9 @@ loadI18n().then(async () => {
             },
             theme: {},
         },
-    });
+    };
 
+    initialTianyuShellAsync(initial);
     const { waitLoading } = await import("shell-core");
     await waitLoading();
 

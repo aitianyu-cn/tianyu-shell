@@ -69,8 +69,6 @@ export interface ITianyuShellCoreUIThemeItem {
     theme: string;
     /** Theme color */
     color: TianyuShellUIThemeColor;
-    /** Theme valid flag */
-    valid: boolean;
 }
 
 /** Tianyu Shell UI Vertical Alignment */
@@ -91,51 +89,6 @@ export enum ITianyuShellUIHorizontalAlignment {
     RIGHT,
     /** Center Alignment */
     CENTER,
-}
-
-/**
- * Tianyu Shell UI Theme Custom Operations APIs
- * To support manage custom themes
- */
-export interface ITianyuShellCoreUIThemeCustomManager {
-    /**
-     * Add a new theme into theme list
-     *
-     * @param themeId theme id
-     * @param style theme remote link
-     */
-    add(themeId: string, style: string): void;
-    /**
-     * Update a exist theme
-     *
-     * If the theme is using, the UI css will be updated automatically
-     *
-     * @param themeId theme id
-     * @param style new theme remote link
-     */
-    update(themeId: string, style: string): void;
-    /**
-     * Remove a theme
-     *
-     * If the theme is using, the UI css will be removed automatically
-     *
-     * @param themeId theme id
-     */
-    delete(themeId: string): void;
-    /**
-     * Get all custom themes
-     *
-     * @returns custom theme ids list
-     */
-    getThemes(): string[];
-    /**
-     * Get a theme URL by theme id
-     *
-     * @param themeId theme id
-     *
-     * @returns return theme URL
-     */
-    getUrl(themeId: string): string;
 }
 
 /** Tianyu Shell UI Custom Theme APIs */
@@ -162,8 +115,6 @@ export interface ITianyuShellCoreUIThemeCustom {
     remove(id: string): void;
     /** Reset custom theme status and remove all using custom theme */
     reset(): void;
-    /** Custom theme provider */
-    manager: ITianyuShellCoreUIThemeCustomManager;
 }
 
 /** Tianyu Shell UI Theme APIs */
@@ -178,7 +129,7 @@ export interface ITianyuShellCoreUITheme {
      * This theme setting is used for Tianyu Shell general themes setting
      * (This theme is defined in Tianyu Shell inner)
      */
-    custom: ITianyuShellCoreUIThemeItem;
+    custom: ITianyuShellCoreUIThemeItem | null;
     /**
      * Application Custom theme setting
      * This theme setting is all from custom side
@@ -550,10 +501,8 @@ export interface ITianyuShellUICssHelper {
      * Remove a styling from html document
      *
      * @param key the stylink key
-     *
-     * @returns return true is the styling is removed successful, otherwise false
      */
-    remove(key: string): boolean;
+    remove(key: string): void;
 }
 
 /** Tianyu Shell Core UI Styling APIs */
@@ -566,10 +515,8 @@ export interface ITianyuShellCoreUIStyle {
      * @param key the styling name
      * @param styling styling object
      * @param path the styling saved path
-     *
-     * @returns return true if the styling is saved, otherwise false
      */
-    set(key: string, styling: TianyuUIStyleDeclaration, path?: string): boolean;
+    set(key: string, styling: TianyuUIStyleDeclaration, path?: string): void;
     /**
      * Get a customized styling
      *

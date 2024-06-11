@@ -16,15 +16,11 @@ export interface IStylingState extends IterableType {
             theme: string;
             /** Theme color */
             color: TianyuShellUIThemeColor;
-            /** Theme valid flag */
-            valid: boolean;
         };
         custom: {
             theme: string;
             /** Theme color */
             color: TianyuShellUIThemeColor;
-            /** Theme valid flag */
-            valid: boolean;
         };
     };
 }

@@ -20,7 +20,7 @@ export class StyleCss {
      *
      * @returns return true is the styling is removed successful, otherwise false
      */
-    public static remove(key: string): boolean {
-        return StyleBase().css.remove(key);
+    public static remove(key: string): void {
+        StyleBase().css.remove(key);
     }
 }

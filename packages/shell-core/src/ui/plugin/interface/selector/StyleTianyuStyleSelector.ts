@@ -1,11 +1,11 @@
 /** @format */
 
 import { SelectorFactor } from "@aitianyu.cn/tianyu-store";
-import { MapOfType } from "@aitianyu.cn/types";
+import { MapOfType, ObjectHelper } from "@aitianyu.cn/types";
 import { TianyuUIStyleDeclaration } from "shell-core/src/core/declares/ui/TianyuUIStyle";
 import { StyleHelper } from "shell-core/src/ui/resources/StyleHelper";
 import { getStylingMap } from "shell-core/src/ui/tools/TianyuStylingHelper";
-import { IStyleMap, IStylingState, STYLING_STYLE_MAP } from "../state/StylingState";
+import { CssMap, IStyleMap, IStylingState, STYLING_CSS_MAP, STYLING_STYLE_MAP } from "../state/StylingState";
 
 export const GetTianyuUIStyleSelector = SelectorFactor.makeParameterSelector<
     IStylingState,
@@ -58,3 +58,25 @@ export const GetTianyuUIStyleSelector = SelectorFactor.makeParameterSelector<
         return register.get(STYLING_STYLE_MAP) as IStyleMap;
     },
 );
+
+export const GetStyleCssElementSelector = SelectorFactor.makeParameterSelector<
+    IStylingState,
+    string,
+    HTMLElement | undefined,
+    CssMap | undefined
+>(
+    function (_state, key, map) {
+        if (!map) {
+            return undefined;
+        }
+
+        return map.get(key);
+    },
+    function (register) {
+        return register.get<CssMap>(STYLING_CSS_MAP);
+    },
+);
+
+export const GetStyleCssListSelector = SelectorFactor.makeSelector<IStylingState, string[]>(function (state) {
+    return ObjectHelper.clone(state.css);
+});

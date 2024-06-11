@@ -64,6 +64,12 @@ export const BackgroundInterface = {
     },
 };
 
+export const BackgroundListenerExpose = {
+    control: {
+        getBackground: SelectorFactor.makeVirtualSelector<IBackgroundState, IBackgroundInfo>(),
+    },
+};
+
 export const BackgroundExpose = {
     control: {
         reset: ActionFactor.makeVirtualAction<IBackgroundState>(),
@@ -91,5 +97,7 @@ export const BackgroundExpose = {
 
 BackgroundInterface as ITianyuStoreInterface<IBackgroundState>;
 BackgroundExpose as ITianyuStoreInterfaceImplementation;
+BackgroundListenerExpose as ITianyuStoreInterfaceImplementation;
 
 StoreUtils.registerExpose(BackgroundExpose, StoreType.BACKGROUND_STORE_TYPE);
+StoreUtils.registerExpose(BackgroundListenerExpose, StoreType.BACKGROUND_STORE_TYPE);

@@ -13,8 +13,8 @@ export class Style {
      *
      * @returns return true if the styling is saved, otherwise false
      */
-    public static set(key: string, styling: TianyuUIStyleDeclaration, path?: string): boolean {
-        return StyleBase().set(key, styling, path);
+    public static set(key: string, styling: TianyuUIStyleDeclaration, path?: string): void {
+        StyleBase().set(key, styling, path);
     }
 
     /**

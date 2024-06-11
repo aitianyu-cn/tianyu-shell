@@ -20,3 +20,5 @@ export const UpdateCustomThemeActionCreator = ActionFactor.makeActionCreator<
 >();
 
 export const DeleteCustomThemeActionCreator = ActionFactor.makeActionCreator<IStylingState, string>();
+
+export const ResetCustomThemeActionCreator = ActionFactor.makeActionCreator<IStylingState>();

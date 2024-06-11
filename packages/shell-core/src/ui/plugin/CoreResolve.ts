@@ -13,11 +13,8 @@ function fnInitHtmlBasic(): void {
 
 export async function loadingTianyuShellCore(): Promise<void> {
     try {
-        const { initTianyuShellCoreUIStyle } = await import(
-            /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/core" */ "./components/Style"
-        );
-        const { initTianyuShellCoreUITheme } = await import(
-            /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/core" */ "./components/Theme"
+        const { initTianyuShellCoreUIStyling } = await import(
+            /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/core" */ "./components/StylingResolve"
         );
         const { initTianyuShellCoreUIMessage } = await import(
             /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/shell" */ "./components/Message"
@@ -35,9 +32,8 @@ export async function loadingTianyuShellCore(): Promise<void> {
             /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/resources" */ "../resources/Loader"
         );
 
-        initTianyuShellCoreUITheme();
+        await initTianyuShellCoreUIStyling();
         await initTianyuShellCoreUIMessage();
-        initTianyuShellCoreUIStyle();
         initTianyuShellCoreUIDialog();
         await initTianyuShellCoreUIBackground();
         initTianyuShellCoreUIMajor();

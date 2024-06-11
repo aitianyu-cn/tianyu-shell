@@ -4,7 +4,7 @@ import { ListenerFactor, Missing } from "@aitianyu.cn/tianyu-store";
 import { MapOfType, Log, ObjectHelper } from "@aitianyu.cn/types";
 import { getStore } from "shell-core/src/core/utils/Store";
 import { getMessageInstanceId } from "../../tools/InstanceHelper";
-import { MessageInterface } from "../interface/MessageInterfaceExpose";
+import { MessageInterface, MessageListenerExpose } from "../interface/MessageInterfaceExpose";
 import { DEFAULT_MESSAGE_HELPER, IMessageHelper, IMessageTipState } from "../interface/state/MessageState";
 import { MessageTip } from "../types/MessageTip";
 import * as MessageBundle from "../../resources/i18n/Message";
@@ -72,11 +72,11 @@ function onLayerSettingChanged(oldState: IMessageHelper | undefined, newState: I
 }
 
 export const LayerSettingListener = ListenerFactor.createListener(
-    MessageInterface.control.getHelper(getMessageInstanceId()),
+    MessageListenerExpose.control.getHelper(getMessageInstanceId()),
     onLayerSettingChanged,
 );
 
 export const MessagePostListener = ListenerFactor.createListener(
-    MessageInterface.control.allMessages(getMessageInstanceId()),
+    MessageListenerExpose.control.allMessages(getMessageInstanceId()),
     onMessagePost,
 );

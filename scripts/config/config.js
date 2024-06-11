@@ -2,7 +2,16 @@
 
 module.exports.extensions = [".ts", ".js", ".css", ".view.json", ".i18n.js", ".tsx", "png", "svg"];
 
-module.exports.proxy = {};
+module.exports.proxy = {
+    "/remote-resources": {
+        target: "http://resource.aitianyu.cn/resources",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+            "^/remote-resources": "",
+        },
+    },
+};
 
 module.exports.static = [];
 

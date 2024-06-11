@@ -39,8 +39,9 @@ import {
     GetHelperSelector,
     GetAllMessageInfoSelector,
 } from "./selector/MessageSelector";
-import { IMessagePostData, IMessageState } from "./state/MessageState";
+import { IMessageHelper, IMessagePostData, IMessageState, IMessageTipState } from "./state/MessageState";
 import { StoreType } from "./StoreTypes";
+import { MapOfType } from "@aitianyu.cn/types";
 
 export const MessageInterface = {
     core: {
@@ -79,6 +80,13 @@ export const MessageInterface = {
     },
 };
 
+export const MessageListenerExpose = {
+    control: {
+        getHelper: SelectorFactor.makeVirtualSelector<IMessageState, IMessageHelper>(),
+        allMessages: SelectorFactor.makeVirtualSelector<IMessageState, MapOfType<IMessageTipState>>(),
+    },
+};
+
 export const MessageExpose = {
     helper: {
         setVerticalAlign: ActionFactor.makeVirtualAction<IMessageState, ITianyuShellUIVerticalAlignment>(),
@@ -104,5 +112,7 @@ export const MessageExpose = {
 
 MessageInterface as ITianyuStoreInterface<IMessageState>;
 MessageExpose as ITianyuStoreInterfaceImplementation;
+MessageListenerExpose as ITianyuStoreInterfaceImplementation;
 
 StoreUtils.registerExpose(MessageExpose, StoreType.MESSAGE_STORE_TYPE);
+StoreUtils.registerExpose(MessageListenerExpose, StoreType.MESSAGE_STORE_TYPE);

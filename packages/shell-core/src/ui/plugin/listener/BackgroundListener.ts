@@ -4,7 +4,7 @@ import { Missing, ListenerFactor } from "@aitianyu.cn/tianyu-store";
 import { getStore } from "shell-core/src/core/utils/Store";
 import { getBackgroundInstanceId } from "../../tools/InstanceHelper";
 import { VERY_DEFAULT_COLOR } from "../handler/BackgroundHandler";
-import { BackgroundInterface } from "../interface/BackgroundInterfaceExpose";
+import { BackgroundInterface, BackgroundListenerExpose } from "../interface/BackgroundInterfaceExpose";
 import { IBackgroundInfo } from "../interface/state/BackgroundState";
 
 function onBackgroundChanged(oldState: IBackgroundInfo | undefined, newState: IBackgroundInfo | undefined): void {
@@ -43,6 +43,6 @@ function onBackgroundChanged(oldState: IBackgroundInfo | undefined, newState: IB
 }
 
 export const BackgroundChangedListener = ListenerFactor.createListener(
-    BackgroundInterface.control.getBackground(getBackgroundInstanceId()),
+    BackgroundListenerExpose.control.getBackground(getBackgroundInstanceId()),
     onBackgroundChanged,
 );

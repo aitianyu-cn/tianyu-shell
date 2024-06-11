@@ -32,7 +32,6 @@ export const RemoveStylingCssAction = RemoveStylingCssActionCreator.withHandler(
 
     const styleElement = cssMap.get(action.params);
     if (styleElement) {
-        CssHelper.removeGlobalStyle(styleElement);
         cssMap.delete(action.params);
     }
 
@@ -57,15 +56,15 @@ export const AddStylingCssAction = AddStylingCssActionCreator.withHandler(functi
 
     const isURL = checkURL(action.params.link);
     const newStyle = isURL
-        ? CssHelper.linkGlobalStyle(action.params.link)
-        : CssHelper.setGlobalStyle(action.params.link);
+        ? CssHelper.createGlobalStyleLink(action.params.key, action.params.link)
+        : CssHelper.createGlobalStyle(action.params.key, action.params.link);
 
     cssMap.set(action.params.key, newStyle);
 
     return action.params.key;
 }).withReducer(function (state, key) {
     const newState = ObjectHelper.clone(state) as IStylingState;
-    if (key) {
+    if (key && !newState.css.includes(key)) {
         newState.css.push(key);
     }
     return newState;
