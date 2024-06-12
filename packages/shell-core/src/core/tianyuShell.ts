@@ -44,7 +44,7 @@ export function initialTianyuShell(config?: ITianyuShellInitial, callback?: Call
                         resolve();
                     }
                 },
-                "tianyu-shell/runtime",
+                "aitianyu.cn/tianyu-shell/runtime",
             );
         } else {
             resolve();
@@ -96,7 +96,7 @@ export async function initialTianyuShellAsync(config?: ITianyuShellInitial): Pro
                         resolve();
                     }
                 },
-                "tianyu-shell/runtime",
+                "aitianyu.cn/tianyu-shell/runtime",
             );
         } else {
             resolve();
