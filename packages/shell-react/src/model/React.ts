@@ -1,14 +1,14 @@
 /**@format */
 
+import { IterableType } from "@aitianyu.cn/tianyu-store";
+
 declare type StandardLonghandProperties = any;
 
 export interface IReactProperty {
-    [key: string]: string | boolean | number;
+    [key: string]: any;
 }
 
-export interface IReactState {
-    [key: string]: string | boolean | number;
-}
+export interface IReactState extends IterableType {}
 
 export interface IReactControlProperty {
     style?: StandardLonghandProperties;
