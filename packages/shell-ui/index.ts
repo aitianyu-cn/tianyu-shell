@@ -2,6 +2,8 @@
 
 // export common declarations
 export * from "./src/common/Declaration";
+export * from "./src/common/HashHelper";
+export * from "./src/common/RouterHelper";
 
 // export ui models
 export * from "./src/model/Component";
