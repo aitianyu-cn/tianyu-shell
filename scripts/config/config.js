@@ -4,7 +4,7 @@ module.exports.extensions = [".ts", ".js", ".css", ".view.json", ".i18n.js", ".t
 
 module.exports.proxy = {
     "/remote-resources": {
-        target: "http://resource.aitianyu.cn/resources",
+        target: "https://resource.aitianyu.cn/resources",
         ws: true,
         changeOrigin: true,
         pathRewrite: {

@@ -583,10 +583,10 @@ export interface ITianyuUIThemeConfigure extends ITianyuShellCookieConfigure {
      * The URL is the customized theme resources link and other style will be gotten by this url.
      *
      * E.G.:
-     * pre-URL is http://resource.aitianyu.cn/resources/tianyu-shell/common
+     * pre-URL is https://resource.aitianyu.cn/resources/tianyu-shell/common
      * the style name is example.css
      *
-     * the Target style link is: http://resource.aitianyu.cn/resources/tianyu-shell/common/example.css
+     * the Target style link is: https://resource.aitianyu.cn/resources/tianyu-shell/common/example.css
      */
     themeUrl: string;
     /** The default Theme name */

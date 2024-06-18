@@ -51,7 +51,7 @@ export interface ITianyuShellInitial {
              * For some browser cases, to provide a proxy supporting to avoid CORS policy issue
              *
              * IMPORTANT:
-             *  1. remote actual base url is http://resource.aitianyu.cn/resources, please set the proxy to it.
+             *  1. remote actual base url is https://resource.aitianyu.cn/resources, please set the proxy to it.
              *  2. this framework has enabled the resources loading from remote library to load styling and other data,
              *     please always set this item to avoid some CORS error.
              */

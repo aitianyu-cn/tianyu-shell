@@ -5,7 +5,7 @@
  * All the global resource will be provided by this url
  * Includes Css, Image, Audio, Video, and etc..
  */
-export const TIANYU_RESOURCE_URL = "http://resource.aitianyu.cn/resources";
+export const TIANYU_RESOURCE_URL = "https://resource.aitianyu.cn/resources";
 
 /**
  * The Common Resource of the Tianyu Global Resource Library
