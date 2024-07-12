@@ -54,4 +54,12 @@ loadI18n().then(async () => {
     // } catch (e) {
     //     shellCore.Core.Plugin.Log.log(e);
     // }
+
+    const { Major } = await import("shell-core");
+
+    const div = document.createElement("div");
+    div.style.width = "100%";
+    div.style.height = "100%";
+    div.style.backgroundColor = "red";
+    Major.append(div);
 });

@@ -1,6 +1,6 @@
 {
     "name": "@aitianyu.cn/tianyu-shell",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Web shell framework of aitianyu",
     "exports": {
         ".": {
@@ -136,8 +136,8 @@
     "dependencies": {
         "@aitianyu.cn/client-base": "^0.0.1",
         "@aitianyu.cn/theme": "^0.0.1",
-        "@aitianyu.cn/tianyu-store": "^0.2.0",
-        "@aitianyu.cn/types": "0.0.11",
+        "@aitianyu.cn/tianyu-store": "^0.2.6",
+        "@aitianyu.cn/types": "0.0.13",
         "browser": "^0.2.6",
         "core-js": "^3.26.1",
         "cross-env": "^7.0.3",

@@ -2,6 +2,7 @@
 
 import { ITianyuShell } from "shell-core";
 import { Log } from "shell-core/src/core/plugin/Console";
+import { TIANYU_SEHLL_STORE_FRIENDLY_NAME } from "./types/Types";
 
 function fnInitHtmlBasic(): void {
     const htmlPageScale = document.createElement("meta");
@@ -57,7 +58,7 @@ export async function loadingTianyuStore(): Promise<void> {
             const unReodoUndoInstanceId = StoreHelper.generateStoreInstanceId();
             const genericInstanceId = StoreHelper.generateStoreInstanceId();
 
-            const tianyuStore = createStore();
+            const tianyuStore = createStore({ friendlyName: TIANYU_SEHLL_STORE_FRIENDLY_NAME });
             await tianyuStore.dispatch(
                 TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(genericInstanceId),
             );

@@ -30,6 +30,9 @@ function _init_major_layout_base(): void {
 
     const majorLayer = document.createElement("div");
     majorLayer.style.zIndex = `${TianyuShellUIMajorZIndex}`;
+    majorLayer.style.position = "absolute";
+    majorLayer.style.width = "100%";
+    majorLayer.style.height = "100%";
     majorLayer.id = _majorMap.layerId;
     document.body.appendChild(majorLayer);
 }
