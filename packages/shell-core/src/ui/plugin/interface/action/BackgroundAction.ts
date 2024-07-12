@@ -41,7 +41,9 @@ export const SetColorAction = SetColorActionCreator.withReducer(function (state,
     return StoreUtils.State.getNewState(state, ["color"], data);
 });
 export const RemoveColorAction = RemoveColorActionCreator.withHandler(function* (action) {
-    const defaultColor = yield* StoreUtils.Handler.doSelector(GetBackgroundDefaultColorSelector(action.instanceId));
+    const defaultColor = yield* StoreUtils.Handler.doSelectorWithThrow(
+        GetBackgroundDefaultColorSelector(action.instanceId),
+    );
     yield* StoreUtils.Handler.doAction(SetColorAction(action.instanceId, defaultColor));
 });
 
@@ -99,7 +101,9 @@ export const ResetBackgroundAction = ResetBackgroundActionCreator.withHandler(fu
         return register.get(BACKGROUND_ELEMENT_MAP) as Map<string, HTMLElement> | undefined;
     });
     htmlMap?.clear();
-    const defaultColor = yield* StoreUtils.Handler.doSelector(GetBackgroundDefaultColorSelector(action.instanceId));
+    const defaultColor = yield* StoreUtils.Handler.doSelectorWithThrow(
+        GetBackgroundDefaultColorSelector(action.instanceId),
+    );
     return defaultColor;
 }).withReducer(function (state, data) {
     let newState = StoreUtils.State.getNewState(state, ["elementId"], null);

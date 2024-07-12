@@ -74,7 +74,7 @@ export const PostMessageAction = PostMessageActionCreator.withHandler(function* 
         }
     }
 
-    const timestamp = yield* StoreUtils.Handler.doSelector(GetTimestampSelector(action.instanceId));
+    const timestamp = yield* StoreUtils.Handler.doSelectorWithThrow(GetTimestampSelector(action.instanceId));
 
     const messageId = guid();
     const message: IMessageTipState = {
@@ -101,7 +101,9 @@ export const PostMessageAction = PostMessageActionCreator.withHandler(function* 
 });
 
 export const CloseMessageAction = CloseMessageActionCreator.withHandler(function* (action) {
-    const linkInfoId = yield* StoreUtils.Handler.doSelector(GetMessageLinkSelector(action.instanceId, action.params));
+    const linkInfoId = yield* StoreUtils.Handler.doSelectorWithThrow(
+        GetMessageLinkSelector(action.instanceId, action.params),
+    );
     if (linkInfoId) {
         const linkMap = yield* StoreUtils.Handler.doReadExternal(function (register) {
             return register.get(MESSAGE_LINKER_MAP) as Map<string, IMessageInfoLink> | undefined;
