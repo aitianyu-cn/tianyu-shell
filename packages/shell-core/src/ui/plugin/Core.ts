@@ -10,20 +10,24 @@ import {
     ITianyuShellCoreUIBackground,
     ITianyuShellCoreUIMajor,
 } from "shell-core/src/core/declares/ui/UserInterface";
-import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
 import * as MessageBundle from "../resources/i18n/Message";
 import { Log } from "shell-core/src/core/plugin/Console";
-import { loadingTianyuShellCore, loadingTianyuStore } from "./CoreResolve";
-
-const _runtimeUIConfigure = TianyuShellProcessor.getUIConfigures();
+import { loadingTianyuShellCore } from "./CoreResolve";
+import { getStore } from "shell-core/src/core/utils/Store";
+import {
+    getTianyuShellInfraInstanceId,
+    TianyuShellInfraInterfaceExpose,
+} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
 
 let loadingPromise: Promise<void> | undefined = undefined;
 
+const _runtimeUIConfigure = getStore().selecteWithThrow(
+    TianyuShellInfraInterfaceExpose.getUIConfigures(getTianyuShellInfraInstanceId()),
+);
 if (!_runtimeUIConfigure.core.support) {
     throw new RuntimeNotSupportException(MessageBundle.getText("TIANYU_UI_RUNTIME_NOT_SUPPORT"));
 } else {
     loadingPromise = new Promise<void>(async (resolve) => {
-        await loadingTianyuStore();
         await loadingTianyuShellCore();
         resolve();
     }).catch(() => {

@@ -2,7 +2,7 @@
 
 import { FeatureSource, IFeature } from "../../../../../packages/shell-core/src/core/declares/Features";
 import { ITianyuShellInitial } from "../../../../../packages/shell-core/src/core/ITianyuShellInitial";
-import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/tianyuShell";
+import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/TianyuShell";
 
 const config = require("../../../../config/env.json") as ITianyuShellInitial;
 initialTianyuShell(config);
@@ -64,7 +64,9 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.FeatureTog
             "TEST_FEATURE",
             "TEST_UNUSED_FEATURE",
         ]);
-        expect((window as any).tianyuShell?.core?.featureToggle._dependentFeatures["TEST_FEATURE_4"]).toEqual(["TEST_FEATURE_2"]);
+        expect((window as any).tianyuShell?.core?.featureToggle._dependentFeatures["TEST_FEATURE_4"]).toEqual([
+            "TEST_FEATURE_2",
+        ]);
     });
 
     describe("enable", () => {

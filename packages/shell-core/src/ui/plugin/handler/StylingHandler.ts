@@ -2,7 +2,6 @@
 
 import { ITianyuShellCoreUIThemeItem, TianyuShellUIThemeColor } from "shell-core/src/core/declares/ui/UserInterface";
 import { formatUserThemeId } from "../../tools/UserStylingHelper";
-import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
 import { ICookieSetOptions, Cookie } from "shell-core/src/core/plugin/Cookie";
 import {
     TianyuShellUIThemeCustomCookieTheme,
@@ -11,6 +10,11 @@ import {
 } from "../../common/Declare";
 import { UIValidation } from "shell-core/src/core/utils/UIValidation";
 import { ThemeURLHandler } from "../../resources/URLHandler";
+import {
+    TianyuShellInfraInterfaceExpose,
+    getTianyuShellInfraInstanceId,
+} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+import { getStore } from "shell-core/src/core/utils/Store";
 
 export function removeUserTheme(themeId: string): boolean {
     const id = formatUserThemeId(themeId);
@@ -34,7 +38,9 @@ export function addUserTheme(themeId: string, url: string): void {
 }
 
 export function getDefaultThemeFromConfigure(): ITianyuShellCoreUIThemeItem {
-    const runtimeUIConfigure = TianyuShellProcessor.getUIConfigures();
+    const runtimeUIConfigure = getStore().selecteWithThrow(
+        TianyuShellInfraInterfaceExpose.getUIConfigures(getTianyuShellInfraInstanceId()),
+    );
     const theme = runtimeUIConfigure.theme.defaultTheme;
     const color = runtimeUIConfigure.theme.defaultThemeColor;
     const themeColor: TianyuShellUIThemeColor = color === 0 ? "dark" : "light";
@@ -60,7 +66,9 @@ export function getCustomThemeFromCookie(): ITianyuShellCoreUIThemeItem {
 }
 
 export function saveCustomThemeInCookie(theme: string, color: TianyuShellUIThemeColor): void {
-    const runtimeUIConfigure = TianyuShellProcessor.getUIConfigures();
+    const runtimeUIConfigure = getStore().selecteWithThrow(
+        TianyuShellInfraInterfaceExpose.getUIConfigures(getTianyuShellInfraInstanceId()),
+    );
     const date = new Date(Date.now());
     const expires = new Date(date.setDate(date.getDate() + 30));
     const cookieOption: ICookieSetOptions = {

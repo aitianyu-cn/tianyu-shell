@@ -1,7 +1,6 @@
 /**@format */
 
 import { ILog, Log as basicLog, LogLevel, MapOfType } from "@aitianyu.cn/types";
-import { TianyuShellProcessor } from "../utils/Processor";
 import { FeatureToggle } from "./FeatureToggle";
 import {
     ICaptureRecorder,
@@ -14,6 +13,9 @@ import {
 import { ITianyuShell } from "../declares/Declare";
 import { ITianyuShellPluginSetting } from "../declares/Core";
 import { getText } from "./i18n/Message";
+import { getStore } from "../utils/Store";
+import { TianyuShellInfraInstanceId, TianyuShellInfraInterface } from "../TianyushellInfraInterfaceExpose";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
 /**
  * Check for console log enable status
@@ -22,8 +24,9 @@ import { getText } from "./i18n/Message";
  * @returns return true indicates should print console log, otherwise false
  */
 function _isConsoleEnabled(forceLog?: boolean): boolean {
+    const configure = getStore().selecte(TianyuShellInfraInterface.getCoreConfigure(TianyuShellInfraInstanceId));
     // get console log setting from core configure
-    const runtimeEnable = TianyuShellProcessor.getCoreConfigure().runtime.console;
+    const runtimeEnable = !(configure instanceof Missing) && configure.runtime.console;
     // get from feature toggle
     const featureToggleEnable = FeatureToggle.isActive("TIANYU_SHELL_CONSOLE_LOG");
 
@@ -351,7 +354,9 @@ const _perfHelper: IPerformanceHelper = {
 
             const hour = time;
 
-            _log.debug(getText("CONSOLE_PERF_HELPER_END", [perf.id, perf.start, end, hour, minutes, second, millisecond]));
+            _log.debug(
+                getText("CONSOLE_PERF_HELPER_END", [perf.id, perf.start, end, hour, minutes, second, millisecond]),
+            );
         }
 
         return during;
@@ -378,9 +383,10 @@ function _initTianyuShellPerformance(): void {
     }
 }
 
-const _pluginSetting: ITianyuShellPluginSetting = TianyuShellProcessor.getPluginSetting();
+const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
-_pluginSetting.globalize && _initTianyuShellPerformance();
+globalize && _initTianyuShellPerformance();
 
 /** Tianyu Shell Performance Capture */
 export class PerfCapture {
@@ -390,7 +396,7 @@ export class PerfCapture {
      * @returns return an async Promise
      */
     public static async clean(): Promise<void> {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.capture.clean()
             : _capture.clean();
     }
@@ -401,7 +407,7 @@ export class PerfCapture {
      * @param callback callback function
      */
     public static addCallback(callback: PerfCaptureCallback): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.capture.addCallback(callback)
             : _capture.addCallback(callback);
     }
@@ -416,7 +422,7 @@ export class PerfCapture {
      * @returns return a capture recorder object
      */
     public static start(classify: string, id: string, forceLog?: boolean): ICaptureRecorder {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.capture.start(classify, id, forceLog)
             : _capture.start(classify, id, forceLog);
     }
@@ -427,7 +433,7 @@ export class PerfCapture {
      * @param recorder a recorder object
      */
     public static end(recorder: ICaptureRecorder): void {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.capture.end(recorder)
             : _capture.end(recorder);
     }
@@ -438,7 +444,7 @@ export class PerfCapture {
      * @param fileName the download file name
      */
     public static saveToFile(fileName: string): void {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.capture.saveToFile(fileName)
             : _capture.saveToFile(fileName);
     }
@@ -454,7 +460,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static log(msg: string, level?: LogLevel, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.log(msg, level, timer)
             : _log.log(msg, level, timer);
     }
@@ -464,7 +470,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static info(msg: string, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.info(msg, timer)
             : _log.info(msg, timer);
     }
@@ -474,7 +480,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static warn(msg: string, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.warn(msg, timer)
             : _log.warn(msg, timer);
     }
@@ -484,7 +490,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static debug(msg: string, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.debug(msg, timer)
             : _log.debug(msg, timer);
     }
@@ -494,7 +500,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static error(msg: string, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.error(msg, timer)
             : _log.error(msg, timer);
     }
@@ -504,7 +510,7 @@ export class Log {
      * @param timer a boolean value indicates whether needs to add a timestamp for the log
      */
     public static fatal(msg: string, timer?: boolean): void {
-        _pluginSetting.globalize
+        globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.log.fatal(msg, timer)
             : _log.fatal(msg, timer);
     }
@@ -521,7 +527,7 @@ export class PerfHelper {
      * @returns return a recorder object
      */
     public static start(id: string, forceLog?: boolean): PerformanceRecorder {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.perfHelper.start(id, forceLog)
             : _perfHelper.start(id, forceLog);
     }
@@ -533,7 +539,7 @@ export class PerfHelper {
      * @returns return the during time of current performance recording
      */
     public static end(perf: PerformanceRecorder): number {
-        return _pluginSetting.globalize
+        return globalize
             ? ((window as any).tianyuShell as ITianyuShell).core.console.perfHelper.end(perf)
             : _perfHelper.end(perf);
     }

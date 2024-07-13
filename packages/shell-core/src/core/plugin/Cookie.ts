@@ -1,12 +1,21 @@
 /**@format */
 
+import { Missing } from "@aitianyu.cn/tianyu-store";
 import { getCookie } from "../../../../infra/Cookie";
 import { ITianyuShellCookie, ITianyuShellPluginSetting } from "../declares/Core";
 import { ITianyuShell } from "../declares/Declare";
-import { TianyuShellProcessor } from "../utils/Processor";
+import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getStore } from "../utils/Store";
 
 const _cookie: ITianyuShellCookie = {
-    set: function (key: string, value: string, domain?: string, path?: string, expires?: Date, escaped?: boolean): void {
+    set: function (
+        key: string,
+        value: string,
+        domain?: string,
+        path?: string,
+        expires?: Date,
+        escaped?: boolean,
+    ): void {
         const escapeValue = escaped ? value : encodeURI(value);
         const expiresPart = expires ? `; expires=${expires.toUTCString()}` : "";
         const pathPart = path ? `; path=${path}` : "; path=/";
@@ -43,9 +52,10 @@ function _initTianyuShellCookie(): void {
     }
 }
 
-const _pluginSetting: ITianyuShellPluginSetting = TianyuShellProcessor.getPluginSetting();
+const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
-_pluginSetting.globalize && _initTianyuShellCookie();
+globalize && _initTianyuShellCookie();
 
 /** Cookie setting option */
 export interface ICookieSetOptions {
@@ -69,16 +79,7 @@ export class Cookie {
      * @param options cookie setting options
      */
     public static set(key: string, value: string, options?: ICookieSetOptions): void {
-        _pluginSetting.globalize
-            ? ((window as any).tianyuShell as ITianyuShell).core.cookie.set(
-                  key,
-                  value,
-                  options?.domain,
-                  options?.path,
-                  options?.expires,
-                  options?.escaped,
-              )
-            : _cookie.set(key, value, options?.domain, options?.path, options?.expires, options?.escaped);
+        _cookie.set(key, value, options?.domain, options?.path, options?.expires, options?.escaped);
     }
     /**
      * Get a value from cookie
@@ -89,9 +90,7 @@ export class Cookie {
      * @returns return the value or fallback value
      */
     public static get(key: string, notFound: string = ""): string {
-        return _pluginSetting.globalize
-            ? ((window as any).tianyuShell as ITianyuShell).core.cookie.get(key, notFound)
-            : _cookie.get(key, notFound);
+        return _cookie.get(key, notFound);
     }
     /**
      * Remove a value from cookie
@@ -101,8 +100,6 @@ export class Cookie {
      * @param domain the domain URL
      */
     public static remove(key: string, path?: string, domain?: string): void {
-        _pluginSetting.globalize
-            ? ((window as any).tianyuShell as ITianyuShell).core.cookie.remove(key, path, domain)
-            : _cookie.remove(key, path, domain);
+        _cookie.remove(key, path, domain);
     }
 }

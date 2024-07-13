@@ -3,7 +3,7 @@
 import { ITianyuShell } from "../../../../../packages/shell-core/src/core/declares/Declare";
 import { EventRemoveResult, IEventInvokeData } from "../../../../../packages/shell-core/src/core/declares/Event";
 import { ITianyuShellInitial } from "../../../../../packages/shell-core/src/core/ITianyuShellInitial";
-import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/tianyuShell";
+import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/TianyuShell";
 
 const config = require("../../../../config/env.json") as ITianyuShellInitial;
 initialTianyuShell(config);

@@ -1,6 +1,6 @@
 /**@format */
 
-import { MapOfBoolean, MapOfStrings } from "@aitianyu.cn/types";
+import { MapOfBoolean } from "@aitianyu.cn/types";
 
 /** Feature Toggle Item */
 export interface IFeature {
@@ -88,12 +88,4 @@ export interface IFeatureToggle {
      * @param features feature map
      */
     loadFeatures(features: FeatureSource): void;
-}
-
-/** Tianyu Shell Feature Toggle APIs */
-export interface ITianyuShellFeatureToggle extends IFeatureToggle {
-    /** features map */
-    _features: MapOfBoolean;
-    /** features dependency map*/
-    _dependentFeatures: MapOfStrings;
 }

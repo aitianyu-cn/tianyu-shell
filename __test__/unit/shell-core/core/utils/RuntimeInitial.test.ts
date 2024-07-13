@@ -1,6 +1,6 @@
 /**@format */
 
-import { initTianyuShellGlobalCache } from "../../../../../packages/shell-core/src/core/utils/RuntimeInitial";
+import { initTianyuShellGlobalCache } from "../../../../../packages/shell-core/src/core/initial/RuntimeInitial";
 
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.utils.RuntimeInital", () => {
     beforeEach(() => {

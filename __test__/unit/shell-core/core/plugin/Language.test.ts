@@ -4,7 +4,7 @@ import { AreaCode } from "@aitianyu.cn/types";
 import { ITianyuShell } from "../../../../../packages/shell-core/src/core/declares/Declare";
 import { LanguageParseException } from "../../../../../packages/shell-core/src/core/declares/Exception";
 import { ITianyuShellInitial } from "../../../../../packages/shell-core/src/core/ITianyuShellInitial";
-import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/tianyuShell";
+import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/TianyuShell";
 
 const AiTianyuTypes = require("@aitianyu.cn/types");
 

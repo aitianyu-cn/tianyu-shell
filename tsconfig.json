@@ -8,8 +8,7 @@
         "packages/webpack",
         "packages/resources.d.ts",
         "scripts/app",
-        "*.d.ts",
-        "__test__"
+        "*.d.ts"
     ],
     "exclude": [],
     "compilerOptions": {

@@ -538,18 +538,6 @@ export interface ITianyuShellCoreUIStyle {
     remove(key: string, path?: string): void;
 }
 
-/** Tianyu Store APIs */
-export interface ITianyuShellUIStore {
-    /** Tianyu Store */
-    store: IStore;
-    /** Base Instance Id */
-    instanceId: InstanceId;
-    /** Instance Supports Redo Undo Operation */
-    histroyInstance: InstanceId;
-    /** Instance Not support redo undo */
-    nonHisInstance: InstanceId;
-}
-
 /** Tianyu Shell Core UI APIs */
 export interface ITianyuShellUI {
     /** Tianyu Shell Core UI Background APIs */
@@ -564,8 +552,6 @@ export interface ITianyuShellUI {
     theme: ITianyuShellCoreUITheme;
     /** Tianyu Shell Core UI Styling APIs */
     style: ITianyuShellCoreUIStyle;
-    /** Tianyu Store */
-    store: ITianyuShellUIStore;
 }
 
 /** Tianyu Shell Core UI Configuration base */

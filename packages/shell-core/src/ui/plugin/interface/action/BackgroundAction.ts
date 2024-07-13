@@ -14,13 +14,20 @@ import {
     SetColorActionCreator,
     SetHtmlElementActionCreator,
 } from "./BackgroundActionCreator";
-import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
 import { StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { GetBackgroundCurrentHTMLElementId, GetBackgroundDefaultColorSelector } from "../selector/BackgroundSelector";
 import { BACKGROUND_ELEMENT_MAP } from "../state/BackgroundState";
+import {
+    TianyuShellInfraInterfaceExpose,
+    getTianyuShellInfraInstanceId,
+} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+import { getStore } from "shell-core/src/core/utils/Store";
 
 export const CreateBackgroundInstanceAction = CreateBackgroundInstanceActionCreator.withReducer(function (_state) {
-    const defaultColor = TianyuShellProcessor.getUIConfigures().core.background;
+    const _runtimeUIConfigure = getStore().selecteWithThrow(
+        TianyuShellInfraInterfaceExpose.getUIConfigures(getTianyuShellInfraInstanceId()),
+    );
+    const defaultColor = _runtimeUIConfigure.core.background;
 
     return {
         layerId: `${TianyuShellUIBackgroundPreious}_${guid()}`,

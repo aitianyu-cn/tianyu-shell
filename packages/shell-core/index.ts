@@ -4,11 +4,9 @@
 export * from "./src/core/declares/Console";
 export * from "./src/core/declares/Core";
 export * from "./src/core/declares/Declare";
-export * from "./src/core/declares/Event";
 export * from "./src/core/declares/Exception";
 export * from "./src/core/declares/Features";
 export * from "./src/core/declares/IStorage";
-export * from "./src/core/declares/Language";
 export * from "./src/core/declares/Router";
 export * from "./src/core/declares/Sync";
 export * from "./src/core/declares/ui/UserInterface";
@@ -24,13 +22,11 @@ export * from "./src/core/plugin/Runtime";
 
 /** Export as Components */
 import * as HashParameterImport from "./src/core/utils/HashParameter";
-import * as ProcessorImport from "./src/core/utils/Processor";
 import * as CommonInterfaceIAutomaticStorage from "./src/core/common/interface/IAutomaticStorage";
 import * as CommonAutomaticStorage from "./src/core/common/AutomaticStorage";
 
 export namespace Utils {
     export import HashParameter = HashParameterImport.HashParameter;
-    export import Processor = ProcessorImport.TianyuShellProcessor;
 
     export import DefaultStorageWatchDogTimer = CommonInterfaceIAutomaticStorage.DefaultStorageWatchDogTimer;
     export import MinimumStorageWatchDogTimer = CommonInterfaceIAutomaticStorage.MinimumStorageWatchDogTimer;
@@ -38,12 +34,11 @@ export namespace Utils {
 }
 
 import * as StoreImport from "./src/core/utils/Store";
-
 import * as InterfaceExposeImport from "./src/ui/plugin/interface/InterfaceExpose";
-
 import * as StoreTypeImport from "./src/ui/plugin/interface/StoreTypes";
-
 import * as InstanceHelperImport from "./src/ui/tools/InstanceHelper";
+import * as CoreInterfaceImport from "./src/core/utils/CoreInterfaceExpose";
+import * as InfraInterfaceImport from "./src/core/TianyushellInfraInterfaceExpose";
 
 export namespace TianyuShellStore {
     export import getStore = StoreImport.getStore;
@@ -51,13 +46,21 @@ export namespace TianyuShellStore {
     export import getHistroySupportedIns = StoreImport.getHistroySupportedIns;
     export import getNoHisSupportedIns = StoreImport.getNoHisSupportedIns;
 
-    export import InterfaceExpose = InterfaceExposeImport.StoreInterfaceExpose;
-    export import StoreType = StoreTypeImport.StoreType;
+    export import CoreInterfaceExpose = CoreInterfaceImport.TianyuShellCoreInterfaceExpose;
+    export import getCoreInstanceId = CoreInterfaceImport.getTianyuShellCoreInstanceId;
 
-    export namespace InstanceHelper {
-        export import getBackgroundInstanceId = InstanceHelperImport.getBackgroundInstanceId;
-        export import getMessageInstanceId = InstanceHelperImport.getMessageInstanceId;
-        export import getStylingInstanceId = InstanceHelperImport.getStylingInstanceId;
+    export import InfraInterfaceExpose = InfraInterfaceImport.TianyuShellInfraInterfaceExpose;
+    export import getInfraInstanceId = InfraInterfaceImport.getTianyuShellInfraInstanceId;
+
+    export namespace UI {
+        export import InterfaceExpose = InterfaceExposeImport.StoreInterfaceExpose;
+        export import StoreType = StoreTypeImport.StoreType;
+
+        export namespace InstanceHelper {
+            export import getBackgroundInstanceId = InstanceHelperImport.getBackgroundInstanceId;
+            export import getMessageInstanceId = InstanceHelperImport.getMessageInstanceId;
+            export import getStylingInstanceId = InstanceHelperImport.getStylingInstanceId;
+        }
     }
 }
 

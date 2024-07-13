@@ -6,7 +6,7 @@ import { TianyuShellProcessor } from "../../../../../packages/shell-core/src/cor
 import { PerfCaptureStatusType } from "../../../../../packages/shell-core/src/core/declares/Console";
 import { ITianyuShell } from "../../../../../packages/shell-core/src/core/declares/Declare";
 import { ITianyuShellInitial } from "../../../../../packages/shell-core/src/core/ITianyuShellInitial";
-import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/tianyuShell";
+import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/TianyuShell";
 
 const { Blob } = require("blob-polyfill");
 
@@ -17,7 +17,12 @@ global.Blob = Blob;
 
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.Console", () => {
     const { FeatureToggle } = require("../../../../../packages/shell-core/src/core/plugin/FeatureToggle");
-    const { Log, PerfCapture, PerfHelper, _console } = require("../../../../../packages/shell-core/src/core/plugin/Console");
+    const {
+        Log,
+        PerfCapture,
+        PerfHelper,
+        _console,
+    } = require("../../../../../packages/shell-core/src/core/plugin/Console");
 
     const coreConfigure: ITianyuShellCoreBaseConfigure = {
         environment: "development",

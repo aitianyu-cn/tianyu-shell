@@ -3,9 +3,11 @@
 import { MapOfType, guid } from "@aitianyu.cn/types";
 import { IRouterCallbackEvent, ITianyuRouterProvider, RouterCallback } from "../declares/Router";
 import { ITianyuShell } from "../declares/Declare";
-import { TianyuShellProcessor } from "../utils/Processor";
 import { RuntimeNotSupportException } from "../declares/Exception";
 import { getText } from "./i18n/Message";
+import { getStore } from "../utils/Store";
+import { TianyuShellInfraInstanceId, TianyuShellInfraInterface } from "../TianyushellInfraInterfaceExpose";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
 interface IRouteNode {
     end: RouterCallback | null;
@@ -385,9 +387,10 @@ function _initTianyuShellRouterProvider(): void {
     }
 }
 
-const runtimeSupport = TianyuShellProcessor.getRuntimeSupport();
+const runtimeSupport = getStore().selecte(TianyuShellInfraInterface.getRuntimeSupport(TianyuShellInfraInstanceId));
+const routerSupport = !(runtimeSupport instanceof Missing) && runtimeSupport.router;
 
-runtimeSupport.router && _initTianyuShellRouterProvider();
+routerSupport && _initTianyuShellRouterProvider();
 
 /**
  * Tianyu shell Router API package
@@ -400,7 +403,7 @@ export class Router {
      * @param {boolean} force force map hash with regex
      */
     public static forceRegex(force: boolean): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.forceRegex(force);
@@ -412,7 +415,7 @@ export class Router {
      * @param {RouterCallback} callback fail router callback
      */
     public static setFail(callback: RouterCallback): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.setRouteFail(callback);
@@ -422,7 +425,7 @@ export class Router {
      * Reset fail router to default
      */
     public static resetFail(): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.resetRouteFail();
@@ -434,7 +437,7 @@ export class Router {
      * @param {string} path specified hash path
      */
     public static removePath(path: string): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.removeRoutePath(path);
@@ -446,7 +449,7 @@ export class Router {
      * @param {string} id the id of the hash mapping regex
      */
     public static removeRegex(id: string): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.removeRouteRegex(id);
@@ -459,7 +462,7 @@ export class Router {
      * @param {RouterCallback} callback the router callback function of current path
      */
     public static addPath(path: string, callback: RouterCallback): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.addRoutePath(path, callback);
@@ -475,7 +478,7 @@ export class Router {
      * @param {number} priority the hash priority of current new mapping regex
      */
     public static addRegex(id: string, reg: RegExp, callback: RouterCallback, priority: number): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.addRouteRegex(id, reg, callback, priority);
@@ -497,7 +500,7 @@ export class Router {
      * @param {boolean} rollback whether should record the history (true to record the history and the rollback is supported, false will not)
      */
     public static jump(hash: string, rollback?: boolean): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.jump(hash, rollback);
@@ -507,7 +510,7 @@ export class Router {
      * Back to the preious hash value if current hash value is not the first.
      */
     public static back(): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.back();
@@ -517,7 +520,7 @@ export class Router {
      * Go to the next hash value if current hash value is not the lastest.
      */
     public static forward(): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.forward();
@@ -527,7 +530,7 @@ export class Router {
      * Route to the first one.
      */
     public static start(): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.start();
@@ -537,7 +540,7 @@ export class Router {
      * Route to the lastest one.
      */
     public static end(): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.end();
@@ -549,7 +552,7 @@ export class Router {
      * @param {number | string} target the target hash index or the id
      */
     public static go(target: number | string): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.go(target);
@@ -561,27 +564,27 @@ export class Router {
      * @param {number} delta the delta value of current hash item (negative number will goback and the positive number will go forward)
      */
     public static move(delta: number): void {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         ((window as any).tianyuShell as ITianyuShell).core.router.go(delta);
     }
 
     public static getHistory(): string[] {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         return ((window as any).tianyuShell as ITianyuShell).core.router.history();
     }
 
     public current(): string {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         return ((window as any).tianyuShell as ITianyuShell).core.router.current();
     }
     public length(): number {
-        if (!runtimeSupport.router) {
+        if (!routerSupport) {
             throw new RuntimeNotSupportException(getText("ROUTER_EXCEPTION_NAME"));
         }
         return ((window as any).tianyuShell as ITianyuShell).core.router.length();

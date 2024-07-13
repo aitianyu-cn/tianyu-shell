@@ -1,9 +1,8 @@
 /** @format */
 
-import { loadI18n } from "infra/resource/MessageLoader";
 import { ITianyuShellInitial } from "shell";
 
-loadI18n().then(async () => {
+(async () => {
     const { initialTianyuShellAsync } = await import("shell");
     const initial: ITianyuShellInitial = {
         core: {
@@ -36,24 +35,10 @@ loadI18n().then(async () => {
         },
     };
 
-    initialTianyuShellAsync(initial);
+    await initialTianyuShellAsync(initial);
+
     const { waitLoading } = await import("shell-core");
     await waitLoading();
-
-    // const language = require("../../dist/lib/shell-core/src/core/plugin/Language");
-    // const cookie = require("../../dist/lib/shell-core/src/core/plugin/Cookie");
-    // const event = require("../../dist/lib/shell-core/src/core/plugin/Event");
-    // const router = require("../../dist/lib/shell-core/src/core/plugin/Router");
-    // const runtime = require("../../dist/lib/shell-core/src/core/plugin/Runtime");
-    // const console = require("../../dist/lib/shell-core/src/core/plugin/Console");
-    // const featureToggle = require("../../dist/lib/shell-core/src/core/plugin/FeatureToggle");
-    // const shellCore = require("../../dist/lib/shell-core");
-
-    // try {
-    //     shellCore.Core.Plugin.Language.parse("abcde");
-    // } catch (e) {
-    //     shellCore.Core.Plugin.Log.log(e);
-    // }
 
     const { Major } = await import("shell-core");
 
@@ -62,4 +47,4 @@ loadI18n().then(async () => {
     div.style.height = "100%";
     div.style.backgroundColor = "red";
     Major.append(div);
-});
+})();

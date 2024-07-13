@@ -1,5 +1,6 @@
 /**@format */
 
+import { getStore } from "shell-core/src/core/utils/Store";
 import {
     TianyuShellUIMajorZIndex,
     TianyuShellUIMessageZIndex,
@@ -7,7 +8,11 @@ import {
     TianyuShellUIZIndexMaximum,
 } from "../common/Declare";
 import { IZIndexVerification } from "../common/Interface";
-import { TianyuShellProcessor } from "shell-core/src/core/utils/Processor";
+import {
+    getTianyuShellInfraInstanceId,
+    TianyuShellInfraInterfaceExpose,
+} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
 const _ZIndexVerification: IZIndexVerification = {
     background: (index: number) => {
@@ -35,6 +40,9 @@ export class TianyuShellUIHelper {
      * @returns return true if the core supportable is true, otherwise false
      */
     public static isCoreSupportable(): boolean {
-        return TianyuShellProcessor.getUIConfigures().core.support;
+        const configure = getStore().selecte(
+            TianyuShellInfraInterfaceExpose.getUIConfigures(getTianyuShellInfraInstanceId()),
+        );
+        return !(configure instanceof Missing) && configure.core.support;
     }
 }

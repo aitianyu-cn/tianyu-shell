@@ -1,82 +1,31 @@
 /**@format */
 
-import { TianyuShellProcessor } from "../utils/Processor";
-import { ITianyuShellLanguage, TianyuShellLanguageRegisterType } from "../declares/Language";
-import { AreaCode, ArrayHelper, parseAreaCode, parseAreaString } from "@aitianyu.cn/types";
-import { Cookie, ICookieSetOptions } from "./Cookie";
-import { ITianyuShell } from "../declares/Declare";
-import { ITianyuShellPluginSetting } from "../declares/Core";
+import { AreaCode, parseAreaCode, parseAreaString } from "@aitianyu.cn/types";
+import { ITianyuShell, TianyuShellLanguageRegisterType } from "../declares/Declare";
 import { LanguageParseException } from "../declares/Exception";
-import { LANGUAGE_COOKIE_ID, getLanguage } from "../../../../infra/Language";
-import { languageDef } from "infra/Compatibility";
-
-const languageCompatibility = ((window as any).tianyuShell as ITianyuShell)?.runtime?.sync?.language || languageDef();
-const languageConfig = TianyuShellProcessor.getLanguageConfigures();
-
-function generateLanguage(type: string): string[] {
-    const list: string[] = [];
-    const languageTypeList = languageCompatibility[type];
-
-    if (Array.isArray(languageTypeList)) {
-        for (const langItem of languageCompatibility[type]) {
-            const area = parseAreaString(langItem);
-            AreaCode.unknown !== area && list.push(langItem);
-        }
-
-        return list;
-    }
-
-    return [];
-}
-
-/** Tianyu Shell Language Implementation */
-const _language: ITianyuShellLanguage = {
-    set: function (language: string | AreaCode): void {
-        // check the language is support or not
-        const areaString = typeof language === "string" ? language : parseAreaCode(language);
-        if (!this.supportLanguage.includes(areaString)) {
-            return;
-        }
-
-        // save language to local storage and valid date is 30 days
-        const date = new Date(Date.now());
-        const expires = new Date(date.setDate(date.getDate() + 30));
-        const cookieOption: ICookieSetOptions = {
-            expires: expires,
-        };
-        if (languageConfig.domain) {
-            cookieOption.domain = languageConfig.domain;
-        }
-        if (languageConfig.path) {
-            cookieOption.path = languageConfig.path;
-        }
-        Cookie.set(LANGUAGE_COOKIE_ID, areaString, cookieOption);
-    },
-    get: function (): AreaCode {
-        return parseAreaString(getLanguage());
-    },
-    toString: function (language?: AreaCode): string {
-        return parseAreaCode(language || this.get());
-    },
-    supportLanguage: generateLanguage("support"),
-    pendingLanguage: generateLanguage("pending"),
-};
+import { Missing } from "@aitianyu.cn/tianyu-store";
+import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getStore } from "../utils/Store";
+import { TianyuShellCoreInstanceId, TianyuShellCoreInterface } from "./store/Exports";
+import { getLanguage } from "infra/Language";
 
 function _initTianyuShellLanguage(): void {
     const windowObj = window as any;
-    if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.language) {
+    if (!(windowObj.tianyuShell as ITianyuShell)?.core?.language) {
         (windowObj.tianyuShell as ITianyuShell) = {
             ...(windowObj.tianyuShell || {}),
             core: {
                 ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
-                language: _language,
+                language: true,
             },
         };
     }
 }
 
-const _pluginSetting: ITianyuShellPluginSetting = TianyuShellProcessor.getPluginSetting();
-_pluginSetting.globalize && _initTianyuShellLanguage();
+const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
+
+globalize && _initTianyuShellLanguage();
 
 /** Tianyu Shell Language */
 export class Language {
@@ -86,9 +35,7 @@ export class Language {
      * @param language language areacode or language string
      */
     public static set(language: string | AreaCode): void {
-        _pluginSetting.globalize
-            ? ((window as any).tianyuShell as ITianyuShell).core.language.set(language)
-            : _language.set(language);
+        void getStore().dispatch(TianyuShellCoreInterface.language.action.set(TianyuShellCoreInstanceId, language));
     }
     /**
      * Get application language
@@ -96,7 +43,9 @@ export class Language {
      * @returns return local language from cookie or get default language from browser
      */
     public static getLocalLanguage(): AreaCode {
-        return _pluginSetting.globalize ? ((window as any).tianyuShell as ITianyuShell).core.language.get() : _language.get();
+        const language = getStore().selecte(TianyuShellCoreInterface.language.select.get(TianyuShellCoreInstanceId));
+
+        return language instanceof Missing ? parseAreaString(getLanguage()) : language;
     }
     /**
      * Get browser language
@@ -131,9 +80,7 @@ export class Language {
      * @returns return local language string or parse language areacode
      */
     public static toString(language?: AreaCode): string {
-        return _pluginSetting.globalize
-            ? ((window as any).tianyuShell as ITianyuShell).core.language.toString(language)
-            : _language.toString(language);
+        return parseAreaCode(Language.getLocalLanguage());
     }
     /**
      * Convert the string to area code
@@ -154,77 +101,8 @@ export class Language {
      * @param languages the new language settings
      */
     public static addLanguages(type: TianyuShellLanguageRegisterType, languages: string[]): void {
-        switch (type) {
-            case "support":
-                {
-                    // get supported languages and mergre data
-                    const newSupportLanguages = ArrayHelper.merge(
-                        _pluginSetting.globalize
-                            ? ((window as any).tianyuShell as ITianyuShell).core.language.supportLanguage
-                            : _language.supportLanguage,
-                        languages,
-                    );
-                    // process pending languages
-                    // to remove languages which are added in supported language list currently,
-                    // from old pending languages list
-                    const newPendingLanguages: string[] = [];
-                    const oldPendingLanguages = _pluginSetting.globalize
-                        ? ((window as any).tianyuShell as ITianyuShell).core.language.supportLanguage
-                        : _language.supportLanguage;
-                    for (const lang of oldPendingLanguages) {
-                        !newSupportLanguages.includes(lang) && newPendingLanguages.push(lang);
-                    }
-                    // set new languages
-                    if (_pluginSetting.globalize) {
-                        ((window as any).tianyuShell as ITianyuShell).core.language.supportLanguage = newSupportLanguages;
-                        ((window as any).tianyuShell as ITianyuShell).core.language.pendingLanguage = newPendingLanguages;
-                    } else {
-                        _language.supportLanguage = newSupportLanguages;
-                        _language.pendingLanguage = newPendingLanguages;
-                    }
-                }
-                break;
-            default:
-                {
-                    // get pending languages and mergre data
-                    const newPendingLanguages = ArrayHelper.merge(
-                        _pluginSetting.globalize
-                            ? ((window as any).tianyuShell as ITianyuShell).core.language.pendingLanguage
-                            : _language.pendingLanguage,
-                        languages,
-                    );
-                    // process supported languages
-                    // to remove languages which are added in pending language list currently,
-                    // from old supported languages list
-                    const newSupportLanguages: string[] = [];
-                    const oldSupportLanguages = _pluginSetting.globalize
-                        ? ((window as any).tianyuShell as ITianyuShell).core.language.supportLanguage
-                        : _language.supportLanguage;
-                    for (const lang of oldSupportLanguages) {
-                        !newPendingLanguages.includes(lang) && newSupportLanguages.push(lang);
-                    }
-                    // set new languages
-                    if (_pluginSetting.globalize) {
-                        ((window as any).tianyuShell as ITianyuShell).core.language.supportLanguage = newSupportLanguages;
-                        ((window as any).tianyuShell as ITianyuShell).core.language.pendingLanguage = newPendingLanguages;
-                    } else {
-                        _language.supportLanguage = newSupportLanguages;
-                        _language.pendingLanguage = newPendingLanguages;
-                    }
-
-                    // if the language of local setting is not supported in newest language setting
-                    // to set the local language to the first of support languages or get from default language.
-                    const localUsingLanguage = parseAreaCode(Language.getLocalLanguage()).replace("-", "_");
-                    if (newPendingLanguages.includes(localUsingLanguage)) {
-                        if (newSupportLanguages.length > 0) {
-                            const newLocalLanguage = parseAreaString(newSupportLanguages[0]);
-                            Language.set(newLocalLanguage);
-                        } else {
-                            Language.set(Language.getDefaultLanguage());
-                        }
-                    }
-                }
-                break;
-        }
+        void getStore().dispatch(
+            TianyuShellCoreInterface.compatibility.action.addLanguage(TianyuShellCoreInstanceId, { type, languages }),
+        );
     }
 }

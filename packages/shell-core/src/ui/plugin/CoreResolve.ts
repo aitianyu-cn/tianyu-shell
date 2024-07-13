@@ -1,8 +1,6 @@
 /**@format */
 
-import { ITianyuShell } from "shell-core";
 import { Log } from "shell-core/src/core/plugin/Console";
-import { TIANYU_SEHLL_STORE_FRIENDLY_NAME } from "./types/Types";
 
 function fnInitHtmlBasic(): void {
     const htmlPageScale = document.createElement("meta");
@@ -42,51 +40,6 @@ export async function loadingTianyuShellCore(): Promise<void> {
         staticLoader();
 
         fnInitHtmlBasic();
-    } catch (e) {
-        Log.error((e as any)?.message || "error loading tianyu shell ui core");
-        return Promise.reject();
-    }
-}
-
-export async function loadingTianyuStore(): Promise<void> {
-    try {
-        const windowObj = window as any;
-        if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.store) {
-            const { createStore, StoreHelper, TianyuStoreEntityInterfaceExpose, TIANYU_STORE_ENTITY_CORE } =
-                await import(/*webpackChunkName: "aitianyu.cn/tianyu-store" */ "@aitianyu.cn/tianyu-store");
-            const redoUndoSupportedInstanceId = StoreHelper.generateStoreInstanceId();
-            const unReodoUndoInstanceId = StoreHelper.generateStoreInstanceId();
-            const genericInstanceId = StoreHelper.generateStoreInstanceId();
-
-            const tianyuStore = createStore({ friendlyName: TIANYU_SEHLL_STORE_FRIENDLY_NAME });
-            await tianyuStore.dispatch(
-                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(genericInstanceId),
-            );
-            await tianyuStore.dispatch(
-                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(redoUndoSupportedInstanceId),
-            );
-            await tianyuStore.dispatch(
-                TianyuStoreEntityInterfaceExpose[TIANYU_STORE_ENTITY_CORE].core.creator(unReodoUndoInstanceId, {
-                    redoUndo: false,
-                }),
-            );
-
-            (windowObj.tianyuShell as ITianyuShell) = {
-                ...(windowObj.tianyuShell || {}),
-                core: {
-                    ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
-                    ui: {
-                        ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
-                        store: {
-                            store: tianyuStore,
-                            instanceId: genericInstanceId,
-                            histroyInstance: redoUndoSupportedInstanceId,
-                            nonHisInstance: unReodoUndoInstanceId,
-                        },
-                    },
-                },
-            };
-        }
     } catch (e) {
         Log.error((e as any)?.message || "error loading tianyu shell ui core");
         return Promise.reject();

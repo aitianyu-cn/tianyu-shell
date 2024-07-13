@@ -3,6 +3,8 @@
 /** Tianyu Shell Environment Type */
 export type CoreEnvironment = "production" | "development";
 
+export const TIANYU_SEHLL_STORE_FRIENDLY_NAME = "tianyu-shell-global-store";
+
 /** Cookie API of Tianyu Shell */
 export interface ITianyuShellCookie {
     /**

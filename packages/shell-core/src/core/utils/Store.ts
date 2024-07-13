@@ -2,39 +2,38 @@
 
 import { InstanceId, IStore } from "@aitianyu.cn/tianyu-store";
 import { ITianyuShell } from "shell-core/src/core/declares/Declare";
-import * as MessageBundle from "../common/i18n/Message";
 
 export function getStore(): IStore {
-    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.runtime?.store;
     if (!store) {
-        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+        throw new Error("[Error] Tianyu Shell infra exception: Tianyu Store is not valid.");
     }
 
     return store.store;
 }
 
 export function getInstanceId(): InstanceId {
-    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.runtime?.store;
     if (!store) {
-        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+        throw new Error("[Error] Tianyu Shell infra exception: Tianyu Store is not valid.");
     }
 
     return store.instanceId;
 }
 
 export function getHistroySupportedIns(): InstanceId {
-    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.runtime?.store;
     if (!store) {
-        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+        throw new Error("[Error] Tianyu Shell infra exception: Tianyu Store is not valid.");
     }
 
     return store.histroyInstance;
 }
 
 export function getNoHisSupportedIns(): InstanceId {
-    const store = ((window as any)?.tianyuShell as ITianyuShell)?.core?.ui?.store;
+    const store = ((window as any)?.tianyuShell as ITianyuShell)?.runtime?.store;
     if (!store) {
-        throw new Error(MessageBundle.getText("TIANYU_STORE_NOT_VALID"));
+        throw new Error("[Error] Tianyu Shell infra exception: Tianyu Store is not valid.");
     }
 
     return store.nonHisInstance;

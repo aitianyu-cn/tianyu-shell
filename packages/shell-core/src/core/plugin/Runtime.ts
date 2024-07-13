@@ -1,8 +1,10 @@
 /**@format */
 
+import { Missing } from "@aitianyu.cn/tianyu-store";
 import { ITianyuShellCoreBaseConfigure } from "../declares/Core";
 import { ITianyuShell } from "../declares/Declare";
-import { TianyuShellProcessor } from "../utils/Processor";
+import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getStore } from "../utils/Store";
 
 declare const navigator: any;
 
@@ -48,6 +50,9 @@ function _isMacOS(): boolean {
 }
 
 function _initTianyuShellRuntime(): void {
+    const coreConf = getStore().selecte(TianyuShellInfraInterface.getCoreConfigure(TianyuShellInfraInstanceId));
+    const configure = coreConf instanceof Missing ? {} : coreConf;
+
     // init core configure
     const windowObj = window as any;
     if (!!!(windowObj.tianyuShell as ITianyuShell)?.core?.configure) {
@@ -56,7 +61,7 @@ function _initTianyuShellRuntime(): void {
             core: {
                 ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
                 configure: {
-                    ...TianyuShellProcessor.getCoreConfigure(),
+                    ...configure,
                     isMobile: _isMobile(),
                     isIOS: _isIOS(),
                     isMac: _isMacOS(),

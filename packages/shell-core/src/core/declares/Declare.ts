@@ -1,23 +1,22 @@
 /**@format */
 
 import { ITianyuShellCookie, ITianyuShellCoreConfigure } from "./Core";
-import { ITianyuShellCoreEvents } from "./Event";
 import { IFeatureToggle } from "./Features";
-import { ITianyuShellLanguage } from "./Language";
 import { ITianyuShellCoreConsole } from "./Console";
 import { ITianyuRouterProvider } from "./Router";
 import { ITianyuShellUI } from "./ui/UserInterface";
 import { ITianyuShellGlobalCache } from "./IStorage";
 import { ITianyuShellGlobalSyncs } from "./Sync";
+import { IStore, InstanceId } from "@aitianyu.cn/tianyu-store";
 
 /** Tianyu Shell Core APIs */
 export interface ITianyuShellCore {
     /** Tianyu Shell Cookie API */
     cookie: ITianyuShellCookie;
     /** Tianyu Shell Event API */
-    event: ITianyuShellCoreEvents;
+    event: boolean;
     /** Tianyu Shell Language API */
-    language: ITianyuShellLanguage;
+    language: boolean;
     /** Tianyu Shell Console API */
     console: ITianyuShellCoreConsole;
     /** Tianyu Shell Configure API */
@@ -30,12 +29,26 @@ export interface ITianyuShellCore {
     ui: ITianyuShellUI;
 }
 
+/** Tianyu Store APIs */
+export interface ITianyuShellUIStore {
+    /** Tianyu Store */
+    store: IStore;
+    /** Base Instance Id */
+    instanceId: InstanceId;
+    /** Instance Supports Redo Undo Operation */
+    histroyInstance: InstanceId;
+    /** Instance Not support redo undo */
+    nonHisInstance: InstanceId;
+}
+
 /** Tianyu Shell Runtime APIs */
 export interface ITianyuShellRuntime {
     /** Tianyu Shell Global Cache Interface */
     cache: ITianyuShellGlobalCache;
     /** Tianyu Shell Global Synced Data Cache */
     sync: ITianyuShellGlobalSyncs;
+    /** Tianyu Store */
+    store: ITianyuShellUIStore;
 }
 
 /**
@@ -50,3 +63,16 @@ export interface ITianyuShell {
     /** Tianyu Shell Runtime APIs */
     runtime: ITianyuShellRuntime;
 }
+
+/**
+ * Tianyu Shell Event Trigger Callback
+ *
+ * @param ev System UI Event
+ */
+export type TianyuShellGenericEventCallback<T> = (oldState?: T, newState?: T) => void;
+
+/**
+ * Language modify type
+ * To indicate what type of languages (pending or support) will be modified
+ */
+export type TianyuShellLanguageRegisterType = "pending" | "support";

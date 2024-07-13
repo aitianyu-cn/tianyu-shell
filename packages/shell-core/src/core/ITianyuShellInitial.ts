@@ -1,7 +1,9 @@
 /**@format */
 
+import { IterableType } from "@aitianyu.cn/tianyu-store";
+
 /** Tianyu Shell initial configuration template */
-export interface ITianyuShellInitial {
+export interface ITianyuShellInitial extends IterableType {
     /** Core config part */
     core?: {
         /** runtime control */

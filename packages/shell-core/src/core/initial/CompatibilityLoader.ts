@@ -48,8 +48,12 @@ async function languageLoader(): Promise<void> {
                 },
             };
         } else {
-            (windowObj.tianyuShell as ITianyuShell).runtime.sync.language?.pending.push(...(languageData.pending || []));
-            (windowObj.tianyuShell as ITianyuShell).runtime.sync.language?.support.push(...(languageData.support || []));
+            (windowObj.tianyuShell as ITianyuShell).runtime.sync.language?.pending.push(
+                ...(languageData.pending || []),
+            );
+            (windowObj.tianyuShell as ITianyuShell).runtime.sync.language?.support.push(
+                ...(languageData.support || []),
+            );
         }
     }
 }

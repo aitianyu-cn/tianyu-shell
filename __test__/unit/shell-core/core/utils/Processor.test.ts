@@ -1,6 +1,6 @@
 /**@format */
 
-import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/tianyuShell";
+import { initialTianyuShell } from "../../../../../packages/shell-core/src/core/TianyuShell";
 import { TianyuShellProcessor } from "../../../../../packages/shell-core/src/core/utils/Processor";
 import { ITianyuShellInitial } from "../../../../../packages/shell-core/src/core/ITianyuShellInitial";
 
