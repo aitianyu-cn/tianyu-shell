@@ -14,7 +14,7 @@ import { ITianyuShell } from "../declares/Declare";
 import { ITianyuShellPluginSetting } from "../declares/Core";
 import { getText } from "./i18n/Message";
 import { getStore } from "../utils/Store";
-import { TianyuShellInfraInstanceId, TianyuShellInfraInterface } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 import { Missing } from "@aitianyu.cn/tianyu-store";
 
 /**
@@ -24,7 +24,9 @@ import { Missing } from "@aitianyu.cn/tianyu-store";
  * @returns return true indicates should print console log, otherwise false
  */
 function _isConsoleEnabled(forceLog?: boolean): boolean {
-    const configure = getStore().selecte(TianyuShellInfraInterface.getCoreConfigure(TianyuShellInfraInstanceId));
+    const configure = getStore().selecte(
+        TianyuShellInfraInterfaceExpose.getCoreConfigure(getTianyuShellInfraInstanceId()),
+    );
     // get console log setting from core configure
     const runtimeEnable = !(configure instanceof Missing) && configure.runtime.console;
     // get from feature toggle
@@ -383,7 +385,9 @@ function _initTianyuShellPerformance(): void {
     }
 }
 
-const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const _pluginSetting = getStore().selecte(
+    TianyuShellInfraInterfaceExpose.getPluginSetting(getTianyuShellInfraInstanceId()),
+);
 const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
 globalize && _initTianyuShellPerformance();

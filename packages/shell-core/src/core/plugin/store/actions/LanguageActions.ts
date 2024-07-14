@@ -5,9 +5,9 @@ import { ITianyuShellCoreState } from "../State";
 import { AreaCode, parseAreaCode } from "@aitianyu.cn/types";
 import { IsLanguageSuppprted } from "../selectors/LanguageSelector";
 import {
-    TianyuShellInfraInstanceId,
-    TianyuShellInfraInterface,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+    getTianyuShellInfraInstanceId,
+    TianyuShellInfraInterfaceExpose,
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { Cookie, ICookieSetOptions } from "../../Cookie";
 import { LANGUAGE_COOKIE_ID } from "infra/Language";
 
@@ -23,7 +23,7 @@ export const SetLanguageAction = ActionFactor.makeActionCreator<ITianyuShellCore
         }
 
         const languageConfig = yield* StoreUtils.Handler.doSelectorWithThrow(
-            TianyuShellInfraInterface.getLanguageConfigures(TianyuShellInfraInstanceId),
+            TianyuShellInfraInterfaceExpose.getLanguageConfigures(getTianyuShellInfraInstanceId()),
         );
 
         // save language to local storage and valid date is 30 days

@@ -2,10 +2,10 @@
 
 import { SelectorFactor } from "@aitianyu.cn/tianyu-store";
 import { getBoolean } from "@aitianyu.cn/types";
-import { ITianyuShellInitial } from "../ITianyuShellInitial";
-import { ITianyuShellUIConfigure } from "../declares/ui/UserInterface";
+import { ITianyuShellInitial } from "../../ITianyuShellInitial";
+import { ITianyuShellUIConfigure } from "../../declares/ui/UserInterface";
 import { translateThemeColorToId } from "shell-core/src/ui/utils/ThemeTranslator";
-import { UIValidation } from "../utils/UIValidation";
+import { UIValidation } from "../../utils/UIValidation";
 import {
     Default_UI_Configure_ThemeURL,
     Default_UI_Configure_DefaultTheme,
@@ -14,14 +14,15 @@ import {
     Default_Core_Environment,
     Default_Core_Runtime_Console,
     Default_Core_Version,
-} from "./Constant";
+} from "../../declares/Constant";
 import {
+    ITianyuShellCompatibilityConfig,
     ITianyuShellCookieConfigure,
     ITianyuShellCoreBaseConfigure,
     ITianyuShellPluginSetting,
     ITianyuShellRuntimeSetting,
     ITianyuShellRuntimeSupport,
-} from "../declares/Core";
+} from "../../declares/Core";
 
 export const getUIConfigures = SelectorFactor.makeSelector<ITianyuShellInitial, ITianyuShellUIConfigure>(function (
     state,
@@ -105,3 +106,12 @@ export const getRuntimeSupport = SelectorFactor.makeSelector<ITianyuShellInitial
         router: getBoolean(state.runtime?.support?.router),
     };
 });
+
+export const getCompatibilityConfig = SelectorFactor.makeSelector<ITianyuShellInitial, ITianyuShellCompatibilityConfig>(
+    function (state) {
+        return {
+            compatibility: Boolean(state.core?.sync?.compatibility),
+            proxy: state.core?.sync?.proxy || "",
+        };
+    },
+);

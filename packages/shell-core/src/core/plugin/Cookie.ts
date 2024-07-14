@@ -4,7 +4,7 @@ import { Missing } from "@aitianyu.cn/tianyu-store";
 import { getCookie } from "../../../../infra/Cookie";
 import { ITianyuShellCookie, ITianyuShellPluginSetting } from "../declares/Core";
 import { ITianyuShell } from "../declares/Declare";
-import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 import { getStore } from "../utils/Store";
 
 const _cookie: ITianyuShellCookie = {
@@ -52,7 +52,9 @@ function _initTianyuShellCookie(): void {
     }
 }
 
-const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const _pluginSetting = getStore().selecte(
+    TianyuShellInfraInterfaceExpose.getPluginSetting(getTianyuShellInfraInstanceId()),
+);
 const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
 globalize && _initTianyuShellCookie();

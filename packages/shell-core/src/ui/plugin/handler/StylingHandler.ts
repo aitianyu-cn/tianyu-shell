@@ -13,7 +13,7 @@ import { ThemeURLHandler } from "../../resources/URLHandler";
 import {
     TianyuShellInfraInterfaceExpose,
     getTianyuShellInfraInstanceId,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { getStore } from "shell-core/src/core/utils/Store";
 
 export function removeUserTheme(themeId: string): boolean {

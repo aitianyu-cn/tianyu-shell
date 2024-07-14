@@ -20,11 +20,22 @@ module.exports = {
         ],
     ],
     coverageDirectory: "__test__/__report__/coverage",
-    setupFiles: [],
+    setupFilesAfterEnv: ["./__test__/env/loader.ts"],
     resetMocks: true,
     clearMocks: true,
+    resetModules: true,
     transform: {
         "message\\.properties$": "./__test__/config/i18nLoader.js",
     },
+    moduleNameMapper: {
+        "^shell$": "<rootDir>/packages/index.ts",
+        "^shell-core/(.*)$": "<rootDir>/packages/shell-core/$1",
+        "^shell-react/(.*)$": "<rootDir>/packages/shell-react/$1",
+        "^shell-ui/(.*)$": "<rootDir>/packages/shell-ui/$1",
+        "^infra/(.*)$": "<rootDir>/packages/infra/$1",
+        "^test/(.*)$": "<rootDir>/__test__/$1",
+    },
+    testPathIgnorePatterns: ["<rootDir>/__test__old"],
+    coveragePathIgnorePatterns: ["<rootDir>/packages/infra/resource/"],
     // transformIgnorePatterns: ["<rootDir>/node_modules/$"],
 };

@@ -1,6 +1,8 @@
 /** @format */
 
-import { CoreEnvironment } from "../declares/Core";
+import { CoreEnvironment } from "./Core";
+
+export const TIANYU_SHELL_INFRA_STORE_TYPE = "tianyu-shell-infra";
 
 export const Default_UI_Configure_ThemeURL: string = "/static/theme";
 export const Default_UI_Configure_DefaultTheme: string = "tianyu-default";

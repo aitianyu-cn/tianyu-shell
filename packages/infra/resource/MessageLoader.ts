@@ -5,7 +5,7 @@ import { DEFAULT_LANGUAGE, setI18nModuleCache } from "./Message";
 
 const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
     [DEFAULT_LANGUAGE]: async () =>
-        require.ensure(
+        require.ensure?.(
             [],
             (require: NodeRequire) => {
                 setI18nModuleCache(
@@ -39,7 +39,7 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
             "aitianyu.cn/tianyu-shell/i18n/default",
         ),
     ["zh_CN"]: async () =>
-        require.ensure(
+        require.ensure?.(
             [],
             (require: NodeRequire) => {
                 setI18nModuleCache(
@@ -73,7 +73,7 @@ const _i18nRequireContexts: { [local: string]: () => Promise<void> } = {
             "aitianyu.cn/tianyu-shell/i18n/zh_CN",
         ),
     ["en_US"]: async () =>
-        require.ensure(
+        require.ensure?.(
             [],
             (require: NodeRequire) => {
                 setI18nModuleCache(

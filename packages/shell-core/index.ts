@@ -38,7 +38,7 @@ import * as InterfaceExposeImport from "./src/ui/plugin/interface/InterfaceExpos
 import * as StoreTypeImport from "./src/ui/plugin/interface/StoreTypes";
 import * as InstanceHelperImport from "./src/ui/tools/InstanceHelper";
 import * as CoreInterfaceImport from "./src/core/utils/CoreInterfaceExpose";
-import * as InfraInterfaceImport from "./src/core/TianyushellInfraInterfaceExpose";
+import * as InfraInterfaceImport from "./src/core/utils/InfraInterfaceExpose";
 
 export namespace TianyuShellStore {
     export import getStore = StoreImport.getStore;

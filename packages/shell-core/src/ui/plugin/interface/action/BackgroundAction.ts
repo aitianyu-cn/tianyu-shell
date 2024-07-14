@@ -20,7 +20,7 @@ import { BACKGROUND_ELEMENT_MAP } from "../state/BackgroundState";
 import {
     TianyuShellInfraInterfaceExpose,
     getTianyuShellInfraInstanceId,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { getStore } from "shell-core/src/core/utils/Store";
 
 export const CreateBackgroundInstanceAction = CreateBackgroundInstanceActionCreator.withReducer(function (_state) {

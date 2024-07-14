@@ -7,7 +7,7 @@ import { FeatureSource, IFeature, IFeatureToggle } from "../declares/Features";
 import { getStore } from "../utils/Store";
 import { TianyuShellCoreInstanceId, TianyuShellCoreInterface } from "./store/Exports";
 import { ITianyuShellFeatureToggleState } from "./store/State";
-import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 
 const _processToggleState = (features: FeatureSource, featureName: string): boolean => {
     const featureState = features[featureName];
@@ -120,7 +120,9 @@ function _initTianyuShellFeatureToggle(): void {
     }
 }
 
-const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const _pluginSetting = getStore().selecte(
+    TianyuShellInfraInterfaceExpose.getPluginSetting(getTianyuShellInfraInstanceId()),
+);
 const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
 globalize && _initTianyuShellFeatureToggle();

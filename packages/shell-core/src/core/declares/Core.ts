@@ -95,3 +95,8 @@ export interface ITianyuShellCookieConfigure {
     /** The cookie saved path url */
     path?: string;
 }
+
+export interface ITianyuShellCompatibilityConfig {
+    compatibility: boolean;
+    proxy: string;
+}

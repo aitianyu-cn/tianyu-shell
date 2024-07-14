@@ -17,7 +17,7 @@ import { getStore } from "shell-core/src/core/utils/Store";
 import {
     getTianyuShellInfraInstanceId,
     TianyuShellInfraInterfaceExpose,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 
 let loadingPromise: Promise<void> | undefined = undefined;
 

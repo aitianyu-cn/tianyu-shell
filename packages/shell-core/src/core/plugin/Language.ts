@@ -4,7 +4,7 @@ import { AreaCode, parseAreaCode, parseAreaString } from "@aitianyu.cn/types";
 import { ITianyuShell, TianyuShellLanguageRegisterType } from "../declares/Declare";
 import { LanguageParseException } from "../declares/Exception";
 import { Missing } from "@aitianyu.cn/tianyu-store";
-import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 import { getStore } from "../utils/Store";
 import { TianyuShellCoreInstanceId, TianyuShellCoreInterface } from "./store/Exports";
 import { getLanguage } from "infra/Language";
@@ -22,7 +22,9 @@ function _initTianyuShellLanguage(): void {
     }
 }
 
-const _pluginSetting = getStore().selecte(TianyuShellInfraInterface.getPluginSetting(TianyuShellInfraInstanceId));
+const _pluginSetting = getStore().selecte(
+    TianyuShellInfraInterfaceExpose.getPluginSetting(getTianyuShellInfraInstanceId()),
+);
 const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
 
 globalize && _initTianyuShellLanguage();

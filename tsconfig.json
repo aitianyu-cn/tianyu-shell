@@ -8,7 +8,8 @@
         "packages/webpack",
         "packages/resources.d.ts",
         "scripts/app",
-        "*.d.ts"
+        "*.d.ts",
+        "__test__"
     ],
     "exclude": [],
     "compilerOptions": {
@@ -37,7 +38,8 @@
             "shell-core/*": ["packages/shell-core/*"],
             "shell-react/*": ["packages/shell-react/*"],
             "shell-ui/*": ["packages/shell-ui/*"],
-            "infra/*": ["packages/infra/*"]
+            "infra/*": ["packages/infra/*"],
+            "test/*": ["__test__/*"]
         }
     }
 }

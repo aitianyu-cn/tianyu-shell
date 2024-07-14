@@ -1,8 +1,8 @@
 /**@format */
 
-import { AutomaticStorage } from "../common/AutomaticStorage";
-import { ITianyuShell } from "../declares/Declare";
-import { ITianyuShellGlobalCache } from "../declares/IStorage";
+import { AutomaticStorage } from "../../common/AutomaticStorage";
+import { ITianyuShell } from "../../declares/Declare";
+import { ITianyuShellGlobalCache } from "../../declares/IStorage";
 
 export function initTianyuShellGlobalCache(): void {
     const windowObj = window as any;

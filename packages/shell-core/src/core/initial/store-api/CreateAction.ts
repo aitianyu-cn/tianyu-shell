@@ -1,7 +1,7 @@
 /** @format */
 
 import { ActionFactor } from "@aitianyu.cn/tianyu-store";
-import { ITianyuShellInitial } from "../ITianyuShellInitial";
+import { ITianyuShellInitial } from "../../ITianyuShellInitial";
 import { ObjectHelper } from "@aitianyu.cn/types";
 
 export const CreateTianyuShellInfraAction = ActionFactor.makeCreateStoreAction<

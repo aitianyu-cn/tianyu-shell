@@ -41,38 +41,42 @@ export async function initialTianyuShellAsync(config?: ITianyuShellInitial): Pro
         const { loadI18n } = await import(
             /*webpackChunkName: "aitianyu.cn/tianyu-shell/loader" */ "infra/resource/MessageLoader"
         );
-        const { loadingTianyuStore } = await import(
-            /*webpackChunkName: "aitianyu.cn/tianyu-shell/loader" */ "./initial/StoreInitial"
-        );
         await loadI18n();
-        await loadingTianyuStore();
-
-        const { TianyuShellInfraInterface, TianyuShellInfraInstanceId, TIANYU_SHELL_INFRA_STORE_TYPE } = await import(
-            /*webpackChunkName: "aitianyu.cn/tianyu-shell/infra" */ "./TianyushellInfraInterfaceExpose"
-        );
-        getStore().registerInterface(TIANYU_SHELL_INFRA_STORE_TYPE, TianyuShellInfraInterface);
-        await getStore().dispatch(TianyuShellInfraInterface.core.creator(TianyuShellInfraInstanceId, config || {}));
     });
 
     initialPromise = initialPromise.then(async () => {
+        const { loadingTianyuStore } = await import(
+            /*webpackChunkName: "aitianyu.cn/tianyu-shell/store" */ "./initial/StoreInitial"
+        );
+        await loadingTianyuStore();
+    });
+
+    initialPromise = initialPromise.then(async () => {
+        const { TIANYU_SHELL_INFRA_STORE_TYPE } = await import(
+            /*webpackChunkName: "aitianyu.cn/tianyu-shell/store-api" */ "./declares/Constant"
+        );
+        const { TianyuShellInfraInterface, TianyuShellInfraInstanceId } = await import(
+            /*webpackChunkName: "aitianyu.cn/tianyu-shell/store-api" */ "./initial/store-api/TianyushellInfraInterfaceExpose"
+        );
+        getStore().registerInterface(TIANYU_SHELL_INFRA_STORE_TYPE, TianyuShellInfraInterface);
+
+        await getStore().dispatch(TianyuShellInfraInterface.core.creator(TianyuShellInfraInstanceId, config || {}));
         const { TianyuShellCoreInterface, TianyuShellCoreInstanceId } = await import(
             /*webpackChunkName: "aitianyu.cn/tianyu-shell/store-api" */ "./plugin/store/Exports"
         );
         await getStore().dispatch(TianyuShellCoreInterface.core.creator(TianyuShellCoreInstanceId));
     });
 
-    if (config?.runtime?.globalCache) {
-        initialPromise = initialPromise.then(async () => {
+    initialPromise = initialPromise.then(async () => {
+        if (config?.runtime?.globalCache) {
             const { initTianyuShellGlobalCache } = await import(
-                /*webpackChunkName: "aitianyu.cn/tianyu-shell/runtime" */ "./initial/RuntimeInitial"
+                /*webpackChunkName: "aitianyu.cn/tianyu-shell/runtime" */ "./initial/runtime/RuntimeInitial"
             );
             initTianyuShellGlobalCache();
-        });
-    }
+        }
 
-    initialPromise = initialPromise.then(async () => {
         const { compatibilityLoader } = await import(
-            /*webpackChunkName: "aitianyu.cn/tianyu-shell/runtime" */ "./initial/CompatibilityLoader"
+            /*webpackChunkName: "aitianyu.cn/tianyu-shell/runtime" */ "./initial/runtime/CompatibilityLoader"
         );
         await compatibilityLoader();
     });

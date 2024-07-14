@@ -6,7 +6,7 @@ import { ITianyuShell } from "../declares/Declare";
 import { RuntimeNotSupportException } from "../declares/Exception";
 import { getText } from "./i18n/Message";
 import { getStore } from "../utils/Store";
-import { TianyuShellInfraInstanceId, TianyuShellInfraInterface } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 import { Missing } from "@aitianyu.cn/tianyu-store";
 
 interface IRouteNode {
@@ -387,7 +387,9 @@ function _initTianyuShellRouterProvider(): void {
     }
 }
 
-const runtimeSupport = getStore().selecte(TianyuShellInfraInterface.getRuntimeSupport(TianyuShellInfraInstanceId));
+const runtimeSupport = getStore().selecte(
+    TianyuShellInfraInterfaceExpose.getRuntimeSupport(getTianyuShellInfraInstanceId()),
+);
 const routerSupport = !(runtimeSupport instanceof Missing) && runtimeSupport.router;
 
 routerSupport && _initTianyuShellRouterProvider();

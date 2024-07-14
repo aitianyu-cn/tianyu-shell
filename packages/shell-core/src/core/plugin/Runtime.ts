@@ -3,7 +3,7 @@
 import { Missing } from "@aitianyu.cn/tianyu-store";
 import { ITianyuShellCoreBaseConfigure } from "../declares/Core";
 import { ITianyuShell } from "../declares/Declare";
-import { TianyuShellInfraInterface, TianyuShellInfraInstanceId } from "../TianyushellInfraInterfaceExpose";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
 import { getStore } from "../utils/Store";
 
 declare const navigator: any;
@@ -50,7 +50,9 @@ function _isMacOS(): boolean {
 }
 
 function _initTianyuShellRuntime(): void {
-    const coreConf = getStore().selecte(TianyuShellInfraInterface.getCoreConfigure(TianyuShellInfraInstanceId));
+    const coreConf = getStore().selecte(
+        TianyuShellInfraInterfaceExpose.getCoreConfigure(getTianyuShellInfraInstanceId()),
+    );
     const configure = coreConf instanceof Missing ? {} : coreConf;
 
     // init core configure

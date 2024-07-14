@@ -3,7 +3,7 @@
 import {
     TianyuShellInfraInterfaceExpose,
     getTianyuShellInfraInstanceId,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { getStore } from "shell-core/src/core/utils/Store";
 import { TianyuShellUICustomAppliedPreious } from "../common/Declare";
 import { Missing } from "@aitianyu.cn/tianyu-store";

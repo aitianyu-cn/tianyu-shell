@@ -11,7 +11,7 @@ import { IZIndexVerification } from "../common/Interface";
 import {
     getTianyuShellInfraInstanceId,
     TianyuShellInfraInterfaceExpose,
-} from "shell-core/src/core/TianyushellInfraInterfaceExpose";
+} from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { Missing } from "@aitianyu.cn/tianyu-store";
 
 const _ZIndexVerification: IZIndexVerification = {

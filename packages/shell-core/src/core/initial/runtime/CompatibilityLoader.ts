@@ -1,14 +1,15 @@
 /**@format */
 
 import { TIANYU_RESOURCE_COMMON, TIANYU_RESOURCE_URL } from "infra/RemoteEnvironment";
-import { ITianyuShell } from "../declares/Declare";
+import { ITianyuShell } from "../../declares/Declare";
 import { FetchFileLoader } from "@aitianyu.cn/client-base";
+import { getStore } from "../../utils/Store";
+import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../../utils/InfraInterfaceExpose";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
-function remoteUrlGenerator(group: string): string {
-    if ((window as any).tianyuShell?.env?.config?.core?.sync?.proxy) {
-        return `${
-            (window as any).tianyuShell?.env?.config?.core?.sync?.proxy
-        }/${TIANYU_RESOURCE_COMMON}/${group}/compatibility.json`;
+function remoteUrlGenerator(group: string, proxy: string): string {
+    if (proxy) {
+        return `${proxy}/${TIANYU_RESOURCE_COMMON}/${group}/compatibility.json`;
     }
     return `${TIANYU_RESOURCE_URL}/${TIANYU_RESOURCE_COMMON}/${group}/compatibility.json`;
 }
@@ -23,8 +24,8 @@ async function fetchData(url: string): Promise<any> {
     }
 }
 
-async function languageLoader(): Promise<void> {
-    const remoteUrl = remoteUrlGenerator("language");
+async function languageLoader(proxy: string): Promise<void> {
+    const remoteUrl = remoteUrlGenerator("language", proxy);
     const languageData = await fetchData(remoteUrl);
 
     if (
@@ -58,8 +59,8 @@ async function languageLoader(): Promise<void> {
     }
 }
 
-async function themeLoader(): Promise<void> {
-    const remoteUrl = remoteUrlGenerator("theme");
+async function themeLoader(proxy: string): Promise<void> {
+    const remoteUrl = remoteUrlGenerator("theme", proxy);
     const themeData = await fetchData(remoteUrl);
 
     if (Array.isArray(themeData) && themeData.length) {
@@ -82,10 +83,13 @@ async function themeLoader(): Promise<void> {
 }
 
 export async function compatibilityLoader(): Promise<void> {
-    if (!(window as any).tianyuShell?.env?.config?.core?.sync?.compatibility) {
+    const compatibility = getStore().selecte(
+        TianyuShellInfraInterfaceExpose.getCompatibilityConfig(getTianyuShellInfraInstanceId()),
+    );
+    if (compatibility instanceof Missing || !compatibility.compatibility) {
         return;
     }
 
-    await languageLoader();
-    await themeLoader();
+    await languageLoader(compatibility.proxy);
+    await themeLoader(compatibility.proxy);
 }
