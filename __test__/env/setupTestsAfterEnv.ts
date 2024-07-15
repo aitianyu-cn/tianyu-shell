@@ -4,10 +4,7 @@ import { initialTianyuShellAsync } from "shell";
 
 const env = require("../config/env.json");
 
-// async function init() {
-//     await initialTianyuShellAsync(env);
-// }
-
 beforeAll(async () => {
+    console.log("start initializing");
     await initialTianyuShellAsync(env);
 });

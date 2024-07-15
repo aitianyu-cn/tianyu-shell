@@ -11,7 +11,7 @@ export const LANGUAGE_COOKIE_ID = "LANGUAGE";
  *
  * @returns return the language formatted string
  */
-export function getLanguage() {
+export function getLanguage(): string {
     const defaultLanguage = navigator.language.replace("-", "_");
     const languageString = getCookie(LANGUAGE_COOKIE_ID, defaultLanguage);
 

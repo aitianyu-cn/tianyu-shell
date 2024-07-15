@@ -11,7 +11,6 @@ import {
     PerfCaptureCallback,
 } from "../declares/Console";
 import { ITianyuShell } from "../declares/Declare";
-import { ITianyuShellPluginSetting } from "../declares/Core";
 import { getText } from "./i18n/Message";
 import { getStore } from "../utils/Store";
 import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";

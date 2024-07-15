@@ -20,7 +20,7 @@ module.exports = {
         ],
     ],
     coverageDirectory: "__test__/__report__/coverage",
-    setupFilesAfterEnv: ["./__test__/env/loader.ts"],
+    setupFilesAfterEnv: ["<rootDir>/__test__/env/setupTestsAfterEnv.ts"],
     resetMocks: true,
     clearMocks: true,
     resetModules: true,
@@ -36,6 +36,10 @@ module.exports = {
         "^test/(.*)$": "<rootDir>/__test__/$1",
     },
     testPathIgnorePatterns: ["<rootDir>/__test__old"],
-    coveragePathIgnorePatterns: ["<rootDir>/packages/infra/resource/"],
+    coveragePathIgnorePatterns: [
+        "<rootDir>/packages/infra/resource/",
+        "<rootDir>/packages/infra/index.ts",
+        "<rootDir>/packages/infra/International.ts",
+    ],
     // transformIgnorePatterns: ["<rootDir>/node_modules/$"],
 };
