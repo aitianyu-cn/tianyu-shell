@@ -1,6 +1,6 @@
 /** @format */
 
-import { StoreHelper } from "@aitianyu.cn/tianyu-store";
+import { InstanceId, StoreHelper } from "@aitianyu.cn/tianyu-store";
 import { getNoHisSupportedIns, getStore } from "../../utils/Store";
 import { CreateTianyuShellCoreAction, DestroyTianyuShellCoreAction } from "./actions/CreateAction";
 import { ChangeUrlHashAction, PageResizeAction, SetDocumentLoadedAction } from "./actions/EventActions";
@@ -31,9 +31,28 @@ import {
     AddThemesAction,
 } from "./actions/CompatibilityActions";
 import { GetThemeList } from "./selectors/CompatibilitySelector";
-import { getTianyuShellCoreInstanceId, TIANYU_SHELL_CORE_STORE_TYPE } from "../../utils/CoreInterfaceExpose";
+import { ConsoleLogAction } from "./actions/ConsoleActions";
+import {
+    _AddNewCaptureRecordAction,
+    _DoCaptureOperationAction,
+    _GenerateNewClassifyAction,
+    _GenerateOrIncreaseClassifyIdAction,
+    CleanCaptureAction,
+    DownloadCaptureAction,
+    EndCaptureAction,
+    StartCaptureAction,
+} from "./actions/CaptureActions";
+import {
+    _GetAllCaptureRecords,
+    _GetCaptureBaseTime,
+    _GetCaptureRecord,
+    _GetClassifyId,
+} from "./selectors/CaptureSelector";
+import { TIANYU_SHELL_CORE_STORE_TYPE } from "../../declares/Constant";
 
-export const TianyuShellCoreInstanceId = getTianyuShellCoreInstanceId();
+export function getTianyuShellCoreInstanceId(): InstanceId {
+    return StoreHelper.generateInstanceId(getNoHisSupportedIns(), TIANYU_SHELL_CORE_STORE_TYPE, "tianyu-shell-core");
+}
 
 export const TianyuShellCoreInterface = {
     core: {
@@ -100,6 +119,29 @@ export const TianyuShellCoreInterface = {
             getThemes: GetThemeList,
         },
     },
-};
 
-getStore().registerInterface(TIANYU_SHELL_CORE_STORE_TYPE, TianyuShellCoreInterface);
+    console: {
+        log: ConsoleLogAction,
+
+        capture: {
+            internal: {
+                _doCaptureOperation: _DoCaptureOperationAction,
+                _generateClassify: _GenerateNewClassifyAction,
+                _handleClassifyId: _GenerateOrIncreaseClassifyIdAction,
+                _recordCapture: _AddNewCaptureRecordAction,
+
+                _getClassifyId: _GetClassifyId,
+                _getCaptureRec: _GetCaptureRecord,
+                _getAllRecords: _GetAllCaptureRecords,
+                _getBaseTime: _GetCaptureBaseTime,
+            },
+
+            action: {
+                clean: CleanCaptureAction,
+                start: StartCaptureAction,
+                end: EndCaptureAction,
+                donwload: DownloadCaptureAction,
+            },
+        },
+    },
+};

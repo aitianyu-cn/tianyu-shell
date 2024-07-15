@@ -1,33 +1,12 @@
 /**@format */
 
 import { AreaCode, parseAreaCode, parseAreaString } from "@aitianyu.cn/types";
-import { ITianyuShell, TianyuShellLanguageRegisterType } from "../declares/Declare";
-import { LanguageParseException } from "../declares/Exception";
 import { Missing } from "@aitianyu.cn/tianyu-store";
-import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../utils/InfraInterfaceExpose";
+import { TianyuShellLanguageRegisterType } from "../declares/Declare";
+import { LanguageParseException } from "../declares/Exception";
 import { getStore } from "../utils/Store";
-import { TianyuShellCoreInstanceId, TianyuShellCoreInterface } from "./store/Exports";
+import { getTianyuShellCoreInstanceId, TianyuShellCoreInterface } from "./store/Exports";
 import { getLanguage } from "infra/Language";
-
-function _initTianyuShellLanguage(): void {
-    const windowObj = window as any;
-    if (!(windowObj.tianyuShell as ITianyuShell)?.core?.language) {
-        (windowObj.tianyuShell as ITianyuShell) = {
-            ...(windowObj.tianyuShell || {}),
-            core: {
-                ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
-                language: true,
-            },
-        };
-    }
-}
-
-const _pluginSetting = getStore().selecte(
-    TianyuShellInfraInterfaceExpose.getPluginSetting(getTianyuShellInfraInstanceId()),
-);
-const globalize = !(_pluginSetting instanceof Missing) && _pluginSetting.globalize;
-
-globalize && _initTianyuShellLanguage();
 
 /** Tianyu Shell Language */
 export class Language {
@@ -37,7 +16,9 @@ export class Language {
      * @param language language areacode or language string
      */
     public static set(language: string | AreaCode): void {
-        void getStore().dispatch(TianyuShellCoreInterface.language.action.set(TianyuShellCoreInstanceId, language));
+        void getStore().dispatch(
+            TianyuShellCoreInterface.language.action.set(getTianyuShellCoreInstanceId(), language),
+        );
     }
     /**
      * Get application language
@@ -45,7 +26,9 @@ export class Language {
      * @returns return local language from cookie or get default language from browser
      */
     public static getLocalLanguage(): AreaCode {
-        const language = getStore().selecte(TianyuShellCoreInterface.language.select.get(TianyuShellCoreInstanceId));
+        const language = getStore().selecte(
+            TianyuShellCoreInterface.language.select.get(getTianyuShellCoreInstanceId()),
+        );
 
         return language instanceof Missing ? parseAreaString(getLanguage()) : language;
     }
@@ -104,7 +87,10 @@ export class Language {
      */
     public static addLanguages(type: TianyuShellLanguageRegisterType, languages: string[]): void {
         void getStore().dispatch(
-            TianyuShellCoreInterface.compatibility.action.addLanguage(TianyuShellCoreInstanceId, { type, languages }),
+            TianyuShellCoreInterface.compatibility.action.addLanguage(getTianyuShellCoreInstanceId(), {
+                type,
+                languages,
+            }),
         );
     }
 }

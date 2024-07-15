@@ -54,7 +54,7 @@ export interface ITianyuShellCoreBaseConfigure {
 }
 
 /** Tianyu Shell Configuration */
-export interface ITianyuShellCoreConfigure extends ITianyuShellCoreBaseConfigure {
+export interface ITianyuShellCoreConfigure {
     /** Mobile Runtime flag */
     isMobile: boolean;
     /** IOS Runtime flag */

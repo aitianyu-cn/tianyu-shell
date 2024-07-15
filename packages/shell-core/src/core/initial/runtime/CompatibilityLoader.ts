@@ -4,8 +4,9 @@ import { TIANYU_RESOURCE_COMMON, TIANYU_RESOURCE_URL } from "infra/RemoteEnviron
 import { ITianyuShell } from "../../declares/Declare";
 import { FetchFileLoader } from "@aitianyu.cn/client-base";
 import { getStore } from "../../utils/Store";
-import { getTianyuShellInfraInstanceId, TianyuShellInfraInterfaceExpose } from "../../utils/InfraInterfaceExpose";
+import { TianyuShellInfraInterfaceExpose } from "../../utils/InfraInterfaceExpose";
 import { Missing } from "@aitianyu.cn/tianyu-store";
+import { getTianyuShellInfraInstanceId } from "../store-api/TianyushellInfraInterface";
 
 function remoteUrlGenerator(group: string, proxy: string): string {
     if (proxy) {

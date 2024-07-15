@@ -3,11 +3,11 @@
 /** Export Interfaces */
 export * from "./src/core/declares/Console";
 export * from "./src/core/declares/Core";
+export * from "./src/core/declares/Cookie";
 export * from "./src/core/declares/Declare";
 export * from "./src/core/declares/Exception";
 export * from "./src/core/declares/Features";
 export * from "./src/core/declares/IStorage";
-export * from "./src/core/declares/Router";
 export * from "./src/core/declares/Sync";
 export * from "./src/core/declares/ui/UserInterface";
 
@@ -17,7 +17,6 @@ export * from "./src/core/plugin/Cookie";
 export * from "./src/core/plugin/Event";
 export * from "./src/core/plugin/FeatureToggle";
 export * from "./src/core/plugin/Language";
-export * from "./src/core/plugin/Router";
 export * from "./src/core/plugin/Runtime";
 
 /** Export as Components */
@@ -73,7 +72,7 @@ export * from "./src/core/declares/ui/TianyuUIEvent";
 export * from "./src/core/declares/ui/TianyuUIStyle";
 
 // Export UI Core Components
-export { waitLoading } from "./src/ui/plugin/Core";
+export { waitLoading as loadingUI } from "./src/ui/plugin/Core";
 export * from "./src/ui/plugin/Theme";
 export * from "./src/ui/plugin/UserTheme";
 export * from "./src/ui/plugin/Message";

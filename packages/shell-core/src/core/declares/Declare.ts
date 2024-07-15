@@ -3,7 +3,6 @@
 import { ITianyuShellCookie, ITianyuShellCoreConfigure } from "./Core";
 import { IFeatureToggle } from "./Features";
 import { ITianyuShellCoreConsole } from "./Console";
-import { ITianyuRouterProvider } from "./Router";
 import { ITianyuShellUI } from "./ui/UserInterface";
 import { ITianyuShellGlobalCache } from "./IStorage";
 import { ITianyuShellGlobalSyncs } from "./Sync";
@@ -15,16 +14,12 @@ export interface ITianyuShellCore {
     cookie: ITianyuShellCookie;
     /** Tianyu Shell Event API */
     event: boolean;
-    /** Tianyu Shell Language API */
-    language: boolean;
     /** Tianyu Shell Console API */
     console: ITianyuShellCoreConsole;
     /** Tianyu Shell Configure API */
     configure: ITianyuShellCoreConfigure;
     /** Tianyu Shell FeatureToggle API */
     featureToggle: IFeatureToggle;
-    /** Tianyu Shell Router Interface */
-    router: ITianyuRouterProvider;
     /** Tianyu Shell UI Operations */
     ui: ITianyuShellUI;
 }

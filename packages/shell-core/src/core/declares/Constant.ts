@@ -3,6 +3,7 @@
 import { CoreEnvironment } from "./Core";
 
 export const TIANYU_SHELL_INFRA_STORE_TYPE = "tianyu-shell-infra";
+export const TIANYU_SHELL_CORE_STORE_TYPE = "tianyu-shell";
 
 export const Default_UI_Configure_ThemeURL: string = "/static/theme";
 export const Default_UI_Configure_DefaultTheme: string = "tianyu-default";

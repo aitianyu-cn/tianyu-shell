@@ -35,7 +35,7 @@ export class DialogBase {
         this.id = id;
         this.message = message;
         this.mode =
-            button === TianyuShellUIDialogButtons.NONE && isMobile
+            button === TianyuShellUIDialogButtons.NONE && isMobile()
                 ? TianyuShellUIDialogButtons.OK
                 : button || TianyuShellUIDialogButtons.OK;
         this.type = type || TianyuShellUIDialogType.INFO;
@@ -56,7 +56,7 @@ export class DialogBase {
 
     public render(): HTMLElement {
         const basic = document.createElement("div");
-        basic.classList.add(isMobile ? "tys_dialog_view_container_styling_mb" : "tys_dialog_view_container_styling");
+        basic.classList.add(isMobile() ? "tys_dialog_view_container_styling_mb" : "tys_dialog_view_container_styling");
 
         basic.appendChild(this.processCloseButton());
         basic.appendChild(this.processContent());
@@ -161,7 +161,10 @@ export class DialogBase {
         this.callback(ev);
     }
 
-    private static _createInputBox(mode: TianyuShellUIDialogButtons, type: TianyuShellUIDialogType): HTMLInputElement | null {
+    private static _createInputBox(
+        mode: TianyuShellUIDialogButtons,
+        type: TianyuShellUIDialogType,
+    ): HTMLInputElement | null {
         if (type !== TianyuShellUIDialogType.INPUT && type !== TianyuShellUIDialogType.PASSWORD) {
             return null;
         }
@@ -174,7 +177,10 @@ export class DialogBase {
 
         return input;
     }
-    private static _createYesButton(mode: TianyuShellUIDialogButtons, type: TianyuShellUIDialogType): HTMLElement | null {
+    private static _createYesButton(
+        mode: TianyuShellUIDialogButtons,
+        type: TianyuShellUIDialogType,
+    ): HTMLElement | null {
         if (mode === TianyuShellUIDialogButtons.NONE) {
             return null;
         }
@@ -185,14 +191,20 @@ export class DialogBase {
             ),
         );
     }
-    private static _createNoButton(mode: TianyuShellUIDialogButtons, type: TianyuShellUIDialogType): HTMLElement | null {
+    private static _createNoButton(
+        mode: TianyuShellUIDialogButtons,
+        type: TianyuShellUIDialogType,
+    ): HTMLElement | null {
         if (mode !== TianyuShellUIDialogButtons.YES_NO && mode !== TianyuShellUIDialogButtons.YES_NO_CANCEL) {
             return null;
         }
 
         return DialogBase.__createButton(MessageBundle.getText("TIANYU_UI_DIALOG_BUTTON_NO"));
     }
-    private static _createCancelButton(mode: TianyuShellUIDialogButtons, type: TianyuShellUIDialogType): HTMLElement | null {
+    private static _createCancelButton(
+        mode: TianyuShellUIDialogButtons,
+        type: TianyuShellUIDialogType,
+    ): HTMLElement | null {
         if (mode !== TianyuShellUIDialogButtons.YES_NO_CANCEL) {
             return null;
         }
@@ -201,7 +213,7 @@ export class DialogBase {
     }
     private static _createCloseButton(mode: TianyuShellUIDialogButtons, close?: boolean): HTMLElement | null {
         // mobile environment should not add close button
-        if (isMobile) {
+        if (isMobile()) {
             return null;
         }
         const hasClose = close || mode === TianyuShellUIDialogButtons.NONE;

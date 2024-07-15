@@ -1,21 +1,14 @@
 /**@format */
 
-import { CallbackAction, ILog } from "@aitianyu.cn/types";
+import { ILog } from "@aitianyu.cn/types";
 
 /**A type of Tianyu Shell perf capture callback function to indicate the start and end */
 export type PerfCaptureStatusType = "START" | "END";
 
 /** Tianyu Shell perf capture recorder */
 export interface ICaptureRecorder {
-    /** the recorder index of capture */
-    index: number;
-    /**
-     * the finish callback to end the capture recording
-     *
-     * !!!IMPORTANT
-     * DO NOT INVOKE THIS FUNCTION OUT SIDE OF Tianyu Shell Perf Capture
-     */
-    finish: CallbackAction;
+    /** the recorder id of capture */
+    id: string;
 }
 
 /**Callback function of Tianyu Shell perf capture */
@@ -25,12 +18,6 @@ export type PerfCaptureCallback = (option: PerfCaptureStatusType, capture: strin
 export interface IPerformanceCapture {
     /**clean all perf capture */
     clean(): Promise<void>;
-    /**
-     * add a callback function to perf capture
-     *
-     * @param callback callback function
-     */
-    addCallback(callback: PerfCaptureCallback): void;
     /**
      * start a perf capture recording
      *

@@ -1,7 +1,6 @@
 /**@format */
 
 import { MapOfType } from "@aitianyu.cn/types";
-import { Router } from "shell-core/index";
 
 export interface IHashMappedItem<T> {
     key: string;
@@ -15,7 +14,7 @@ export class HashHelper {
         specifiedHash?: string,
         fnEachItem?: (routerKey: T) => void,
     ): IHashMappedItem<T> {
-        const rawHash = specifiedHash || Router.getHash();
+        const rawHash = specifiedHash || HashHelper.getHash();
         // set the hash is like /xxx/
         const formattedHash = rawHash.startsWith("/") ? rawHash : `/${rawHash}`;
         const formattedHash2 = formattedHash.endsWith("/") ? formattedHash : `${formattedHash}/`;
@@ -51,5 +50,10 @@ export class HashHelper {
         }
 
         return fullMatch;
+    }
+
+    public static getHash(): string {
+        const hash = (window.location.hash as string).substring(1);
+        return hash;
     }
 }

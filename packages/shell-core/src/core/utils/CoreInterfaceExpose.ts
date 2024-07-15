@@ -1,15 +1,11 @@
 /** @format */
 
-import { ActionFactor, InstanceId, SelectorFactor, StoreHelper, StoreUtils } from "@aitianyu.cn/tianyu-store";
-import { getNoHisSupportedIns } from "./Store";
+import { ActionFactor, SelectorFactor, StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { ITianyuShellCoreState, ITianyuShellFeatureToggleState } from "../plugin/store/State";
-import { AreaCode, MapOfBoolean } from "@aitianyu.cn/types";
+import { AreaCode, LogLevel, MapOfBoolean } from "@aitianyu.cn/types";
+import { TIANYU_SHELL_CORE_STORE_TYPE } from "../declares/Constant";
 
-export const TIANYU_SHELL_CORE_STORE_TYPE = "tianyu-shell";
-
-export function getTianyuShellCoreInstanceId(): InstanceId {
-    return StoreHelper.generateInstanceId(getNoHisSupportedIns(), TIANYU_SHELL_CORE_STORE_TYPE, "tianyu-shell-core");
-}
+export { getTianyuShellCoreInstanceId } from "shell-core/src/core/plugin/store/Exports";
 
 export const TianyuShellCoreInterfaceExpose = {
     event: {
@@ -71,6 +67,35 @@ export const TianyuShellCoreInterfaceExpose = {
     compatibility: {
         select: {
             getThemes: SelectorFactor.makeVirtualSelector<ITianyuShellCoreState, string[]>(),
+        },
+    },
+
+    console: {
+        log: ActionFactor.makeVirtualAction<
+            ITianyuShellCoreState,
+            {
+                message: string;
+                level?: LogLevel;
+                timer?: boolean;
+                forceLog?: boolean;
+            }
+        >(),
+
+        capture: {
+            action: {
+                clean: ActionFactor.makeVirtualAction<ITianyuShellCoreState, void>(),
+                start: ActionFactor.makeVirtualAction<
+                    ITianyuShellCoreState,
+                    {
+                        guid: string;
+                        classify: string;
+                        id: string;
+                        forceLog?: boolean;
+                    }
+                >(),
+                end: ActionFactor.makeVirtualAction<ITianyuShellCoreState, string>(),
+                donwload: ActionFactor.makeVirtualAction<ITianyuShellCoreState, string>(),
+            },
         },
     },
 };

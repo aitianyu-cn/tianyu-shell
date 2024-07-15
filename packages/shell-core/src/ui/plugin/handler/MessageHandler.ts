@@ -25,21 +25,21 @@ export function updateMessageLayer(messageLayer: HTMLElement, messageHelper: IMe
         topAlign ? "tys_message_layer_styling_vtop" : "tys_message_layer_styling_vntop",
     );
     messageLayer.style.zIndex = `${TianyuShellUIMessageZIndex}`;
-    messageLayer.style.width = isMobile ? "100%" : `${messageHelper.rate.horizontal}%`;
-    messageLayer.style.maxHeight = isMobile ? "100%" : `${messageHelper.rate.vertical}%`;
+    messageLayer.style.width = isMobile() ? "100%" : `${messageHelper.rate.horizontal}%`;
+    messageLayer.style.maxHeight = isMobile() ? "100%" : `${messageHelper.rate.vertical}%`;
     messageLayer.style.height = "fit-content";
     messageLayer.style.left = leftAlign
         ? "0px"
         : rightAlign
         ? "auto"
-        : isMobile
+        : isMobile()
         ? "0px"
         : `${(100 - messageHelper.rate.horizontal) / 2}%`;
     messageLayer.style.right = leftAlign
         ? "auto"
         : rightAlign
         ? "0px"
-        : isMobile
+        : isMobile()
         ? "0px"
         : `${(100 - messageHelper.rate.horizontal) / 2}%`;
 
@@ -47,14 +47,14 @@ export function updateMessageLayer(messageLayer: HTMLElement, messageHelper: IMe
         ? "0px"
         : bottomAlign
         ? "auto"
-        : isMobile
+        : isMobile()
         ? "0px"
         : `${(100 - messageHelper.rate.vertical) / 2}%`;
     messageLayer.style.bottom = topAlign
         ? "auto"
         : bottomAlign
         ? "0px"
-        : isMobile
+        : isMobile()
         ? "0px"
         : `${(100 - messageHelper.rate.vertical) / 2}%`;
     messageLayer.style.alignItems = leftAlign ? "flex-start" : rightAlign ? "flex-end" : "center";

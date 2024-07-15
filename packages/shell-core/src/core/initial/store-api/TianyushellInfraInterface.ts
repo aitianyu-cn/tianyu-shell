@@ -1,6 +1,6 @@
 /** @format */
 
-import { InstanceId, ITianyuStoreInterface, SelectorFactor, StoreHelper, StoreUtils } from "@aitianyu.cn/tianyu-store";
+import { InstanceId, ITianyuStoreInterface, StoreHelper, StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { CreateTianyuShellInfraAction, DestroyTianyuShellInfraAction } from "./CreateAction";
 import {
     getCompatibilityConfig,
@@ -12,11 +12,12 @@ import {
     getUIConfigures,
 } from "./Selectors";
 import { ITianyuShellInitial } from "../../ITianyuShellInitial";
-import { getNoHisSupportedIns } from "../../utils/Store";
-import { getTianyuShellInfraInstanceId } from "../../utils/InfraInterfaceExpose";
 import { TIANYU_SHELL_INFRA_STORE_TYPE } from "../../declares/Constant";
+import { getNoHisSupportedIns, getStore } from "../../utils/Store";
 
-export const TianyuShellInfraInstanceId = getTianyuShellInfraInstanceId();
+export function getTianyuShellInfraInstanceId(): InstanceId {
+    return StoreHelper.generateInstanceId(getNoHisSupportedIns(), TIANYU_SHELL_INFRA_STORE_TYPE, "tianyu-shell-infra");
+}
 
 export const TianyuShellInfraInterface = {
     core: {
@@ -34,4 +35,5 @@ export const TianyuShellInfraInterface = {
 };
 
 TianyuShellInfraInterface as ITianyuStoreInterface<ITianyuShellInitial>;
+
 StoreUtils.registerExpose(TianyuShellInfraInterface, TIANYU_SHELL_INFRA_STORE_TYPE);

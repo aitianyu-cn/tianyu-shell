@@ -1,10 +1,10 @@
 /** @format */
 
 import { Log } from "@aitianyu.cn/types";
-import { TIANYU_SEHLL_STORE_FRIENDLY_NAME } from "../declares/Core";
-import { ITianyuShell } from "../declares/Declare";
+import { TIANYU_SEHLL_STORE_FRIENDLY_NAME } from "../../declares/Core";
+import { ITianyuShell } from "../../declares/Declare";
 
-export async function loadingTianyuStore(): Promise<void> {
+export async function storeCoreLoader(): Promise<void> {
     try {
         const windowObj = window as any;
         if (!(windowObj.tianyuShell as ITianyuShell)?.runtime?.store) {

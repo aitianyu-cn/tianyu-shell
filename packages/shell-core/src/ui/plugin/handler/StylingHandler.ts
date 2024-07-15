@@ -2,7 +2,7 @@
 
 import { ITianyuShellCoreUIThemeItem, TianyuShellUIThemeColor } from "shell-core/src/core/declares/ui/UserInterface";
 import { formatUserThemeId } from "../../tools/UserStylingHelper";
-import { ICookieSetOptions, Cookie } from "shell-core/src/core/plugin/Cookie";
+import { Cookie } from "shell-core/src/core/plugin/Cookie";
 import {
     TianyuShellUIThemeCustomCookieTheme,
     TianyuShellUIThemeCustomCookieColor,
@@ -15,6 +15,7 @@ import {
     getTianyuShellInfraInstanceId,
 } from "shell-core/src/core/utils/InfraInterfaceExpose";
 import { getStore } from "shell-core/src/core/utils/Store";
+import { ICookieSetOptions } from "shell-core/src/core/declares/Cookie";
 
 export function removeUserTheme(themeId: string): boolean {
     const id = formatUserThemeId(themeId);

@@ -1,14 +1,11 @@
 /** @format */
 
 import { ObjectHelper } from "@aitianyu.cn/types";
+import { AutomaticStorage } from "shell-core/src/core/common/AutomaticStorage";
 
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.common.AutomaticStorage", () => {
-    let storage: any;
+    let storage = new AutomaticStorage();
 
-    beforeAll(async () => {
-        const { AutomaticStorage } = require("shell-core/src/core/common/AutomaticStorage");
-        storage = new AutomaticStorage();
-    });
     it("setValue", () => {
         expect(storage.count()).toEqual(0);
 

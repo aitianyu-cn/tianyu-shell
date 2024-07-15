@@ -37,8 +37,8 @@ import { ITianyuShellInitial } from "shell";
 
     await initialTianyuShellAsync(initial);
 
-    const { waitLoading } = await import("shell-core");
-    await waitLoading();
+    const { loadingUI } = await import("shell-core");
+    await loadingUI();
 
     const { Major } = await import("shell-core");
 

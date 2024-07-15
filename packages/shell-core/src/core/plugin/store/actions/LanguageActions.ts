@@ -4,12 +4,11 @@ import { ActionFactor, Missing, StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { ITianyuShellCoreState } from "../State";
 import { AreaCode, parseAreaCode } from "@aitianyu.cn/types";
 import { IsLanguageSuppprted } from "../selectors/LanguageSelector";
-import {
-    getTianyuShellInfraInstanceId,
-    TianyuShellInfraInterfaceExpose,
-} from "shell-core/src/core/utils/InfraInterfaceExpose";
-import { Cookie, ICookieSetOptions } from "../../Cookie";
+import { TianyuShellInfraInterfaceExpose } from "shell-core/src/core/utils/InfraInterfaceExpose";
+import { Cookie } from "../../Cookie";
 import { LANGUAGE_COOKIE_ID } from "infra/Language";
+import { ICookieSetOptions } from "shell-core/src/core/declares/Cookie";
+import { getTianyuShellInfraInstanceId } from "shell-core/src/core/initial/store-api/TianyushellInfraInterface";
 
 export const SetLanguageAction = ActionFactor.makeActionCreator<ITianyuShellCoreState, string | AreaCode>()
     .withHandler(function* (action) {
