@@ -27,17 +27,13 @@ export function initialTianyuShell(config?: ITianyuShellInitial, callback?: Call
  */
 export async function initialTianyuShellAsync(config?: ITianyuShellInitial): Promise<void> {
     // to check the initialization is done to avoid initial agian
-    if ((window as any).tianyuShell?.env?.initial) {
-        return Promise.resolve();
+    if (!(window as any).tianyuShell?.env?.initial) {
+        shellEnvHandler();
+
+        await internationalLoader();
+        await storeCoreLoader();
+        await storeAPILoader(config || {});
+        await handlerLoader(config || {});
+        await globalFeatureLoader(config || {});
     }
-    shellEnvHandler();
-
-    let initialPromise = Promise.resolve();
-    initialPromise = initialPromise.then(async () => internationalLoader());
-    initialPromise = initialPromise.then(async () => storeCoreLoader());
-    initialPromise = initialPromise.then(async () => storeAPILoader(config || {}));
-    initialPromise = initialPromise.then(async () => handlerLoader(config || {}));
-    initialPromise = initialPromise.then(async () => globalFeatureLoader(config || {}));
-
-    return initialPromise;
 }

@@ -11,7 +11,9 @@ module.exports.handleResolve = function (baseDir) {
     for (const pathAlias of Object.keys(tsPaths)) {
         const formattedAlias = pathAlias.endsWith("/*") ? pathAlias.substring(0, pathAlias.length - 2) : pathAlias;
         const targetPath = tsPaths[pathAlias][0];
-        const formattedTargetPath = targetPath.endsWith("/*") ? targetPath.substring(0, targetPath.length - 2) : targetPath;
+        const formattedTargetPath = targetPath.endsWith("/*")
+            ? targetPath.substring(0, targetPath.length - 2)
+            : targetPath;
         alias[formattedAlias] = path.resolve(baseDir, formattedTargetPath);
     }
 
@@ -19,8 +21,6 @@ module.exports.handleResolve = function (baseDir) {
         extensions: webpackConfigs.extensions,
         alias: alias,
     };
-
-    console.log(JSON.stringify(resolve));
 
     return resolve;
 };

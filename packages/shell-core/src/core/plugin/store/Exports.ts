@@ -47,6 +47,7 @@ import {
     _GetCaptureBaseTime,
     _GetCaptureRecord,
     _GetClassifyId,
+    GetLastOperation,
 } from "./selectors/CaptureSelector";
 import { TIANYU_SHELL_CORE_STORE_TYPE } from "../../declares/Constant";
 
@@ -141,6 +142,10 @@ export const TianyuShellCoreInterface = {
                 start: StartCaptureAction,
                 end: EndCaptureAction,
                 donwload: DownloadCaptureAction,
+            },
+
+            select: {
+                lastCap: GetLastOperation,
             },
         },
     },

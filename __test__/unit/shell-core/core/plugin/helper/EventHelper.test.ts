@@ -4,7 +4,7 @@ import { IBatchAction, IInstanceAction } from "@aitianyu.cn/tianyu-store";
 import { onLoaded } from "shell-core/src/core/plugin/helper/EventHelper";
 import { TianyuShellCoreInterface } from "shell-core/src/core/plugin/store/Exports";
 import { getStore } from "shell-core/src/core/utils/Store";
-import * as Runtime from "shell-core/src/core/plugin/Runtime";
+import * as UserAgent from "shell-core/src/core/utils/UserAgent";
 
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.EventHelper", () => {
     it("onLoaded", () => {
@@ -30,7 +30,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.Eve
 
     describe("onPageResized", () => {
         it("isMobile", (done) => {
-            jest.spyOn(Runtime, "isMobile").mockReturnValue(true);
+            jest.spyOn(UserAgent, "getIsMobile").mockReturnValue(true);
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
                 expect((action as IInstanceAction).action).toEqual(
                     TianyuShellCoreInterface.event.action.onPageResize.info.fullName,
@@ -46,7 +46,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.Eve
         });
 
         it("not mobile", (done) => {
-            jest.spyOn(Runtime, "isMobile").mockReturnValue(false);
+            jest.spyOn(UserAgent, "getIsMobile").mockReturnValue(false);
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
                 expect((action as IInstanceAction).action).toEqual(
                     TianyuShellCoreInterface.event.action.onPageResize.info.fullName,

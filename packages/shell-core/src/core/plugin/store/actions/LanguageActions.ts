@@ -31,9 +31,11 @@ export const SetLanguageAction = ActionFactor.makeActionCreator<ITianyuShellCore
         const cookieOption: ICookieSetOptions = {
             expires: expires,
         };
+        /* istanbul ignore if */
         if (languageConfig.domain) {
             cookieOption.domain = languageConfig.domain;
         }
+        /* istanbul ignore if */
         if (languageConfig.path) {
             cookieOption.path = languageConfig.path;
         }

@@ -72,10 +72,8 @@ export const StartCaptureAction = ActionFactor.makeActionCreator<
 
 export const EndCaptureAction = ActionFactor.makeActionCreator<ITianyuShellCoreState, string>()
     .withHandler(function* (action) {
-        const recorder = yield* StoreUtils.Handler.doSelectorWithThrow(
-            _GetCaptureRecord(action.instanceId, action.params),
-        );
-        if (!recorder || recorder.end !== -1) {
+        const recorder = yield* StoreUtils.Handler.doSelector(_GetCaptureRecord(action.instanceId, action.params));
+        if (recorder instanceof Missing || !recorder || recorder.end !== -1) {
             return;
         }
 
@@ -118,10 +116,9 @@ export const EndCaptureAction = ActionFactor.makeActionCreator<ITianyuShellCoreS
 
 export const DownloadCaptureAction = ActionFactor.makeActionCreator<ITianyuShellCoreState, string>().withHandler(
     function* (action) {
-        const recordersWithMissing = yield* StoreUtils.Handler.doSelector(_GetAllCaptureRecords(action.instanceId));
-        const baseTime = yield* StoreUtils.Handler.doSelector(_GetCaptureBaseTime(action.instanceId));
+        const records = yield* StoreUtils.Handler.doSelectorWithThrow(_GetAllCaptureRecords(action.instanceId));
+        const baseTime = yield* StoreUtils.Handler.doSelectorWithThrow(_GetCaptureBaseTime(action.instanceId));
 
-        const records = recordersWithMissing instanceof Missing ? [] : recordersWithMissing;
         const printList = records.map((rec) => {
             return {
                 name: captureNameGenerator(rec.classify, rec.id, rec.cid),
@@ -135,7 +132,7 @@ export const DownloadCaptureAction = ActionFactor.makeActionCreator<ITianyuShell
 
         // use setTimeout to release tianyu-store thread
         setTimeout(() => {
-            download(action.params, baseTime instanceof Missing ? -1 : baseTime, printList);
+            download(action.params, baseTime, printList);
         }, 0);
     },
 );
@@ -174,9 +171,10 @@ export const _GenerateOrIncreaseClassifyIdAction = ActionFactor.makeActionCreato
     }
 >().withReducer(function (state, data) {
     const newState = ObjectHelper.clone(state) as ITianyuShellCoreState;
-    newState.capture.classifies[data.classify][data.id] = newState.capture.classifies[data.classify]?.[data.id]
-        ? newState.capture.classifies[data.classify][data.id] + 1
-        : 0;
+    newState.capture.classifies[data.classify][data.id] =
+        newState.capture.classifies[data.classify]?.[data.id] !== undefined
+            ? newState.capture.classifies[data.classify][data.id] + 1
+            : 0;
     return newState;
 });
 

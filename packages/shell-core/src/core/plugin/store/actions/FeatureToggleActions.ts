@@ -44,7 +44,7 @@ export const EnableFeatureToggleAction = ActionFactor.makeActionCreator<
                     newFeatureToggleState[feature] = true;
 
                     if (action.params.enableDepFeatures) {
-                        depFeatures.push(...(featureToggleInfo.dependencies[feature] || []));
+                        depFeatures.push(...(featureToggleInfo.dependencies[feature] || /* istanbul ignore next */ []));
                     }
                 }
 

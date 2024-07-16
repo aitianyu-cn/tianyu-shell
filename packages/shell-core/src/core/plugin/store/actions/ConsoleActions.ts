@@ -24,7 +24,7 @@ export const ConsoleLogAction = ActionFactor.makeActionCreator<
     const runtimeEnabled = !(config instanceof Missing) && config.runtime.console;
     const toggleEnabled = !(featureState instanceof Missing) && featureState;
 
-    if (action.params.forceLog || runtimeEnabled || toggleEnabled) {
+    if (action.params.forceLog || toggleEnabled || runtimeEnabled) {
         Log.log(action.params.message, action.params.level, action.params.timer);
     }
 });

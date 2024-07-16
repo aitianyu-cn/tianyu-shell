@@ -1,8 +1,8 @@
 /** @format */
 
-import { getIsIOS, getIsMacOS, getIsMobile } from "shell-core/src/core/plugin/helper/RuntimeHelper";
+import { getIsIOS, getIsMacOS, getIsMobile } from "shell-core/src/core/utils/UserAgent";
 
-describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.RuntimeHelper", () => {
+describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.utils.UserAgent", () => {
     const oldNavigator = global.navigator;
 
     afterEach(() => {

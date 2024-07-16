@@ -1,7 +1,7 @@
 /** @format */
 
 import { ITianyuShell } from "../../declares/Declare";
-import { getIsMacOS, getIsMobile, getIsIOS } from "../helper/RuntimeHelper";
+import { getIsIOS, getIsMacOS, getIsMobile } from "../../utils/UserAgent";
 
 export function initTianyuShellRuntime(): void {
     // init core configure

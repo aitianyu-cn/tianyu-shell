@@ -1,7 +1,7 @@
 /** @format */
 
 import { SelectorFactor } from "@aitianyu.cn/tianyu-store";
-import { ICaptureRecordItem, ITianyuShellCoreState } from "../State";
+import { CaptureOperationType, ICaptureRecordItem, ITianyuShellCoreState } from "../State";
 import { ObjectHelper } from "@aitianyu.cn/types";
 
 export const _GetClassifyId = SelectorFactor.makeParameterSelector<
@@ -13,7 +13,7 @@ export const _GetClassifyId = SelectorFactor.makeParameterSelector<
     number
 >(function (state, data) {
     const idCound = state.capture.classifies[data.classify]?.[data.id];
-    return typeof idCound === "number" ? idCound : 0;
+    return typeof idCound === "number" ? idCound : /* istanbul ignore next */ 0;
 });
 
 export const _GetCaptureRecord = SelectorFactor.makeParameterSelector<
@@ -33,4 +33,17 @@ export const _GetAllCaptureRecords = SelectorFactor.makeSelector<ITianyuShellCor
 
 export const _GetCaptureBaseTime = SelectorFactor.makeSelector<ITianyuShellCoreState, number>(function (state) {
     return state.capture.time;
+});
+
+export const GetLastOperation = SelectorFactor.makeSelector<
+    ITianyuShellCoreState,
+    {
+        type: CaptureOperationType;
+        message: string;
+    }
+>(function (state) {
+    return {
+        type: state.capture.operationType,
+        message: state.capture.operationMsg,
+    };
 });

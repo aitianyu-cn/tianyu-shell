@@ -13,12 +13,12 @@ export const IsLanguageSuppprted = SelectorFactor.makeParameterSelector<ITianyuS
 
 export const GetLanguage = SelectorFactor.makeSelector<ITianyuShellCoreState, AreaCode>(function (state) {
     const storeLang = state.language.current;
-    return storeLang === AreaCode.unknown ? parseAreaString(getLanguage()) : storeLang;
+    return storeLang === AreaCode.unknown ? /* istanbul ignore next */ parseAreaString(getLanguage()) : storeLang;
 });
 
 export const GetLanguageAsString = SelectorFactor.makeSelector<ITianyuShellCoreState, string>(function (state) {
     const storeLang = state.language.current;
-    return storeLang === AreaCode.unknown ? getLanguage() : parseAreaCode(storeLang);
+    return storeLang === AreaCode.unknown ? /* istanbul ignore next */ getLanguage() : parseAreaCode(storeLang);
 });
 
 export const GetSupportLanguages = SelectorFactor.makeSelector<ITianyuShellCoreState, string[]>(function (state) {

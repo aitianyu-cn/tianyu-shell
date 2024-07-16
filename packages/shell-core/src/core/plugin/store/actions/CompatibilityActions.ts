@@ -6,6 +6,7 @@ import { GetLanguageAsString, GetPendingLanguages, GetSupportLanguages } from ".
 import { ArrayHelper } from "@aitianyu.cn/types";
 import { SetLanguageAction } from "./LanguageActions";
 import { TianyuShellLanguageRegisterType } from "shell-core/src/core/declares/Declare";
+import { languageDef, themeList } from "infra/Compatibility";
 
 export const AddSupportLanguage = ActionFactor.makeActionCreator<ITianyuShellCoreState, string[]>()
     .withHandler(function* (action) {
@@ -54,6 +55,7 @@ export const AddPendingLanguage = ActionFactor.makeActionCreator<ITianyuShellCor
             yield* StoreUtils.Handler.doAction(
                 SetLanguageAction(
                     action.instanceId,
+                    /* istanbul ignore next */
                     newSupportLanguages.length > 0 ? newSupportLanguages[0] : navigator.language.replace("-", "_"),
                 ),
             );

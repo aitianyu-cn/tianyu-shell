@@ -2,8 +2,8 @@
 
 import { StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { getStore } from "../../utils/Store";
-import { isMobile } from "../Runtime";
 import { getTianyuShellCoreInstanceId, TianyuShellCoreInterface } from "../store/Exports";
+import { getWindowWidth } from "../../utils/UIHelper";
 
 export function onLoaded(): void {
     getStore().dispatchForView(
@@ -26,10 +26,7 @@ export function onPageResized(ev?: UIEvent): void {
     // use set timeout to avoid page resizing shake
     _eventInvokeShake = window.setTimeout(() => {
         void getStore().dispatch(
-            TianyuShellCoreInterface.event.action.onPageResize(
-                getTianyuShellCoreInstanceId(),
-                isMobile() ? window.outerWidth : window.innerWidth,
-            ),
+            TianyuShellCoreInterface.event.action.onPageResize(getTianyuShellCoreInstanceId(), getWindowWidth()),
         );
 
         _eventInvokeShake = -1;

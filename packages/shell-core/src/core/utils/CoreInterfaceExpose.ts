@@ -1,7 +1,7 @@
 /** @format */
 
 import { ActionFactor, SelectorFactor, StoreUtils } from "@aitianyu.cn/tianyu-store";
-import { ITianyuShellCoreState, ITianyuShellFeatureToggleState } from "../plugin/store/State";
+import { CaptureOperationType, ITianyuShellCoreState, ITianyuShellFeatureToggleState } from "../plugin/store/State";
 import { AreaCode, LogLevel, MapOfBoolean } from "@aitianyu.cn/types";
 import { TIANYU_SHELL_CORE_STORE_TYPE } from "../declares/Constant";
 
@@ -95,6 +95,16 @@ export const TianyuShellCoreInterfaceExpose = {
                 >(),
                 end: ActionFactor.makeVirtualAction<ITianyuShellCoreState, string>(),
                 donwload: ActionFactor.makeVirtualAction<ITianyuShellCoreState, string>(),
+            },
+
+            select: {
+                lastCap: SelectorFactor.makeVirtualSelector<
+                    ITianyuShellCoreState,
+                    {
+                        type: CaptureOperationType;
+                        message: string;
+                    }
+                >(),
             },
         },
     },

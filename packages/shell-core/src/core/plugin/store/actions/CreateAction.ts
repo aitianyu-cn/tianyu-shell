@@ -5,7 +5,7 @@ import { ITianyuShellCoreState } from "../State";
 import { getLanguage } from "infra/Language";
 import { parseAreaString } from "@aitianyu.cn/types";
 import { languageDef, themeList } from "infra/Compatibility";
-import { getIsMobile } from "../../helper/RuntimeHelper";
+import { getWindowWidth } from "shell-core/src/core/utils/UIHelper";
 
 export const CreateTianyuShellCoreAction = ActionFactor.makeCreateStoreAction<ITianyuShellCoreState>().withReducer(
     function (_) {
@@ -13,7 +13,7 @@ export const CreateTianyuShellCoreAction = ActionFactor.makeCreateStoreAction<IT
             event: {
                 loadState: false,
                 urlHash: (window.location.hash as string).substring(1),
-                pageResize: getIsMobile() ? window.outerWidth : window.innerWidth,
+                pageResize: getWindowWidth(),
             },
             featureToggle: {
                 features: {},
