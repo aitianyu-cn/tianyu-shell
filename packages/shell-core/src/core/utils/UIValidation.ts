@@ -1,11 +1,16 @@
 /**@format */
 
 import { themeList as themeCompatibility } from "infra/Compatibility";
-import { ITianyuShell } from "../declares/Declare";
+import { getStore } from "./Store";
+import { getTianyuShellCoreInstanceId, TianyuShellCoreInterfaceExpose } from "./CoreInterfaceExpose";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
 export class UIValidation {
     public static validateTheme(theme?: string): string {
-        const themeList: string[] = ((window as any).tianyuShell as ITianyuShell)?.runtime?.sync?.theme || themeCompatibility();
+        const getThemes = getStore().selecte(
+            TianyuShellCoreInterfaceExpose.compatibility.select.getThemes(getTianyuShellCoreInstanceId()),
+        );
+        const themeList = getThemes instanceof Missing ? themeCompatibility() : getThemes;
         return theme && themeList.includes(theme) ? theme : "";
     }
 }

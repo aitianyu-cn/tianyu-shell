@@ -8,7 +8,6 @@ export * from "./src/core/declares/Declare";
 export * from "./src/core/declares/Exception";
 export * from "./src/core/declares/Features";
 export * from "./src/core/declares/IStorage";
-export * from "./src/core/declares/Sync";
 export * from "./src/core/declares/ui/UserInterface";
 
 /** Export Implementations */

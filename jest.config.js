@@ -3,6 +3,8 @@
  * @type {import('ts-jest').JestConfigWithTsJest}
  * */
 
+const { coverageIgnorePatterns } = require("./__test__/config/coverageIgnore");
+
 module.exports = {
     preset: "ts-jest",
     testEnvironment: "jsdom",
@@ -36,10 +38,6 @@ module.exports = {
         "^test/(.*)$": "<rootDir>/__test__/$1",
     },
     testPathIgnorePatterns: ["<rootDir>/__test__old"],
-    coveragePathIgnorePatterns: [
-        "<rootDir>/packages/infra/resource/",
-        "<rootDir>/packages/infra/index.ts",
-        "<rootDir>/packages/infra/International.ts",
-    ],
+    coveragePathIgnorePatterns: coverageIgnorePatterns,
     // transformIgnorePatterns: ["<rootDir>/node_modules/$"],
 };

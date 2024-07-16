@@ -5,7 +5,6 @@ import { IFeatureToggle } from "./Features";
 import { ITianyuShellCoreConsole } from "./Console";
 import { ITianyuShellUI } from "./ui/UserInterface";
 import { ITianyuShellGlobalCache } from "./IStorage";
-import { ITianyuShellGlobalSyncs } from "./Sync";
 import { IStore, InstanceId } from "@aitianyu.cn/tianyu-store";
 
 /** Tianyu Shell Core APIs */
@@ -40,8 +39,6 @@ export interface ITianyuShellUIStore {
 export interface ITianyuShellRuntime {
     /** Tianyu Shell Global Cache Interface */
     cache: ITianyuShellGlobalCache;
-    /** Tianyu Shell Global Synced Data Cache */
-    sync: ITianyuShellGlobalSyncs;
     /** Tianyu Store */
     store: ITianyuShellUIStore;
 }
