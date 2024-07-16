@@ -4,7 +4,7 @@ import { Missing } from "@aitianyu.cn/tianyu-store";
 import { MapOfBoolean } from "@aitianyu.cn/types";
 import { IFeatureToggle, IFeature, FeatureSource } from "../../declares/Features";
 import { getStore } from "../../utils/Store";
-import { _processToggleState } from "../helper/FeatureToggleHelper";
+import { processToggleState } from "../helper/FeatureToggleHelper";
 import { getTianyuShellCoreInstanceId, TianyuShellCoreInterface } from "../store/Exports";
 import { ITianyuShellFeatureToggleState } from "../store/State";
 
@@ -85,7 +85,7 @@ export const FeatureToggleImpl: IFeatureToggle = {
             dependencies: {},
         };
         for (const featureName of Object.keys(features)) {
-            const state = _processToggleState(features, featureName);
+            const state = processToggleState(features, featureName);
             featureInfo.features[featureName] = state;
             featureInfo.dependencies[featureName] = features[featureName].depFeature;
         }

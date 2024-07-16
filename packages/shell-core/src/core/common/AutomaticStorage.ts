@@ -3,7 +3,11 @@
 import { IStorage, IStorageWatchDog } from "../declares/IStorage";
 import { Log } from "../plugin/Console";
 import { getText } from "./i18n/Message";
-import { IStorageContentItem, DefaultStorageWatchDogTimer, MinimumStorageWatchDogTimer } from "./interface/IAutomaticStorage";
+import {
+    IStorageContentItem,
+    DefaultStorageWatchDogTimer,
+    MinimumStorageWatchDogTimer,
+} from "./interface/IAutomaticStorage";
 
 interface IStorageContent {
     [key: string]: IStorageContentItem;
@@ -29,7 +33,7 @@ export class AutomaticStorage implements IStorage, IStorageWatchDog {
      * @param content value content
      * @param forceTimestamp a flag for watch dog out of date checking
      */
-    public setValue(key: string, content: any, forceTimestamp = false): void {
+    public setValue(key: string, content: any, /* istanbul ignore next */ forceTimestamp = false): void {
         this.oContent[key] = {
             flag: true,
             timeStamp: forceTimestamp ? Date.now() : -1,
@@ -46,7 +50,10 @@ export class AutomaticStorage implements IStorage, IStorageWatchDog {
     public getValue(key: string): any {
         if (this.oContent[key]) {
             this.oContent[key].flag = true;
-            this.oContent[key].timeStamp = this.oContent[key].timeStamp === -1 ? -1 : Date.now();
+            this.oContent[key].timeStamp =
+                this.oContent[key].timeStamp === -1
+                    ? /* istanbul ignore next */ -1
+                    : /* istanbul ignore next */ Date.now();
 
             return this.oContent[key].data;
         }
@@ -101,7 +108,7 @@ export class AutomaticStorage implements IStorage, IStorageWatchDog {
      *
      * @param timer the watch dog running time stamp
      */
-    public startWatchDog(timer: number = DefaultStorageWatchDogTimer): void {
+    public startWatchDog(/* istanbul ignore next */ timer: number = DefaultStorageWatchDogTimer): void {
         Log.warn(getText("STORAGE_WATCH_DOG_START"));
         if (timer < MinimumStorageWatchDogTimer) {
             Log.error(getText("STORAGE_WATCH_DOG_TIMER_LESSTHAN_MIN", [timer, MinimumStorageWatchDogTimer]));

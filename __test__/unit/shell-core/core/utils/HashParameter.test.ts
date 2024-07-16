@@ -3,7 +3,7 @@
 import { MapOfString } from "@aitianyu.cn/types";
 import { HashParameter } from "shell-core/src/core/utils/HashParameter";
 
-describe("aitianyu-cn.node-module.tianyu-shell.shell-core.utils.HashParameter", () => {
+describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.utils.HashParameter", () => {
     describe("parse", () => {
         it("normal param string", () => {
             const param = "test=1&a=b&c=true";

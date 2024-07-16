@@ -65,7 +65,7 @@ export class Language {
      * @returns return local language string or parse language areacode
      */
     public static toString(language?: AreaCode): string {
-        return parseAreaCode(Language.getLocalLanguage());
+        return parseAreaCode(language || Language.getLocalLanguage());
     }
     /**
      * Convert the string to area code

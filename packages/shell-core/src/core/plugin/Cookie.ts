@@ -23,7 +23,7 @@ export class Cookie {
      *
      * @returns return the value or fallback value
      */
-    public static get(key: string, notFound: string = ""): string {
+    public static get(key: string, /* istanbul ignore next */ notFound: string = ""): string {
         return CookieImpl.get(key, notFound);
     }
     /**

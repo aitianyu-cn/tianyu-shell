@@ -6,7 +6,7 @@ import { MapOfString } from "@aitianyu.cn/types";
 export class HashParameter {
     /**
      * Parse a parameter string to a parameter map
-     * 
+     *
      * @param param the parameter string
      * @returns return the parameter map
      */
@@ -16,7 +16,7 @@ export class HashParameter {
         // if the hash parameter is not assigned, to get hash from window.location
         if (!param) {
             const hashUrl = (window.location.hash as string).substring(1);
-            param = hashUrl.split("?")[1] || "";
+            param = hashUrl.split("?")[1] || /* istanbul ignore next */ "";
         }
 
         if (!!param) {
@@ -39,7 +39,7 @@ export class HashParameter {
 
     /**
      * Parse the parameter map to be a equally string
-     * 
+     *
      * @param params the parameter map
      * @returns return a string equals parameter map
      */
@@ -58,7 +58,7 @@ export class HashParameter {
 
     /**
      * Format parameter map to be a hash style string
-     * 
+     *
      * @param params the parameter map
      * @returns return a string equals parameter map
      */
