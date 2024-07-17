@@ -31,6 +31,7 @@ export namespace Utils {
     export import AutomaticStorage = CommonAutomaticStorage.AutomaticStorage;
 }
 
+import { TIANYU_SHELL_CORE_STORE_TYPE, TIANYU_SHELL_INFRA_STORE_TYPE } from "./src/core/declares/Constant";
 import * as StoreImport from "./src/core/utils/Store";
 import * as InterfaceExposeImport from "./src/ui/plugin/interface/InterfaceExpose";
 import * as StoreTypeImport from "./src/ui/plugin/interface/StoreTypes";
@@ -40,26 +41,34 @@ import * as InfraInterfaceImport from "./src/core/utils/InfraInterfaceExpose";
 
 export namespace TianyuShellStore {
     export import getStore = StoreImport.getStore;
-    export import getInstanceId = StoreImport.getInstanceId;
-    export import getHistroySupportedIns = StoreImport.getHistroySupportedIns;
-    export import getNoHisSupportedIns = StoreImport.getNoHisSupportedIns;
 
-    export import CoreInterfaceExpose = CoreInterfaceImport.TianyuShellCoreInterfaceExpose;
-    export import getCoreInstanceId = CoreInterfaceImport.getTianyuShellCoreInstanceId;
+    export const StoreTypeExpose = {
+        SYSTEM: "tianyu-shell-system-entity",
+        SYSTEM_HISTORY: "tianyu-shell-system-history-entity",
+        SYSTEM_NO_HIS: "tianyu-shell-system-non-history-entity",
+        CORE: TIANYU_SHELL_CORE_STORE_TYPE,
+        INFRA: TIANYU_SHELL_INFRA_STORE_TYPE,
+        ...StoreTypeImport.StoreType,
+    };
 
-    export import InfraInterfaceExpose = InfraInterfaceImport.TianyuShellInfraInterfaceExpose;
-    export import getInfraInstanceId = InfraInterfaceImport.getTianyuShellInfraInstanceId;
+    export const InterfaceExpose = {
+        [TIANYU_SHELL_CORE_STORE_TYPE]: CoreInterfaceImport.TianyuShellCoreInterfaceExpose,
+        [TIANYU_SHELL_INFRA_STORE_TYPE]: InfraInterfaceImport.TianyuShellInfraInterfaceExpose,
+        ...InterfaceExposeImport.StoreInterfaceExpose,
+    };
 
-    export namespace UI {
-        export import InterfaceExpose = InterfaceExposeImport.StoreInterfaceExpose;
-        export import StoreType = StoreTypeImport.StoreType;
+    export const InstanceMap = {
+        ["tianyu-shell-system-entity"]: StoreImport.getInstanceId,
+        ["tianyu-shell-system-history-entity"]: StoreImport.getHistroySupportedIns,
+        ["tianyu-shell-system-non-history-entity"]: StoreImport.getNoHisSupportedIns,
 
-        export namespace InstanceHelper {
-            export import getBackgroundInstanceId = InstanceHelperImport.getBackgroundInstanceId;
-            export import getMessageInstanceId = InstanceHelperImport.getMessageInstanceId;
-            export import getStylingInstanceId = InstanceHelperImport.getStylingInstanceId;
-        }
-    }
+        [TIANYU_SHELL_CORE_STORE_TYPE]: CoreInterfaceImport.getTianyuShellCoreInstanceId,
+        [TIANYU_SHELL_INFRA_STORE_TYPE]: InfraInterfaceImport.getTianyuShellInfraInstanceId,
+
+        ["tianyu-shell-ui-background"]: InstanceHelperImport.getBackgroundInstanceId,
+        ["tianyu-shell-ui-message"]: InstanceHelperImport.getMessageInstanceId,
+        ["tianyu-shell-ui-styling"]: InstanceHelperImport.getStylingInstanceId,
+    };
 }
 
 // Export UI Interfaces
@@ -71,7 +80,7 @@ export * from "./src/core/declares/ui/TianyuUIEvent";
 export * from "./src/core/declares/ui/TianyuUIStyle";
 
 // Export UI Core Components
-export { waitLoading as loadingUI } from "./src/ui/plugin/Core";
+export { waitUILoading } from "./src/ui/plugin/Core";
 export * from "./src/ui/plugin/Theme";
 export * from "./src/ui/plugin/UserTheme";
 export * from "./src/ui/plugin/Message";

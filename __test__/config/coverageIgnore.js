@@ -10,4 +10,5 @@ module.exports.coverageIgnorePatterns = [
     "<rootDir>/packages/shell-core/src/core/declares/Exception.ts",
     "<rootDir>/packages/shell-core/src/core/declares/i18n/",
     "<rootDir>/packages/shell-core/src/core/plugin/i18n/",
+    "<rootDir>/packages/shell-core/src/ui/common/",
 ];

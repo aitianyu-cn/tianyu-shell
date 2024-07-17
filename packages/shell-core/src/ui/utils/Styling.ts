@@ -47,7 +47,7 @@ export class GlobalStyling {
         const styleElement = GlobalStyling.getStyleElement();
         for (const styling of Object.keys(indexMap)) {
             const index = indexMap[styling];
-            index && styleElement.sheet?.deleteRule(index);
+            index !== undefined && styleElement.sheet?.deleteRule(index);
         }
     }
 }

@@ -4,7 +4,10 @@ import { Path, MapOfType } from "@aitianyu.cn/types";
 import { TianyuUIStyleDeclaration } from "shell-core/src/core/declares/ui/TianyuUIStyle";
 import { IStyleMap } from "../plugin/interface/state/StylingState";
 
-function getStylingMapDirectly(tianyuStyleMap: IStyleMap, pathList: string[]): { style: IStyleMap; valid: boolean } {
+export function getStylingMapDirectly(
+    tianyuStyleMap: IStyleMap,
+    pathList: string[],
+): { style: IStyleMap; valid: boolean } {
     let styleMap = tianyuStyleMap;
     let mapping = true;
     for (const dir of pathList) {
@@ -23,7 +26,7 @@ function getStylingMapDirectly(tianyuStyleMap: IStyleMap, pathList: string[]): {
     };
 }
 
-function processPath(path?: string): string[] {
+export function processPath(path?: string): string[] {
     if (!path) {
         return [];
     }

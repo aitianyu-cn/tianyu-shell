@@ -14,7 +14,12 @@ import * as MessageBundle from "../resources/i18n/Message";
 export function renderHTML(parent: HTMLElement | string, tianyuUI: TianyuUI): void {
     const renderParent = typeof parent === "string" ? document.getElementById(parent) : parent;
     if (!renderParent) {
-        Log.error(MessageBundle.getText("TIANYU_UI_RENDER_NO_PARENT", typeof parent === "string" ? parent : "[HTML Object]"));
+        Log.error(
+            MessageBundle.getText(
+                "TIANYU_UI_RENDER_NO_PARENT",
+                /* istanbul ignore next */ typeof parent === "string" ? parent : "[HTML Object]",
+            ),
+        );
         return;
     }
 

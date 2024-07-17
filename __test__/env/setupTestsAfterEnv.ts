@@ -13,8 +13,17 @@ beforeAll(async () => {
     await storeAPILoader(env);
     await handlerLoader(env);
     await globalFeatureLoader(env);
+
+    const { waitUILoading } = await import("shell-core/src/ui/plugin/Core");
+    await waitUILoading();
 });
 
 beforeEach(() => {
     jest.spyOn(Log, "log").mockImplementation(() => undefined);
+});
+
+afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
 });

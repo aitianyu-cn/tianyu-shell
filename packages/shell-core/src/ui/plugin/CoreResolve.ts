@@ -10,7 +10,7 @@ function fnInitHtmlBasic(): void {
     document.head.appendChild(htmlPageScale);
 }
 
-export async function loadingTianyuShellCore(): Promise<void> {
+export async function loadingTianyuShellUICore(): Promise<void> {
     try {
         const { initTianyuShellCoreUIStyling } = await import(
             /*webpackChunkName: "aitianyu.cn/tianyu-shell/ui/core" */ "./components/StylingResolve"
