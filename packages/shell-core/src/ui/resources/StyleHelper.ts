@@ -1,5 +1,6 @@
 /**@format */
 
+import { ObjectHelper } from "@aitianyu.cn/types";
 import { TianyuUIStyleDeclaration } from "../../core/declares/ui/TianyuUIStyle";
 
 export class StyleHelper {
@@ -23,11 +24,15 @@ export class StyleHelper {
     /**
      * Insert stylings into a target styling definiation
      *
-     * @param target the target styling definiation
+     * @param source the target styling definiation
      * @param styles inserted stylings
      * @returns return target styling
      */
-    public static insert(target: TianyuUIStyleDeclaration, ...styles: TianyuUIStyleDeclaration[]): TianyuUIStyleDeclaration {
+    public static insert(
+        source: TianyuUIStyleDeclaration,
+        ...styles: TianyuUIStyleDeclaration[]
+    ): TianyuUIStyleDeclaration {
+        const target = ObjectHelper.clone(source) as TianyuUIStyleDeclaration;
         for (const style of styles) {
             for (const styleKey of Object.keys(style)) {
                 (target as any)[styleKey] = (style as any)[styleKey];

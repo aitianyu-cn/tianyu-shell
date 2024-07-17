@@ -8,6 +8,7 @@ import { storeAPILoader } from "./initial/loader/StoreAPILoader";
 import { handlerLoader } from "./initial/loader/HandlerLoader";
 import { globalFeatureLoader } from "./initial/loader/GlobalFeatureLoader";
 import { shellEnvHandler } from "./initial/ShellEnvHandler";
+import { loadingTianyuShellUICore } from "../ui/plugin/CoreResolve";
 
 /**
  * Initial Tianyu Shell runtime from configuration.
@@ -35,5 +36,9 @@ export async function initialTianyuShellAsync(config?: ITianyuShellInitial): Pro
         await storeAPILoader(config || {});
         await handlerLoader(config || {});
         await globalFeatureLoader(config || {});
+
+        if (config?.ui?.core?.support) {
+            await loadingTianyuShellUICore();
+        }
     }
 }

@@ -80,7 +80,6 @@ export * from "./src/core/declares/ui/TianyuUIEvent";
 export * from "./src/core/declares/ui/TianyuUIStyle";
 
 // Export UI Core Components
-export { waitUILoading } from "./src/ui/plugin/Core";
 export * from "./src/ui/plugin/Theme";
 export * from "./src/ui/plugin/UserTheme";
 export * from "./src/ui/plugin/Message";

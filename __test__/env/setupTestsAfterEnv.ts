@@ -5,6 +5,7 @@ import { globalFeatureLoader } from "shell-core/src/core/initial/loader/GlobalFe
 import { handlerLoader } from "shell-core/src/core/initial/loader/HandlerLoader";
 import { storeAPILoader } from "shell-core/src/core/initial/loader/StoreAPILoader";
 import { storeCoreLoader } from "shell-core/src/core/initial/loader/StoreInitial";
+import { loadingTianyuShellUICore } from "shell-core/src/ui/plugin/CoreResolve";
 
 const env = require("../config/env.json");
 
@@ -13,9 +14,7 @@ beforeAll(async () => {
     await storeAPILoader(env);
     await handlerLoader(env);
     await globalFeatureLoader(env);
-
-    const { waitUILoading } = await import("shell-core/src/ui/plugin/Core");
-    await waitUILoading();
+    await loadingTianyuShellUICore();
 });
 
 beforeEach(() => {

@@ -55,7 +55,7 @@ export function getStylingMap(
     let styleMap = tianyuStyleMap;
     let mapping = true;
 
-    for (const dir of pathList) {
+    const fnFillStyling = () => {
         for (const stylingName of key) {
             const innerStyling = styleMap.styles.get(stylingName);
             if (innerStyling) {
@@ -65,14 +65,21 @@ export function getStylingMap(
                 stylings[stylingName].push(innerStyling);
             }
         }
+    };
 
+    for (const dir of pathList) {
         const subMap = styleMap.list.get(dir);
+        fnFillStyling();
         if (subMap) {
             styleMap = subMap;
         } else {
             mapping = false;
             break;
         }
+    }
+
+    if (mapping) {
+        fnFillStyling();
     }
 
     return {

@@ -40,7 +40,7 @@ export async function loadingTianyuShellUICore(): Promise<void> {
         staticLoader();
 
         fnInitHtmlBasic();
-    } catch (e) {
+    } catch (e) /* istanbul ignore next */ {
         Log.error((e as any)?.message || "error loading tianyu shell ui core");
         return Promise.reject();
     }

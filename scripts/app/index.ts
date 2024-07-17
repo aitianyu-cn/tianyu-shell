@@ -37,9 +37,6 @@ import { ITianyuShellInitial } from "shell";
 
     await initialTianyuShellAsync(initial);
 
-    const { loadingUI } = await import("shell-core");
-    await loadingUI();
-
     const { Major } = await import("shell-core");
 
     const div = document.createElement("div");
