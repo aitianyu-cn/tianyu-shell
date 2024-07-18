@@ -5,6 +5,7 @@ import { ITianyuShellCoreUIStyle, ITianyuShellUICssHelper } from "shell-core/src
 import { getStore } from "shell-core/src/core/utils/Store";
 import { StylingInterface } from "../interface/StylingInterfaceExpose";
 import { getStylingInstanceId } from "../../tools/InstanceHelper";
+import { Missing } from "@aitianyu.cn/tianyu-store";
 
 const StyleCssGlobalAPIs: ITianyuShellUICssHelper = {
     add: function (key: string, link: string): void {
@@ -27,9 +28,11 @@ export const StyleGlobalAPIs: ITianyuShellCoreUIStyle = {
         path?: string | undefined,
         isDepth?: boolean | undefined,
     ): TianyuUIStyleDeclaration {
-        return getStore().selecte(
+        const style = getStore().selecte(
             StylingInterface.style.tianyuStyle.get(getStylingInstanceId(), { key, path, isDepth }),
         );
+
+        return style instanceof Missing ? {} : style;
     },
     remove: function (key: string, path?: string | undefined): void {
         void getStore().dispatch(StylingInterface.style.tianyuStyle.remove(getStylingInstanceId(), { key, path }));

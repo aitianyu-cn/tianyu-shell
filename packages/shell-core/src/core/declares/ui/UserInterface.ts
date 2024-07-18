@@ -386,8 +386,9 @@ export interface ITianyuShellCoreUIBackground {
      * Set an html element as background
      *
      * @param html the html element
+     * @param id the html element id
      */
-    setElement(html: HTMLElement): void;
+    setElement(html: HTMLElement, id?: string): void;
     /** Remove current used background html element */
     removeElement(): void;
     /** Clean all background color and html element and reset to default */
