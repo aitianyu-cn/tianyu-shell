@@ -14,91 +14,6 @@ import { TianyuUI } from "shell-core/src/core/declares/ui/TianyuUI";
 import { DialogBase } from "../types/DialogBase";
 import { createHTMLbyTianyuUI } from "../handler/Creator";
 
-interface IDialogContent {
-    id: string;
-    layers: { id: string; layer: HTMLElement }[];
-    current: string;
-    dialog: Map<string, { layer: string; element: HTMLElement }>;
-}
-
-const _dialogContent: IDialogContent = {
-    id: "",
-    layers: [],
-    current: "",
-    dialog: new Map<string, { layer: string; element: HTMLElement }>(),
-};
-
-const _generateLayerBase = (id: string): HTMLElement => {
-    const dialogLayer = document.createElement("div");
-    dialogLayer.id = id;
-    dialogLayer.style.zIndex = `${TianyuShellUIDialogZIndex + _dialogContent.layers.length * 100}`;
-    dialogLayer.classList.add("tys_basic_layer_styling", "tys_dialog_layer_styling", "tys_common_view_hidden");
-    document.body.appendChild(dialogLayer);
-
-    return dialogLayer;
-};
-
-const _createLayer = (id?: string): string => {
-    const layerId = id || guid();
-    const layerHTML = _generateLayerBase(layerId);
-    _dialogContent.layers.push({ id: layerId, layer: layerHTML });
-
-    return layerId;
-};
-
-const _findLayerFromContent = (id: string): { id: string; layer: HTMLElement } | undefined => {
-    return _dialogContent.layers.find((value) => {
-        return value.id === id;
-    });
-};
-
-const _freshLayerShownState = (id: string): void => {
-    const layer = _findLayerFromContent(id);
-    if (!layer) {
-        return;
-    }
-
-    let layerDialogCount = 0;
-    _dialogContent.dialog.forEach((value) => {
-        if (value.layer === id) {
-            layerDialogCount++;
-        }
-    });
-
-    if (layerDialogCount > 0) {
-        layer.layer.classList.remove("tys_common_view_hidden");
-        layer.layer.classList.add("tys_common_view_show");
-    } else {
-        layer.layer.classList.remove("tys_common_view_show");
-        layer.layer.classList.add("tys_common_view_hidden");
-    }
-};
-
-function _count(): number {
-    return _dialogContent.layers.length;
-}
-function _create(): string | null {
-    if (_dialogContent.layers.length === 10) {
-        return null;
-    }
-
-    return _createLayer();
-}
-function _layers(): string[] {
-    return _dialogContent.layers.map((value) => {
-        return value.id;
-    });
-}
-function _switch(layerId: string): void {
-    if (_dialogContent.id === layerId) {
-        return;
-    }
-
-    const layer = _findLayerFromContent(layerId);
-    if (layer) {
-        _dialogContent.current = layer.id;
-    }
-}
 function _remove(layerId: string): void {
     // the basic layer is not support to delete
     if (layerId === _dialogContent.id) {
@@ -129,14 +44,6 @@ function _remove(layerId: string): void {
         _dialogContent.current =
             _dialogContent.layers[index === _dialogContent.layers.length ? _dialogContent.layers.length - 1 : index].id;
     }
-}
-function _current(): string {
-    return _dialogContent.current;
-}
-function _index(): number {
-    return _dialogContent.layers.findIndex((value) => {
-        return value.id === _dialogContent.current;
-    });
 }
 
 function _open(

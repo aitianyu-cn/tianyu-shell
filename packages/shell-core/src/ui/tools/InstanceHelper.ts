@@ -39,3 +39,14 @@ export function getStylingInstanceId(): InstanceId {
     }
     return InstanceMap[StoreType.STYLING_STORE_TYPE];
 }
+
+export function getDialogInstanceId(): InstanceId {
+    if (!InstanceMap[StoreType.DIALOG_STORE_TYPE]) {
+        InstanceMap[StoreType.DIALOG_STORE_TYPE] = StoreHelper.generateInstanceId(
+            getHistroySupportedIns(),
+            StoreType.DIALOG_STORE_TYPE,
+            "dialog",
+        );
+    }
+    return InstanceMap[StoreType.DIALOG_STORE_TYPE];
+}
