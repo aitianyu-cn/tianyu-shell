@@ -1,16 +1,25 @@
 /** @format */
 
 import { ActionFactor, Missing, StoreUtils } from "@aitianyu.cn/tianyu-store";
-import { DIALOG_ELEMENT_MAP, DIALOG_LAYER_MAP, DialogElementMap, IDialogState, LayerMap } from "../state/DialogState";
+import {
+    DIALOG_ELEMENT_MAP,
+    DIALOG_LAYER_MAP,
+    DialogElementMap,
+    IDialogInstance,
+    IDialogState,
+    LayerMap,
+} from "../state/DialogState";
 import {
     GetAllowDeleteLayer,
     GetCurrentLayer,
     GetDialogLayerCount,
     GetDialogLayerExist,
     GetLayerHasElement,
+    GetLayerHtmlById,
 } from "../selector/DialogSelector";
-import { generateDialogLayerBase } from "../../handler/DialogHandler";
+import { generateDialogElement, generateDialogLayerBase } from "../../handler/DialogHandler";
 import { ObjectHelper } from "@aitianyu.cn/types";
+import { register } from "module";
 
 export const CreateDialogAction = ActionFactor.makeCreateStoreAction<IDialogState>().withReducer(function (_) {
     return {
@@ -132,6 +141,75 @@ export const RefreshLayerDisplayState = ActionFactor.makeActionCreator<IDialogSt
     }
 });
 
+export const _RemoveLayerById = ActionFactor.makeActionCreator<IDialogState, string>()
+    .withHandler(function* ({ instanceId: _instanceId, params: layerId }) {
+        const deleted = yield* StoreUtils.Handler.doReadExternal((register) => {
+            const layerMap = register.get(DIALOG_LAYER_MAP) as LayerMap | undefined;
+            if (!layerMap) {
+                return false;
+            }
+
+            const layer = layerMap.get(layerId);
+            if (!layer) {
+                return false;
+            }
+
+            layerMap.delete(layerId);
+            layer.remove();
+            return true;
+        });
+
+        return deleted ? layerId : undefined;
+    })
+    .withReducer(function (state, layerId) {
+        if (layerId) {
+            const newState = ObjectHelper.clone(state) as IDialogState;
+            newState.layers.splice(newState.layers.indexOf(layerId), 1);
+            return newState;
+        }
+
+        return state;
+    });
+
+export const _RemoveElementFromLayer = ActionFactor.makeActionCreator<IDialogState, string>()
+    .withHandler(function* ({ instanceId: _instanceId, params: layerId }) {
+        return yield* StoreUtils.Handler.doReadExternal((register) => {
+            const elementMap = register.get(DIALOG_ELEMENT_MAP) as DialogElementMap | undefined;
+            if (!elementMap) {
+                return [];
+            }
+
+            const deletedList: string[] = [];
+            for (const elem of elementMap) {
+                if (elem[1].layer === layerId) {
+                    deletedList.push(elem[0]);
+
+                    elem[1].element.remove();
+                }
+            }
+
+            for (const elemId of deletedList) {
+                elementMap.delete(elemId);
+            }
+
+            return deletedList;
+        });
+    })
+    .withReducer(function (state, deleteList) {
+        if (deleteList.length) {
+            const newState = ObjectHelper.clone(state) as IDialogState;
+            newState.dialogs = newState.dialogs.filter((value) => !deleteList.includes(value));
+            return newState;
+        }
+        return state;
+    });
+
+export const _UpdateCurrentLayer = ActionFactor.makeActionCreator<IDialogState>().withReducer(function (state) {
+    return state.layers.includes(state.current)
+        ? state
+        : StoreUtils.State.getNewState(state, ["current"], state.layers[state.layers.length - 1]);
+});
+
 export const RemoveLayerAction = ActionFactor.makeActionCreator<IDialogState, string>().withHandler(function* ({
     instanceId,
     params: layerId,
@@ -141,5 +219,76 @@ export const RemoveLayerAction = ActionFactor.makeActionCreator<IDialogState, st
         return;
     }
 
-    //
+    yield* StoreUtils.Handler.doAction(_RemoveElementFromLayer(instanceId, layerId));
+    yield* StoreUtils.Handler.doAction(_RemoveLayerById(instanceId, layerId));
+    yield* StoreUtils.Handler.doAction(_UpdateCurrentLayer(instanceId));
 });
+
+export const OpenDialogAction = ActionFactor.makeActionCreator<IDialogState, IDialogInstance>()
+    .withHandler(function* ({ instanceId, params: elementDef }) {
+        const layerId = yield* StoreUtils.Handler.doSelectorWithThrow(GetCurrentLayer(instanceId));
+        const layer = yield* StoreUtils.Handler.doSelectorWithThrow(GetLayerHtmlById(instanceId, layerId));
+        if (!layer) {
+            return;
+        }
+
+        const dialogMap = yield* StoreUtils.Handler.doReadExternal((register) => {
+            return register.get(DIALOG_ELEMENT_MAP) as DialogElementMap | undefined;
+        });
+        if (!dialogMap) {
+            return;
+        }
+
+        const dialogIns = generateDialogElement(elementDef);
+        dialogMap.set(elementDef.id, {
+            layer: layerId,
+            element: dialogIns,
+        });
+        layer.appendChild(dialogIns);
+
+        yield* StoreUtils.Handler.doAction(RefreshLayerDisplayState(instanceId, layerId));
+
+        return elementDef.id;
+    })
+    .withReducer(function (state, elementId) {
+        if (elementId) {
+            return StoreUtils.State.getNewState(state, ["dialogs"], state.dialogs.concat(elementId));
+        }
+        return state;
+    });
+
+export const CloseDialogAction = ActionFactor.makeActionCreator<IDialogState, string>()
+    .withHandler(function* ({ instanceId, params: elementId }) {
+        const dialogMap = yield* StoreUtils.Handler.doReadExternal((register) => {
+            return register.get(DIALOG_ELEMENT_MAP) as DialogElementMap | undefined;
+        });
+        if (!dialogMap) {
+            return;
+        }
+        const element = dialogMap.get(elementId);
+        if (!element) {
+            return;
+        }
+
+        const layer = yield* StoreUtils.Handler.doSelectorWithThrow(GetLayerHtmlById(instanceId, element.layer));
+        if (!layer) {
+            return;
+        }
+
+        dialogMap.delete(elementId);
+        layer.removeChild(element.element);
+
+        yield* StoreUtils.Handler.doAction(RefreshLayerDisplayState(instanceId, element.layer));
+
+        return elementId;
+    })
+    .withReducer(function (state, elementId) {
+        if (elementId) {
+            return StoreUtils.State.getNewState(
+                state,
+                ["dialogs"],
+                state.dialogs.filter((value) => value !== elementId),
+            );
+        }
+        return state;
+    });

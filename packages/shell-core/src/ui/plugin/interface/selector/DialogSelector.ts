@@ -41,6 +41,8 @@ export const GetLayerHtmlById = SelectorFactor.makeParameterSelector<
     },
 );
 
+export const GetCurrentLayerHtml = SelectorFactor.makeRestrictSelector(GetCurrentLayer, GetLayerHtmlById);
+
 export const GetLayerElementShownCount = SelectorFactor.makeParameterSelector<
     IDialogState,
     string,
@@ -84,4 +86,11 @@ export const GetAllowDeleteLayer = SelectorFactor.makeParameterSelector<IDialogS
     id,
 ) {
     return state.id !== id && state.layers.includes(id);
+});
+
+export const GetIsDialogElementOpen = SelectorFactor.makeParameterSelector<IDialogState, string, boolean>(function (
+    state,
+    elementId,
+) {
+    return state.dialogs.includes(elementId);
 });
