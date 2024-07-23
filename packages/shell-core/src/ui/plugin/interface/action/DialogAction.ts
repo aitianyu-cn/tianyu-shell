@@ -10,6 +10,7 @@ import {
     LayerMap,
 } from "../state/DialogState";
 import {
+    GetAllowCreateLayer,
     GetAllowDeleteLayer,
     GetCurrentLayer,
     GetDialogLayerCount,
@@ -59,6 +60,11 @@ export const SetBaseLayerIdAction = ActionFactor.makeActionCreator<IDialogState,
 export const AddNewLayerAction = ActionFactor.makeActionCreator<IDialogState, string>()
     .withHandler(function* (action) {
         if (!action.params) {
+            return;
+        }
+
+        const canAdd = yield* StoreUtils.Handler.doSelector(GetAllowCreateLayer(action.instanceId));
+        if (canAdd instanceof Missing || !canAdd) {
             return;
         }
 
