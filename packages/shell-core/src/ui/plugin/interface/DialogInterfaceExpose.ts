@@ -38,6 +38,7 @@ import {
     _RemoveElementFromLayer,
     _RemoveLayerById,
     _UpdateCurrentLayer,
+    _UpdateLayerElementsZIndex,
 } from "./action/DialogAction";
 import { IDialogState, IDialogInstance } from "./state/DialogState";
 
@@ -55,6 +56,7 @@ export const DialogInterface = {
             _remove: _RemoveLayerById,
             _removeElements: _RemoveElementFromLayer,
             _updateCurrent: _UpdateCurrentLayer,
+            _updateLayerZIndex: _UpdateLayerElementsZIndex,
 
             _getLayerHtml: GetLayerHtmlById,
             _getLayerElementsCount: GetLayerElementShownCount,

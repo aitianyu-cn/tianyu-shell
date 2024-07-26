@@ -33,7 +33,7 @@ export async function loadingTianyuShellUICore(): Promise<void> {
 
         await initTianyuShellCoreUIStyling();
         await initTianyuShellCoreUIMessage();
-        initTianyuShellCoreUIDialog();
+        await initTianyuShellCoreUIDialog();
         await initTianyuShellCoreUIBackground();
         initTianyuShellCoreUIMajor();
 

@@ -9,6 +9,9 @@ import {
 } from "shell-core/src/core/declares/ui/UserInterface";
 import * as MessageBundle from "../../resources/i18n/Message";
 import { isMobile } from "shell-core/src/core/plugin/Runtime";
+import { getStore } from "shell-core/src/core/utils/Store";
+import { DialogInterface } from "../interface/DialogInterfaceExpose";
+import { getDialogInstanceId } from "../../tools/InstanceHelper";
 
 export class DialogBase {
     private yesButton: HTMLElement | null;
@@ -157,7 +160,7 @@ export class DialogBase {
     }
 
     private callbackInternal(ev: ITianyuShellUIDialogCallbackValue): void {
-        ((window as any).tianyuShell as ITianyuShell).core.ui.dialog.close(this.id);
+        void getStore().dispatch(DialogInterface.close(getDialogInstanceId(), this.id));
         this.callback(ev);
     }
 

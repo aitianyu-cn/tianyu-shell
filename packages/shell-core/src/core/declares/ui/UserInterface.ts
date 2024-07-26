@@ -165,7 +165,7 @@ export interface ITianyuShellCoreUIDialogLayer {
      *
      * @returns return the new dialog layer id
      */
-    create(): string | null;
+    create(): Promise<string | null>;
     /**
      * Get all created layers id
      *

@@ -44,4 +44,8 @@ import { ITianyuShellInitial } from "shell";
     div.style.height = "100%";
     div.style.backgroundColor = "red";
     Major.append(div);
+
+    const { Dialog, TianyuShellUIDialogButtons, TianyuShellUIDialogType } = await import("shell-core");
+    Dialog.open("test content");
+    Dialog.open("test content2", TianyuShellUIDialogButtons.YES_NO_CANCEL, TianyuShellUIDialogType.INPUT);
 })();

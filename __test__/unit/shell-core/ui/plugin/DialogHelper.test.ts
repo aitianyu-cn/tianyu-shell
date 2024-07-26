@@ -13,11 +13,12 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.DialogHelper
         expect(DialogHelper.count()).toEqual(2);
     });
 
-    it("create", () => {
+    it("create", async () => {
         const id = guid();
-        jest.spyOn(tianyuShell.core.ui.dialog.layer, "create").mockReturnValue(id);
+        jest.spyOn(tianyuShell.core.ui.dialog.layer, "create").mockReturnValue(Promise.resolve(id));
 
-        expect(DialogHelper.create()).toEqual(id);
+        const createdId = await DialogHelper.create();
+        expect(createdId).toEqual(id);
     });
 
     it("layers", () => {

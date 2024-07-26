@@ -88,6 +88,8 @@ export const AddNewLayerAction = ActionFactor.makeActionCreator<IDialogState, st
         const layerHtml = generateDialogLayerBase(action.params, layerIndex);
         layerMap.set(action.params, layerHtml);
 
+        yield* StoreUtils.Handler.doAction(SetBaseLayerIdAction(action.instanceId, action.params));
+
         return action.params;
     })
     .withReducer(function (state, data) {
@@ -147,25 +149,49 @@ export const RefreshLayerDisplayState = ActionFactor.makeActionCreator<IDialogSt
     }
 });
 
-export const _RemoveLayerById = ActionFactor.makeActionCreator<IDialogState, string>()
-    .withHandler(function* ({ instanceId: _instanceId, params: layerId }) {
-        const deleted = yield* StoreUtils.Handler.doReadExternal((register) => {
+export const _UpdateLayerElementsZIndex = ActionFactor.makeActionCreator<IDialogState, number>().withHandler(
+    function* ({ params: deletedZIndex }) {
+        yield* StoreUtils.Handler.doReadExternal((register) => {
             const layerMap = register.get(DIALOG_LAYER_MAP) as LayerMap | undefined;
             if (!layerMap) {
-                return false;
+                return;
+            }
+
+            for (const pair of layerMap) {
+                const zIndex = Number(pair[1].style.zIndex);
+                if (!Number.isNaN(zIndex) && zIndex > deletedZIndex) {
+                    pair[1].style.zIndex = `${zIndex - 100}`;
+                }
+            }
+        });
+    },
+);
+
+export const _RemoveLayerById = ActionFactor.makeActionCreator<IDialogState, string>()
+    .withHandler(function* ({ instanceId, params: layerId }) {
+        const deletedZIndex = yield* StoreUtils.Handler.doReadExternal((register) => {
+            const layerMap = register.get(DIALOG_LAYER_MAP) as LayerMap | undefined;
+            if (!layerMap) {
+                return -1;
             }
 
             const layer = layerMap.get(layerId);
             if (!layer) {
-                return false;
+                return -1;
             }
 
+            const zIndex = layer.style.zIndex;
             layerMap.delete(layerId);
             layer.remove();
-            return true;
+            return Number(zIndex);
         });
 
-        return deleted ? layerId : undefined;
+        const isZIndexValid = !Number.isNaN(deletedZIndex) && -1 !== deletedZIndex;
+        if (isZIndexValid) {
+            yield* StoreUtils.Handler.doAction(_UpdateLayerElementsZIndex(instanceId, deletedZIndex));
+        }
+
+        return isZIndexValid ? layerId : undefined;
     })
     .withReducer(function (state, layerId) {
         if (layerId) {

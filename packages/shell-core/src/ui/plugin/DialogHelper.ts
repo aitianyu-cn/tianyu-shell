@@ -17,7 +17,7 @@ export class DialogHelper {
      *
      * @returns return the new dialog layer id
      */
-    public static create(): string | null {
+    public static async create(): Promise<string | null> {
         return DialogBase().layer.create();
     }
 
