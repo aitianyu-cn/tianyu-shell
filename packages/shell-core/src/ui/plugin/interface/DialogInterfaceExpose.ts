@@ -9,7 +9,6 @@ import {
 } from "@aitianyu.cn/tianyu-store";
 import { StoreType } from "./StoreTypes";
 import {
-    ConvertCountToBoolean,
     GetAllowCreateLayer,
     GetAllowDeleteLayer,
     GetCurrentLayer,
@@ -78,8 +77,6 @@ export const DialogInterface = {
     },
 
     tools: {
-        __toBoolean: ConvertCountToBoolean,
-
         externalObj: {
             create: DialogExternalObjectCreator,
             remove: DialogExternalObjectDestroy,

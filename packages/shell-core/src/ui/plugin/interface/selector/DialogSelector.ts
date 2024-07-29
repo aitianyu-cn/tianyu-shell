@@ -1,6 +1,6 @@
 /** @format */
 
-import { SelectorFactor } from "@aitianyu.cn/tianyu-store";
+import { SelectorFactor, TianyuStoreEntityInterfaceExpose } from "@aitianyu.cn/tianyu-store";
 import { DIALOG_ELEMENT_MAP, DIALOG_LAYER_MAP, DialogElementMap, IDialogState, LayerMap } from "../state/DialogState";
 import { ObjectHelper } from "@aitianyu.cn/types";
 
@@ -68,13 +68,9 @@ export const GetLayerElementShownCount = SelectorFactor.makeParameterSelector<
     },
 );
 
-export const ConvertCountToBoolean = SelectorFactor.makeConstantSelector<boolean, number>(function (_, num) {
-    return !!num;
-});
-
 export const GetLayerHasElement = SelectorFactor.makeRestrictSelector<boolean, string>(
     GetLayerElementShownCount,
-    ConvertCountToBoolean,
+    TianyuStoreEntityInterfaceExpose["tianyu-store-entity-core"].utils.toBoolean,
 );
 
 export const GetAllowCreateLayer = SelectorFactor.makeSelector<IDialogState, boolean>(function (state) {

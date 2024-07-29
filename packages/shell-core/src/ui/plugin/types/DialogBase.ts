@@ -59,6 +59,7 @@ export class DialogBase {
 
     public render(): HTMLElement {
         const basic = document.createElement("div");
+        basic.id = this.id;
         basic.classList.add(isMobile() ? "tys_dialog_view_container_styling_mb" : "tys_dialog_view_container_styling");
 
         basic.appendChild(this.processCloseButton());
