@@ -50,3 +50,14 @@ export function getDialogInstanceId(): InstanceId {
     }
     return InstanceMap[StoreType.DIALOG_STORE_TYPE];
 }
+
+export function getMajorInstanceId(): InstanceId {
+    if (!InstanceMap[StoreType.MAJOR_STORE_TYPE]) {
+        InstanceMap[StoreType.MAJOR_STORE_TYPE] = StoreHelper.generateInstanceId(
+            getHistroySupportedIns(),
+            StoreType.MAJOR_STORE_TYPE,
+            "major",
+        );
+    }
+    return InstanceMap[StoreType.MAJOR_STORE_TYPE];
+}

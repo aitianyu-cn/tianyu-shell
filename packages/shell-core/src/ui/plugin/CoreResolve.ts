@@ -35,7 +35,7 @@ export async function loadingTianyuShellUICore(): Promise<void> {
         await initTianyuShellCoreUIMessage();
         await initTianyuShellCoreUIDialog();
         await initTianyuShellCoreUIBackground();
-        initTianyuShellCoreUIMajor();
+        await initTianyuShellCoreUIMajor();
 
         staticLoader();
 

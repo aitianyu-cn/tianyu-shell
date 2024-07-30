@@ -416,11 +416,13 @@ export interface ITianyuShellCoreUIMajorHelper {
      */
     removeClass(className: string): void;
     /**
-     * remove a tianyu shell style from Tianyu Shell Major Layer
-     *
-     * @param classNames the removed tianyu shell styling name
+     * remove all tianyu shell style from Tianyu Shell Major Layer
      */
     resetStyle(): void;
+    /**
+     * remove all tianyu shell style and classes from Tianyu Shell Major Layer
+     */
+    reset(): void;
 }
 
 /** Tianyu Shell Core UI Major layer APIs */
@@ -437,10 +439,10 @@ export interface ITianyuShellCoreUIMajor {
     /**
      * append a UI element into specific HTML element
      *
-     * @param id specific HTML element id or element object
+     * @param target specific HTML element id or element object
      * @param element appended UI element
      */
-    appendInto(id: string | HTMLElement, element: HTMLElement | TianyuUI): void;
+    appendInto(target: string | HTMLElement, element: HTMLElement | TianyuUI): void;
     /**
      * remove a UI element from Major Layer
      *
@@ -450,10 +452,10 @@ export interface ITianyuShellCoreUIMajor {
     /**
      * remove a UI element from specific HTML element
      *
-     * @param id specific HTML element id or element object
+     * @param target specific HTML element id or element object
      * @param element the removed UI element
      */
-    removeFrom(id: string | HTMLElement, element: HTMLElement | TianyuUI | string): void;
+    removeFrom(target: string | HTMLElement, element: HTMLElement | TianyuUI | string): void;
     /**
      * get HTML element by element id
      *

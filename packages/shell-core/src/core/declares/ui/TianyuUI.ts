@@ -21,7 +21,7 @@ export interface TianyuUI {
     outerText?: string;
 
     /** Define the element inline stylings */
-    style?: TianyuUIStyleDeclaration;
+    style: TianyuUIStyleDeclaration;
     /** Define the element interation event */
     event?: TianyuUIEvent;
 

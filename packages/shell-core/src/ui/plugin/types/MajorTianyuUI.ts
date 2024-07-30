@@ -11,7 +11,7 @@ export class MajorTianyuUI implements TianyuUI {
     innerText?: string | undefined;
     innerHTML?: string | undefined;
     outerText?: string | undefined;
-    style?: TianyuUIStyleDeclaration | undefined;
+    style: TianyuUIStyleDeclaration;
     event?: TianyuUIEvent | undefined;
     styles?: string | string[] | MapOfStrings | undefined;
     classes?: string[] | undefined;
@@ -21,5 +21,6 @@ export class MajorTianyuUI implements TianyuUI {
     public constructor(type: keyof HTMLElementTagNameMap, id?: string) {
         this.type = type;
         this.id = id ?? guid();
+        this.style = {};
     }
 }

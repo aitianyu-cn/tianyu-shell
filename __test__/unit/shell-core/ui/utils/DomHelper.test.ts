@@ -12,6 +12,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.utils.DomHelper", (
             renderHTML("this is a unknown html id", {
                 id: "",
                 type: "div",
+                style: {},
             });
 
             expect(Log.error).toHaveBeenCalled();
@@ -27,6 +28,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.utils.DomHelper", (
             renderHTML(parent, {
                 id: "",
                 type: "div",
+                style: {},
             });
 
             expect(Log.error).not.toHaveBeenCalled();

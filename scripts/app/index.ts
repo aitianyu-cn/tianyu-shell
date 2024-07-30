@@ -39,11 +39,11 @@ import { ITianyuShellInitial } from "shell";
 
     const { Major } = await import("shell-core");
 
-    const div = document.createElement("div");
-    div.style.width = "100%";
-    div.style.height = "100%";
-    div.style.backgroundColor = "red";
-    Major.append(div);
+    const majorElement = Major.createElement("div");
+    majorElement.style.width = "100%";
+    majorElement.style.height = "100%";
+    majorElement.style.backgroundColor = "red";
+    Major.append(majorElement);
 
     const { Dialog, TianyuShellUIDialogButtons, TianyuShellUIDialogType } = await import("shell-core");
     Dialog.open("test content");

@@ -32,14 +32,13 @@ export class StyleHelper {
         source: TianyuUIStyleDeclaration,
         ...styles: TianyuUIStyleDeclaration[]
     ): TianyuUIStyleDeclaration {
-        const target = ObjectHelper.clone(source) as TianyuUIStyleDeclaration;
         for (const style of styles) {
             for (const styleKey of Object.keys(style)) {
-                (target as any)[styleKey] = (style as any)[styleKey];
+                (source as any)[styleKey] = (style as any)[styleKey];
             }
         }
 
-        return target;
+        return source;
     }
 
     /**

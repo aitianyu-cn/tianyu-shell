@@ -33,7 +33,11 @@ function _handleTianyuUIStyles(tianyuUIStyles: string | string[] | MapOfStrings 
     const styles: TianyuUIStyleDeclaration = {};
     if (tianyuUIStyles) {
         const styleArray =
-            typeof tianyuUIStyles === "string" ? [tianyuUIStyles] : Array.isArray(tianyuUIStyles) ? tianyuUIStyles : undefined;
+            typeof tianyuUIStyles === "string"
+                ? [tianyuUIStyles]
+                : Array.isArray(tianyuUIStyles)
+                ? tianyuUIStyles
+                : undefined;
         if (styleArray) {
             const styleItem = ((window as any).tianyuShell as ITianyuShell)?.core?.ui?.style?.get(styleArray) || {};
             StyleHelper.insert(styles, styleItem);
