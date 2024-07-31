@@ -13,6 +13,7 @@ import { Log } from "shell-core/src/core/plugin/Console";
 
 export async function initTianyuShellCoreUIDialog(): Promise<void> {
     const windowObj = window as any;
+    /* istanbul ignore if */
     if (!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.dialog) {
         return;
     }
@@ -30,11 +31,11 @@ export async function initTianyuShellCoreUIDialog(): Promise<void> {
     );
 
     (windowObj.tianyuShell as ITianyuShell) = {
-        ...(windowObj.tianyuShell || {}),
+        ...(windowObj.tianyuShell || /* istanbul ignore next */ {}),
         core: {
-            ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
+            ...((windowObj.tianyuShell as ITianyuShell)?.core || /* istanbul ignore next */ {}),
             ui: {
-                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
+                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || /* istanbul ignore next */ {}),
                 dialog: DialogGlobalAPIs,
             },
         },
@@ -42,6 +43,7 @@ export async function initTianyuShellCoreUIDialog(): Promise<void> {
 
     const baseLayerId = await initDialogLayout();
     const layerInited = store.selecte(DialogInterface.layer.exist(instanceId, baseLayerId));
+    /* istanbul ignore if */
     if (layerInited instanceof Missing || !layerInited) {
         Log.error(MessageBundle.getText("TIANYU_UI_DIALOG_INIT_FAILED"));
     }

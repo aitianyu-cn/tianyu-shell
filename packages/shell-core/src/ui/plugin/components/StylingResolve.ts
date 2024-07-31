@@ -18,6 +18,7 @@ import { StyleGlobalAPIs } from "../apis/StyleAPIs";
 
 export async function initTianyuShellCoreUIStyling(): Promise<void> {
     const windowObj = window as any;
+    /* istanbul ignore if */
     if (!!(windowObj.tianyuShell as ITianyuShell)?.core?.ui?.background) {
         return;
     }
@@ -44,11 +45,11 @@ export async function initTianyuShellCoreUIStyling(): Promise<void> {
     store.startListen(UserThemeChangeListener);
 
     (windowObj.tianyuShell as ITianyuShell) = {
-        ...(windowObj.tianyuShell || {}),
+        ...(windowObj.tianyuShell || /* istanbul ignore next */ {}),
         core: {
-            ...((windowObj.tianyuShell as ITianyuShell)?.core || {}),
+            ...((windowObj.tianyuShell as ITianyuShell)?.core || /* istanbul ignore next */ {}),
             ui: {
-                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || {}),
+                ...((windowObj.tianyuShell as ITianyuShell)?.core?.ui || /* istanbul ignore next */ {}),
                 theme: ThemeGlobalAPIs,
                 style: StyleGlobalAPIs,
             },

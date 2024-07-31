@@ -3,6 +3,8 @@
 import { StoreType } from "shell-core/src/ui/plugin/interface/StoreTypes";
 import {
     getBackgroundInstanceId,
+    getDialogInstanceId,
+    getMajorInstanceId,
     getMessageInstanceId,
     getStylingInstanceId,
 } from "shell-core/src/ui/tools/InstanceHelper";
@@ -21,5 +23,15 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.tools.InstanceHelpe
     it("getStylingInstanceId", () => {
         const instance = getStylingInstanceId();
         expect(instance.storeType).toEqual(StoreType.STYLING_STORE_TYPE);
+    });
+
+    it("getDialogInstanceId", () => {
+        const instance = getDialogInstanceId();
+        expect(instance.storeType).toEqual(StoreType.DIALOG_STORE_TYPE);
+    });
+
+    it("getMajorInstanceId", () => {
+        const instance = getMajorInstanceId();
+        expect(instance.storeType).toEqual(StoreType.MAJOR_STORE_TYPE);
     });
 });
