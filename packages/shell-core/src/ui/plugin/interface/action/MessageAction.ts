@@ -26,7 +26,7 @@ import {
 
 export const CreateMessageInstanceAction = CreateMessageInstanceActionCreator.withReducer(function (_state) {
     const instance = {
-        helper: DEFAULT_MESSAGE_HELPER,
+        helper: ObjectHelper.clone(DEFAULT_MESSAGE_HELPER),
         messages: {},
     };
     instance.helper.layerId = `${TianyuShellUIMessagePreious}_${guid()}`;

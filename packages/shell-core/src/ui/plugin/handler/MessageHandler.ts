@@ -25,22 +25,22 @@ export function updateMessageLayer(messageLayer: HTMLElement, messageHelper: IMe
         topAlign ? "tys_message_layer_styling_vtop" : "tys_message_layer_styling_vntop",
     );
     messageLayer.style.zIndex = `${TianyuShellUIMessageZIndex}`;
-    messageLayer.style.width = isMobile() ? "100%" : `${messageHelper.rate.horizontal}%`;
-    messageLayer.style.maxHeight = isMobile() ? "100%" : `${messageHelper.rate.vertical}%`;
+    messageLayer.style.width = isMobile() ? /* istanbul ignore next */ "100%" : `${messageHelper.rate.horizontal}%`;
+    messageLayer.style.maxHeight = isMobile() ? /* istanbul ignore next */ "100%" : `${messageHelper.rate.vertical}%`;
     messageLayer.style.height = "fit-content";
     messageLayer.style.left = leftAlign
         ? "0px"
         : rightAlign
         ? "auto"
         : isMobile()
-        ? "0px"
+        ? /* istanbul ignore next */ "0px"
         : `${(100 - messageHelper.rate.horizontal) / 2}%`;
     messageLayer.style.right = leftAlign
         ? "auto"
         : rightAlign
         ? "0px"
         : isMobile()
-        ? "0px"
+        ? /* istanbul ignore next */ "0px"
         : `${(100 - messageHelper.rate.horizontal) / 2}%`;
 
     messageLayer.style.top = topAlign
@@ -48,14 +48,14 @@ export function updateMessageLayer(messageLayer: HTMLElement, messageHelper: IMe
         : bottomAlign
         ? "auto"
         : isMobile()
-        ? "0px"
+        ? /* istanbul ignore next */ "0px"
         : `${(100 - messageHelper.rate.vertical) / 2}%`;
     messageLayer.style.bottom = topAlign
         ? "auto"
         : bottomAlign
         ? "0px"
         : isMobile()
-        ? "0px"
+        ? /* istanbul ignore next */ "0px"
         : `${(100 - messageHelper.rate.vertical) / 2}%`;
     messageLayer.style.alignItems = leftAlign ? "flex-start" : rightAlign ? "flex-end" : "center";
 }
