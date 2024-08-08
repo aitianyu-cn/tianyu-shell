@@ -66,7 +66,11 @@ export const BackgroundInterface = {
 
 export const BackgroundListenerExpose = {
     control: {
+        getId: SelectorFactor.makeVirtualSelector<IBackgroundState, string>(),
         getBackground: SelectorFactor.makeVirtualSelector<IBackgroundState, IBackgroundInfo>(),
+    },
+    html: {
+        current: SelectorFactor.makeVirtualParameterSelector<IBackgroundState, string, HTMLElement | undefined>(),
     },
 };
 

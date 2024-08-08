@@ -11,16 +11,16 @@ import * as MessageBundle from "../../resources/i18n/Message";
 
 function _processElementStyles<key extends keyof HTMLElementTagNameMap>(
     element: HTMLElementTagNameMap[key],
-    innerStyle: TianyuUIStyleDeclaration | undefined,
+    innerStyle: TianyuUIStyleDeclaration,
     styleList: string | string[] | MapOfStrings | undefined,
 ): void {
     const tianyuUIStyles = _handleTianyuUIStyles(styleList);
-    StyleHelper.insert(tianyuUIStyles, innerStyle || {});
+    StyleHelper.insert(tianyuUIStyles, innerStyle);
     for (const styleKey of Object.keys(tianyuUIStyles)) {
         if (typeof (element.style as any)[styleKey] !== "undefined") {
             try {
                 (element.style as any)[styleKey] = (tianyuUIStyles as any)[styleKey];
-            } catch (e) {
+            } catch (e) /* istanbul ignore next */ {
                 Log.debug(MessageBundle.getText("TIANYU_UI_CREATOR_SYSTEM_ERROR", (e as any).message));
                 // catch error to avoid function interruption
                 // nothing needs to do in the exception catch
@@ -39,7 +39,9 @@ function _handleTianyuUIStyles(tianyuUIStyles: string | string[] | MapOfStrings 
                 ? tianyuUIStyles
                 : undefined;
         if (styleArray) {
-            const styleItem = ((window as any).tianyuShell as ITianyuShell)?.core?.ui?.style?.get(styleArray) || {};
+            const styleItem =
+                ((window as any).tianyuShell as ITianyuShell)?.core?.ui?.style?.get(styleArray) ||
+                /* istanbul ignore next */ {};
             StyleHelper.insert(styles, styleItem);
         } else {
             for (const path of Object.keys(tianyuUIStyles)) {
@@ -62,7 +64,7 @@ function _processElementEvent<key extends keyof HTMLElementTagNameMap>(
         for (const key of Object.keys(event)) {
             try {
                 element.addEventListener(key, (event as any)[key]);
-            } catch (e) {
+            } catch (e) /* istanbul ignore next */ {
                 Log.debug(MessageBundle.getText("TIANYU_UI_CREATOR_SYSTEM_ERROR", (e as any).message));
                 // catch error to avoid function interruption
                 // nothing needs to do in the exception catch
@@ -77,14 +79,12 @@ function _processOthers<key extends keyof HTMLElementTagNameMap>(
 ): void {
     if (otherSetting) {
         for (const key of Object.keys(otherSetting)) {
-            if (element.hasAttribute(key)) {
-                try {
-                    (element as any)[key] = otherSetting[key];
-                } catch (e) {
-                    Log.debug(MessageBundle.getText("TIANYU_UI_CREATOR_SYSTEM_ERROR", (e as any).message));
-                    // catch error to avoid function interruption
-                    // nothing needs to do in the exception catch
-                }
+            try {
+                (element as any)[key] = otherSetting[key];
+            } catch (e) /* istanbul ignore next */ {
+                Log.debug(MessageBundle.getText("TIANYU_UI_CREATOR_SYSTEM_ERROR", (e as any).message));
+                // catch error to avoid function interruption
+                // nothing needs to do in the exception catch
             }
         }
     }

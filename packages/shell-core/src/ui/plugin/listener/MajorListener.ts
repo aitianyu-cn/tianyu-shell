@@ -5,6 +5,7 @@ import { StyleHelper } from "../../resources/StyleHelper";
 import { ListenerFactor } from "@aitianyu.cn/tianyu-store";
 import { MajorListenerExpose } from "../interface/MajorInterfaceExpose";
 import { getMajorInstanceId } from "../../tools/InstanceHelper";
+import { TestHook } from "infra/TestHook";
 
 function onClassesChanged(
     _oldState:
@@ -27,6 +28,7 @@ function onClassesChanged(
         | undefined,
 ): void {
     if (!newState?.layer.layerRoot) {
+        TestHook.debugger();
         return;
     }
     newState.layer.layerRoot.classList.remove(...newState.layer.layerRoot.classList.values());
@@ -54,6 +56,7 @@ function onStylingChanged(
         | undefined,
 ): void {
     if (!newState?.layer.layerRoot) {
+        TestHook.debugger();
         return;
     }
 
