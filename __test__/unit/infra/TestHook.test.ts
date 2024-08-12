@@ -8,6 +8,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.infra.TestHook", () => {
             expect(() => {
                 TestHook.debugger();
             }).not.toThrow();
+            expect(__TIANYU_SHELL_TEST_HOOK__.debugger).toHaveBeenCalled();
         });
     });
 });

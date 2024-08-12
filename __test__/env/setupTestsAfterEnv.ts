@@ -1,6 +1,7 @@
 /**@format */
 
 import { Log } from "@aitianyu.cn/types";
+import { TestHook } from "infra/TestHook";
 import { globalFeatureLoader } from "shell-core/src/core/initial/loader/GlobalFeatureLoader";
 import { handlerLoader } from "shell-core/src/core/initial/loader/HandlerLoader";
 import { storeAPILoader } from "shell-core/src/core/initial/loader/StoreAPILoader";
@@ -15,6 +16,10 @@ beforeAll(async () => {
     await handlerLoader(env);
     await globalFeatureLoader(env);
     await loadingTianyuShellUICore();
+
+    (global as any).__TIANYU_SHELL_TEST_HOOK__ = {
+        debugger: jest.fn(),
+    };
 });
 
 beforeEach(() => {

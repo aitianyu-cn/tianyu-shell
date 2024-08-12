@@ -1,7 +1,7 @@
 /** @format */
 
 import { ListenerFactor, Missing } from "@aitianyu.cn/tianyu-store";
-import { MapOfType, Log, ObjectHelper } from "@aitianyu.cn/types";
+import { MapOfType, ObjectHelper } from "@aitianyu.cn/types";
 import { getStore } from "shell-core/src/core/utils/Store";
 import { getMessageInstanceId } from "../../tools/InstanceHelper";
 import { MessageInterface, MessageListenerExpose } from "../interface/MessageInterfaceExpose";
@@ -9,6 +9,7 @@ import { DEFAULT_MESSAGE_HELPER, IMessageHelper, IMessageTipState } from "../int
 import { MessageTip } from "../types/MessageTip";
 import * as MessageBundle from "../../resources/i18n/Message";
 import { updateMessageLayer } from "../handler/MessageHandler";
+import { Log } from "shell-core/src/core/plugin/Console";
 
 function onMessagePost(
     oldMessages: MapOfType<IMessageTipState> | undefined,

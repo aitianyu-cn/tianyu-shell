@@ -1,7 +1,7 @@
 /** @format */
 
 export class TestHook {
-    public static debugger(): void {
-        // nothing to do here
+    public static debugger(_info?: string): void {
+        __TIANYU_SHELL_TEST_HOOK__?.debugger?.();
     }
 }
