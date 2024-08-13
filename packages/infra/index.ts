@@ -6,7 +6,7 @@ import * as CompatibilityImport from "./Compatibility";
 
 declare global {
     export const __TIANYU_SHELL_TEST_HOOK__: {
-        debugger: () => undefined;
+        debugger: (msg?: string) => undefined;
     };
 }
 

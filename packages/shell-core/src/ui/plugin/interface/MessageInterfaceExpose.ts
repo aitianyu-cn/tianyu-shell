@@ -82,6 +82,7 @@ export const MessageInterface = {
 
 export const MessageListenerExpose = {
     control: {
+        getId: SelectorFactor.makeVirtualSelector<IMessageState, string>(),
         getHelper: SelectorFactor.makeVirtualSelector<IMessageState, IMessageHelper>(),
         allMessages: SelectorFactor.makeVirtualSelector<IMessageState, MapOfType<IMessageTipState>>(),
     },

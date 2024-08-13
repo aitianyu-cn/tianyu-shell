@@ -4,12 +4,13 @@ import { ListenerFactor, Missing } from "@aitianyu.cn/tianyu-store";
 import { MapOfType, ObjectHelper } from "@aitianyu.cn/types";
 import { getStore } from "shell-core/src/core/utils/Store";
 import { getMessageInstanceId } from "../../tools/InstanceHelper";
-import { MessageInterface, MessageListenerExpose } from "../interface/MessageInterfaceExpose";
+import { MessageListenerExpose } from "../interface/MessageInterfaceExpose";
 import { DEFAULT_MESSAGE_HELPER, IMessageHelper, IMessageTipState } from "../interface/state/MessageState";
 import { MessageTip } from "../types/MessageTip";
 import * as MessageBundle from "../../resources/i18n/Message";
 import { updateMessageLayer } from "../handler/MessageHandler";
 import { Log } from "shell-core/src/core/plugin/Console";
+import { TestHook } from "infra/TestHook";
 
 function onMessagePost(
     oldMessages: MapOfType<IMessageTipState> | undefined,
@@ -21,14 +22,15 @@ function onMessagePost(
     const store = getStore();
     const instanceId = getMessageInstanceId();
 
-    const layerId = store.selecte(MessageInterface.control.getId(instanceId));
-    if (layerId instanceof Missing) {
+    const layerId = store.selecte(MessageListenerExpose.control.getId(instanceId));
+    if (typeof layerId !== "string") {
         return;
     }
 
     const messageLayer = document.getElementById(layerId);
     if (!messageLayer) {
         Log.error(MessageBundle.getText("TIANYU_UI_MESSAGE_POST_NO_LAYER", layerId));
+        TestHook.debugger("message layer is invalid");
         return;
     }
 
@@ -59,8 +61,8 @@ function onLayerSettingChanged(oldState: IMessageHelper | undefined, newState: I
     const store = getStore();
     const instanceId = getMessageInstanceId();
 
-    const layerId = store.selecte(MessageInterface.control.getId(instanceId));
-    if (layerId instanceof Missing) {
+    const layerId = store.selecte(MessageListenerExpose.control.getId(instanceId));
+    if (typeof layerId !== "string") {
         return;
     }
 

@@ -1,7 +1,7 @@
 /** @format */
 
 import { ListenerFactor, Missing } from "@aitianyu.cn/tianyu-store";
-import { StylingInterface, StylingListenerExpose } from "../interface/StylingInterfaceExpose";
+import { StylingListenerExpose } from "../interface/StylingInterfaceExpose";
 import { getStylingInstanceId } from "../../tools/InstanceHelper";
 import { CssHelper } from "../../resources/CssHelper";
 import { getStore } from "shell-core/src/core/utils/Store";
@@ -21,7 +21,7 @@ function onStyleCssChanged(oldCssList: string[] | undefined, newCssList: string[
 
     for (const css in newCssList) {
         if (!oldCssList.includes(css)) {
-            const elementWithMissing = store.selecte(StylingInterface.style.css.getElement(instanceId, css));
+            const elementWithMissing = store.selecte(StylingListenerExpose.style.css.getElement(instanceId, css));
             if (elementWithMissing && !(elementWithMissing instanceof Missing)) {
                 CssHelper.appendGlobalStyle(elementWithMissing);
             }

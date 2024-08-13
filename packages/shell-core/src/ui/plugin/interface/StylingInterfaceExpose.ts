@@ -98,6 +98,7 @@ export const StylingInterface = {
 export const StylingListenerExpose = {
     style: {
         css: {
+            getElement: SelectorFactor.makeVirtualParameterSelector<IStylingState, string, HTMLElement | undefined>(),
             getAllCss: SelectorFactor.makeVirtualSelector<IStylingState, string[]>(),
         },
     },
