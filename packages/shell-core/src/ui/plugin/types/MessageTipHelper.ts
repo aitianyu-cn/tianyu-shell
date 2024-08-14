@@ -3,6 +3,7 @@
 import { CallbackAction, MapOfType, StringHelper } from "@aitianyu.cn/types";
 import { TianyuShellUIHyperLink, TianyuShellUIMessageType } from "shell-core/src/core/declares/ui/UserInterface";
 import * as MessageBundle from "../../resources/i18n/Message";
+import { TestHook } from "infra/TestHook";
 
 const _stylingMap: MapOfType<{ bg: string; bord: string; front: string }> = {
     fatal: {
@@ -48,11 +49,13 @@ export class MessageTipHelper {
         element.style.background = `var(${bgStyling})`;
         element.style.borderColor = `var(${bordStyling})`;
         element.style.borderStyle = "solid";
+        TestHook.debugger(`process background: ${typeString}`);
     }
     public static processFrontColor(element: HTMLElement, type: TianyuShellUIMessageType): void {
         const typeString = MessageTipHelper._getTypeString(type);
         const styling = StringHelper.format(_stylingMap[typeString].front, typeString);
         element.style.color = `var(${styling})`;
+        TestHook.debugger(`process front color: ${typeString}`);
     }
     private static _getTypeString(type: TianyuShellUIMessageType): string {
         switch (type) {
@@ -71,7 +74,11 @@ export class MessageTipHelper {
                 return "default";
         }
     }
-    public static processCloseButton(element: HTMLElement, type: TianyuShellUIMessageType, onClick: CallbackAction): void {
+    public static processCloseButton(
+        element: HTMLElement,
+        type: TianyuShellUIMessageType,
+        onClick: CallbackAction,
+    ): void {
         // auto closed message should not add close button
         if (MessageTipHelper.isAutoClose(type)) {
             return;
@@ -116,7 +123,7 @@ export class MessageTipHelper {
 
         if (moreButton || troubleButton) {
             const placeHoler = MessageTipHelper.generateHyperLinkElement({
-                key: "",
+                key: "messageTip-placeHoler",
                 message: MessageBundle.getText("TIANYU_UI_MESSAGE_MORE_INFOS"),
                 link: () => {
                     moreButton && MessageTipHelper.displayLinker(moreButton);
@@ -141,6 +148,7 @@ export class MessageTipHelper {
 
     private static generateHyperLinkElement(link: TianyuShellUIHyperLink): HTMLElement {
         const linkElement = document.createElement("div");
+        linkElement.id = link.key;
         linkElement.innerText = link.message;
         linkElement.addEventListener("click", link.link);
         linkElement.classList.add(

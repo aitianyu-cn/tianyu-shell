@@ -6,6 +6,7 @@ import { StylingListenerExpose, StylingInterface } from "../interface/StylingInt
 import { getStylingInstanceId } from "../../tools/InstanceHelper";
 import { addUserTheme, removeUserTheme, updateTianyuShellTheme } from "../handler/StylingHandler";
 import { getStore } from "shell-core/src/core/utils/Store";
+import { TestHook } from "infra/TestHook";
 
 function onTianyuShellThemeChanged(
     _oldTheme: ITianyuShellCoreUIThemeItem | undefined,
@@ -33,9 +34,15 @@ function onUserThemeChanged(oldList: string[] | undefined, newList: string[] | u
 
     for (const theme in newList) {
         if (!oldList.includes(theme)) {
-            const themeURLWithMissing = store.selecte(StylingInterface.theme.user.getURL(instanceId, theme));
-            if (!(themeURLWithMissing instanceof Missing)) {
-                addUserTheme(theme, themeURLWithMissing);
+            try {
+                const themeURLWithMissing = store.selecteWithThrow(
+                    StylingInterface.theme.user.getURL(instanceId, theme),
+                );
+                if (themeURLWithMissing) {
+                    addUserTheme(theme, themeURLWithMissing);
+                }
+            } catch {
+                TestHook.debugger("theme listener - get user theme url failed");
             }
         }
     }

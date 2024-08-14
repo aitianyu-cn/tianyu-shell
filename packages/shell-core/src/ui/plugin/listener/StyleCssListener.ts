@@ -5,6 +5,7 @@ import { StylingListenerExpose } from "../interface/StylingInterfaceExpose";
 import { getStylingInstanceId } from "../../tools/InstanceHelper";
 import { CssHelper } from "../../resources/CssHelper";
 import { getStore } from "shell-core/src/core/utils/Store";
+import { TestHook } from "infra/TestHook";
 
 function onStyleCssChanged(oldCssList: string[] | undefined, newCssList: string[] | undefined): void {
     const store = getStore();
@@ -21,9 +22,15 @@ function onStyleCssChanged(oldCssList: string[] | undefined, newCssList: string[
 
     for (const css in newCssList) {
         if (!oldCssList.includes(css)) {
-            const elementWithMissing = store.selecte(StylingListenerExpose.style.css.getElement(instanceId, css));
-            if (elementWithMissing && !(elementWithMissing instanceof Missing)) {
-                CssHelper.appendGlobalStyle(elementWithMissing);
+            try {
+                const elementWithMissing = store.selecteWithThrow(
+                    StylingListenerExpose.style.css.getElement(instanceId, css),
+                );
+                if (elementWithMissing) {
+                    CssHelper.appendGlobalStyle(elementWithMissing);
+                }
+            } catch {
+                TestHook.debugger("style css listener - get style element failed");
             }
         }
     }
