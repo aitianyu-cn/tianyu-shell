@@ -114,6 +114,6 @@ export const ResetBackgroundAction = ResetBackgroundActionCreator.withHandler(fu
     return defaultColor;
 }).withReducer(function (state, data) {
     let newState = StoreUtils.State.getNewState(state, ["elementId"], null);
-    newState = StoreUtils.State.getNewState(state, ["color"], data);
+    newState = StoreUtils.State.getNewState(newState, ["color"], data);
     return newState;
 });

@@ -32,7 +32,7 @@ export const GetBackgroundHTMLElements = SelectorFactor.makeSelector<IBackground
         return externalResult || [];
     },
     function (register) {
-        const map = register.get("BACKGROUND_ELEMENT_MAP") as Map<string, HTMLElement> | undefined;
+        const map = register.get(BACKGROUND_ELEMENT_MAP) as Map<string, HTMLElement> | undefined;
         const result: string[] = [];
 
         if (map) {
@@ -57,7 +57,7 @@ export const GetBackgroundCurrentHTMLElement = SelectorFactor.makeParameterSelec
     HTMLElement | undefined,
     Map<string, HTMLElement> | undefined
 >(
-    function (state, id, map) {
+    function (_state, id, map) {
         return id ? map?.get(id) : undefined;
     },
     function (register): Map<string, HTMLElement> | undefined {

@@ -50,14 +50,12 @@ export const GetLayerElementShownCount = SelectorFactor.makeParameterSelector<
     DialogElementMap | undefined
 >(
     function (_, id, elements) {
-        if (!elements) {
-            return 0;
-        }
-
         let count = 0;
-        for (const dialogElem of elements) {
-            if (dialogElem[1].layer === id) {
-                count = count + 1;
+        if (elements) {
+            for (const dialogElem of elements) {
+                if (dialogElem[1].layer === id) {
+                    count = count + 1;
+                }
             }
         }
 

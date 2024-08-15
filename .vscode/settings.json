@@ -1,6 +1,4 @@
 {
-    "csharp.unitTestDebuggingOptions": {},
-    "csharp.format.enable": true,
     "editor.formatOnSave": true,
 
     "editor.formatOnType": true,

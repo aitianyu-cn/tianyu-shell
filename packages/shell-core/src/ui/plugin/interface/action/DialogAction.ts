@@ -64,12 +64,12 @@ export const AddNewLayerAction = ActionFactor.makeActionCreator<IDialogState, st
         }
 
         const canAdd = yield* StoreUtils.Handler.doSelector(GetAllowCreateLayer(action.instanceId));
-        if (canAdd instanceof Missing || !canAdd) {
+        if (typeof canAdd !== "boolean" || !canAdd) {
             return;
         }
 
         const hasLayer = yield* StoreUtils.Handler.doSelector(GetDialogLayerExist(action.instanceId, action.params));
-        if (hasLayer instanceof Missing || hasLayer) {
+        if (typeof hasLayer !== "boolean" || hasLayer) {
             return;
         }
 
@@ -80,11 +80,7 @@ export const AddNewLayerAction = ActionFactor.makeActionCreator<IDialogState, st
             return;
         }
 
-        const layerIndex = yield* StoreUtils.Handler.doSelector(GetDialogLayerCount(action.instanceId));
-        if (layerIndex instanceof Missing) {
-            return;
-        }
-
+        const layerIndex = yield* StoreUtils.Handler.doSelectorWithThrow(GetDialogLayerCount(action.instanceId));
         const layerHtml = generateDialogLayerBase(action.params, layerIndex);
         layerMap.set(action.params, layerHtml);
 
@@ -104,25 +100,26 @@ export const AddNewLayerAction = ActionFactor.makeActionCreator<IDialogState, st
 
 export const SwitchLayerAction = ActionFactor.makeActionCreator<IDialogState, string>()
     .withHandler(function* (action) {
-        const currentLayer = yield* StoreUtils.Handler.doSelector(GetCurrentLayer(action.instanceId));
-        if (currentLayer instanceof Missing || currentLayer === action.params) {
+        const currentLayer = yield* StoreUtils.Handler.doSelectorWithThrow(GetCurrentLayer(action.instanceId));
+        if (currentLayer === action.params) {
             return;
         }
 
         const hasLayer = yield* StoreUtils.Handler.doSelector(GetDialogLayerExist(action.instanceId, action.params));
-        if (hasLayer instanceof Missing || !hasLayer) {
+        if (typeof hasLayer !== "boolean" || !hasLayer) {
             return;
         }
 
         return action.params;
     })
     .withReducer(function (state, newLayer) {
-        return StoreUtils.State.getNewState(state, ["current"], newLayer);
+        return StoreUtils.State.getNewState(state, ["current"], newLayer || state.current);
     });
 
 export const RefreshLayerDisplayState = ActionFactor.makeActionCreator<IDialogState, string>().withHandler(function* (
     action,
 ) {
+    /* istanbul ignore if */
     if (!action.params) {
         return;
     }
@@ -131,12 +128,14 @@ export const RefreshLayerDisplayState = ActionFactor.makeActionCreator<IDialogSt
         const layerMap = register.get(DIALOG_LAYER_MAP) as LayerMap | undefined;
         return layerMap?.get(action.params);
     });
+    /* istanbul ignore if */
     if (!layerHtml) {
         return;
     }
 
     const layerDisplay = yield* StoreUtils.Handler.doSelector(GetLayerHasElement(action.instanceId, action.params));
-    if (layerDisplay instanceof Missing) {
+    /* istanbul ignore if */
+    if (typeof layerDisplay !== "boolean") {
         return;
     }
 
@@ -153,6 +152,7 @@ export const _UpdateLayerElementsZIndex = ActionFactor.makeActionCreator<IDialog
     function* ({ params: deletedZIndex }) {
         yield* StoreUtils.Handler.doReadExternal((register) => {
             const layerMap = register.get(DIALOG_LAYER_MAP) as LayerMap | undefined;
+            /* istanbul ignore if */
             if (!layerMap) {
                 return;
             }
@@ -207,21 +207,19 @@ export const _RemoveElementFromLayer = ActionFactor.makeActionCreator<IDialogSta
     .withHandler(function* ({ instanceId: _instanceId, params: layerId }) {
         return yield* StoreUtils.Handler.doReadExternal((register) => {
             const elementMap = register.get(DIALOG_ELEMENT_MAP) as DialogElementMap | undefined;
-            if (!elementMap) {
-                return [];
-            }
-
             const deletedList: string[] = [];
-            for (const elem of elementMap) {
-                if (elem[1].layer === layerId) {
-                    deletedList.push(elem[0]);
+            if (elementMap) {
+                for (const elem of elementMap) {
+                    if (elem[1].layer === layerId) {
+                        deletedList.push(elem[0]);
 
-                    elem[1].element.remove();
+                        elem[1].element.remove();
+                    }
                 }
-            }
 
-            for (const elemId of deletedList) {
-                elementMap.delete(elemId);
+                for (const elemId of deletedList) {
+                    elementMap.delete(elemId);
+                }
             }
 
             return deletedList;
@@ -246,8 +244,8 @@ export const RemoveLayerAction = ActionFactor.makeActionCreator<IDialogState, st
     instanceId,
     params: layerId,
 }) {
-    const canDelete = yield* StoreUtils.Handler.doSelector(GetAllowDeleteLayer(instanceId, layerId));
-    if (canDelete instanceof Missing || !canDelete) {
+    const canDelete = yield* StoreUtils.Handler.doSelectorWithThrow(GetAllowDeleteLayer(instanceId, layerId));
+    if (!canDelete) {
         return;
     }
 
@@ -267,6 +265,7 @@ export const OpenDialogAction = ActionFactor.makeActionCreator<IDialogState, IDi
         const dialogMap = yield* StoreUtils.Handler.doReadExternal((register) => {
             return register.get(DIALOG_ELEMENT_MAP) as DialogElementMap | undefined;
         });
+        /* istanbul ignore if */
         if (!dialogMap) {
             return;
         }
@@ -303,6 +302,7 @@ export const CloseDialogAction = ActionFactor.makeActionCreator<IDialogState, st
         }
 
         const layer = yield* StoreUtils.Handler.doSelectorWithThrow(GetLayerHtmlById(instanceId, element.layer));
+        /* istanbul ignore if */
         if (!layer) {
             return;
         }

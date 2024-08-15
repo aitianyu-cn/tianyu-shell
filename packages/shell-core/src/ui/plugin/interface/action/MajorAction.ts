@@ -83,12 +83,14 @@ export const ResetAllAction = ActionFactor.makeActionCreator<IMajorState>().with
 export const AppendMajorElement = ActionFactor.makeActionCreator<IMajorState, HTMLElement | TianyuUI>().withHandler(
     function* ({ instanceId, params: element }) {
         const renderElement = generateMajorElement(element);
+        /* istanbul ignore if */
         if (!renderElement) {
             Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${element}`));
             return;
         }
 
         const layer = yield* StoreUtils.Handler.doSelectorWithThrow(_GetMajorLayer(instanceId));
+        /* istanbul ignore if */
         if (!layer.layerRoot) {
             throw new TianyuUIMajorInvalidException(layer.layerId);
         }
@@ -104,13 +106,14 @@ export const AppendElementInto = ActionFactor.makeActionCreator<
         element: HTMLElement | TianyuUI;
     }
 >().withHandler(function* ({ params }) {
-    let renderElement = generateMajorElement(params.element);
+    const renderElement = generateMajorElement(params.element);
+    /* istanbul ignore if */
     if (!renderElement) {
-        Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${params.element}`));
+        Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${renderElement}`));
         return;
     }
 
-    let rootElement = generateMajorElement(params.target);
+    const rootElement = generateMajorElement(params.target);
     if (!rootElement) {
         Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${params.target}`));
         return;
@@ -123,13 +126,15 @@ export const RemoveMajorElement = ActionFactor.makeActionCreator<
     IMajorState,
     HTMLElement | TianyuUI | string
 >().withHandler(function* ({ instanceId, params: element }) {
-    let renderElement = generateMajorElement(element, true);
+    const renderElement = generateMajorElement(element, true);
+    /* istanbul ignore if */
     if (!renderElement) {
         Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${element}`));
         return;
     }
 
     const layer = yield* StoreUtils.Handler.doSelectorWithThrow(_GetMajorLayer(instanceId));
+    /* istanbul ignore if */
     if (!layer.layerRoot) {
         throw new TianyuUIMajorInvalidException(layer.layerId);
     }
@@ -144,13 +149,13 @@ export const RemoveElementFrom = ActionFactor.makeActionCreator<
         element: string | HTMLElement | TianyuUI;
     }
 >().withHandler(function* ({ params }) {
-    let renderElement = generateMajorElement(params.element, true);
+    const renderElement = generateMajorElement(params.element, true);
     if (!renderElement) {
         Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${params.element}`));
         return;
     }
 
-    let rootElement = generateMajorElement(params.target);
+    const rootElement = generateMajorElement(params.target);
     if (!rootElement) {
         Log.error(MessageBundle.getText("TIANYU_UI_MAJOR_GENERATE_NULL_ELEMENT", `${params.target}`));
         return;

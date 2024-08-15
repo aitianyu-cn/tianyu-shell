@@ -15,6 +15,7 @@ import {
     RemoveColorAction,
     RemoveHtmlElementAction,
     ResetBackgroundAction,
+    ResetHtmlElementAction,
     SetColorAction,
     SetHtmlElementAction,
 } from "./action/BackgroundAction";
@@ -55,7 +56,7 @@ export const BackgroundInterface = {
     html: {
         set: SetHtmlElementAction,
         remove: RemoveHtmlElementAction,
-        reset: ResetBackgroundAction,
+        reset: ResetHtmlElementAction,
         clear: ClearHtmlElementsAction,
 
         current: GetBackgroundCurrentHTMLElement,

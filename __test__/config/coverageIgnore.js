@@ -1,5 +1,7 @@
 /** @format */
 
+const { viewFiles } = require("./viewFiles");
+
 module.exports.coverageIgnorePatterns = [
     "<rootDir>/__test__/",
     "<rootDir>/packages/infra/resource/",
@@ -11,4 +13,5 @@ module.exports.coverageIgnorePatterns = [
     "<rootDir>/packages/shell-core/src/core/declares/i18n/",
     "<rootDir>/packages/shell-core/src/core/plugin/i18n/",
     "<rootDir>/packages/shell-core/src/ui/common/",
+    ...viewFiles,
 ];
