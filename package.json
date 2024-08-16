@@ -1,6 +1,6 @@
 {
     "name": "@aitianyu.cn/tianyu-shell",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "description": "Web shell framework of aitianyu",
     "exports": {
         ".": {
