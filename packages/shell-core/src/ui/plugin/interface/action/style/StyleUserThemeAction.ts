@@ -13,6 +13,7 @@ export const AddNewCustomThemeAction = AddNewCustomThemeActionCreator.withReduce
     const newState = ObjectHelper.clone(state) as IStylingState;
     if (!newState.theme.user.custom[styling.themeId]) {
         newState.theme.user.custom[styling.themeId] = formatUserThemeURL(styling.styling);
+        newState.theme.user.using.push(styling.themeId);
     }
     return newState;
 });
@@ -20,7 +21,7 @@ export const AddNewCustomThemeAction = AddNewCustomThemeActionCreator.withReduce
 export const DeleteCustomThemeAction = DeleteCustomThemeActionCreator.withReducer(function (state, usingTheme) {
     const newState = ObjectHelper.clone(state) as IStylingState;
     // remove from using list
-    newState.theme.user.using = newState.theme.user.using.splice(newState.theme.user.using.indexOf(usingTheme), 1);
+    newState.theme.user.using.splice(newState.theme.user.using.indexOf(usingTheme), 1);
     // remove custom from map
     if (newState.theme.user.custom[usingTheme]) {
         delete newState.theme.user.custom[usingTheme];

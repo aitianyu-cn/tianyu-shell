@@ -22,12 +22,12 @@ export const GetTianyuUIStyleSelector = SelectorFactor.makeParameterSelector<
             return {};
         }
 
-        if (Array.isArray(params.key) && params.key.length === 0) {
+        // transform string to array
+        const keys = typeof params.key === "string" ? [params.key] : params.key;
+        if (keys.length === 0) {
             return {};
         }
 
-        // transform string to array
-        const keys = typeof params.key === "string" ? [params.key] : params.key;
         // create a stylings map for depth search
         const stylings: MapOfType<TianyuUIStyleDeclaration[]> = {};
         // get styling map and get depth search stylings
@@ -44,7 +44,7 @@ export const GetTianyuUIStyleSelector = SelectorFactor.makeParameterSelector<
             const style = styleMap.style.styles.get(styleKey);
             if (style) {
                 // get depth styling list
-                const mergeList = stylings[styleKey] || [];
+                const mergeList = stylings[styleKey] || /* istanbul ignore next */ [];
                 // merge depth stylings and target styling
                 // the merge is target first.
                 // styling in the target will overwrite the depth styling result

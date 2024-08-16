@@ -2,7 +2,7 @@
 
 import { StoreUtils } from "@aitianyu.cn/tianyu-store";
 import { TianyuUIStyleDeclaration } from "shell-core/src/core/declares/ui/TianyuUIStyle";
-import { getStylingMap } from "shell-core/src/ui/tools/TianyuStylingHelper";
+import { getStylingMap, processPath } from "shell-core/src/ui/tools/TianyuStylingHelper";
 import { IStyleMap, STYLING_STYLE_MAP } from "../../state/StylingState";
 import {
     CreateTianyuStyleMapActionCreator,
@@ -29,9 +29,22 @@ export const SetTianyuStylingAction = SetTianyuStylingActionCreator.withHandler(
         return;
     }
 
-    const styleMap = getStylingMap(tianyuStyleMap, action.params.path);
-    const originStyle = styleMap.style.styles.get(action.params.key) || {};
-    styleMap.style.styles.set(action.params.key, {
+    const pathList = processPath(action.params.path);
+    let styleMap = tianyuStyleMap;
+    for (const dir of pathList) {
+        let subMap = styleMap.list.get(dir);
+        if (!subMap) {
+            subMap = {
+                list: new Map<string, IStyleMap>(),
+                styles: new Map<string, TianyuUIStyleDeclaration>(),
+            };
+            styleMap.list.set(dir, subMap);
+        }
+        styleMap = subMap;
+    }
+
+    const originStyle = styleMap.styles.get(action.params.key) || {};
+    styleMap.styles.set(action.params.key, {
         ...originStyle,
         ...action.params.styling,
     });
