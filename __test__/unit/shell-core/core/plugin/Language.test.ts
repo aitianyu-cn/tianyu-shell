@@ -12,7 +12,7 @@ import { TianyuShellCoreInterface } from "shell-core/src/core/plugin/store/Expor
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.Language", () => {
     it("set", async () => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterfaceExpose.language.action.set.info.fullName,
             );
         });
@@ -82,7 +82,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.Language",
 
     it("addLanguage", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterface.compatibility.action.addLanguage.info.fullName,
             );
             done();

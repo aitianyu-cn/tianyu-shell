@@ -9,10 +9,10 @@ import { getStore } from "shell-core/src/core/utils/Store";
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.FeatureToggleImpl", () => {
     it("addFeature", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterface.featureToggle.action.add.info.fullName,
             );
-            expect((action as IInstanceAction).params).toEqual({
+            expect((action as IInstanceAction<any>).params).toEqual({
                 features: {
                     TEST_FEATURE: false,
                 },
@@ -43,10 +43,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
         ];
 
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterface.featureToggle.action.add.info.fullName,
             );
-            expect((action as IInstanceAction).params).toEqual({
+            expect((action as IInstanceAction<any>).params).toEqual({
                 features: {
                     FEATURE_1: false,
                     FEATURE_2: true,
@@ -93,10 +93,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
     describe("enable", () => {
         it("with dep", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.featureToggle.action.enable.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     featureName: "TEST_FEATURE",
                     enableDepFeatures: true,
                 });
@@ -108,10 +108,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
 
         it("without dep", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.featureToggle.action.enable.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     featureName: "TEST_FEATURE",
                     enableDepFeatures: false,
                 });
@@ -125,10 +125,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
     describe("disable", () => {
         it("with dep", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.featureToggle.action.disable.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     featureName: "TEST_FEATURE",
                     disableDepFeatures: true,
                 });
@@ -140,10 +140,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
 
         it("without dep", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.featureToggle.action.disable.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     featureName: "TEST_FEATURE",
                     disableDepFeatures: false,
                 });
@@ -224,10 +224,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Featu
         };
 
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterface.featureToggle.action.add.info.fullName,
             );
-            expect((action as IInstanceAction).params).toEqual({
+            expect((action as IInstanceAction<any>).params).toEqual({
                 features: {
                     FEATURE_1: false,
                     FEATURE_2: true,

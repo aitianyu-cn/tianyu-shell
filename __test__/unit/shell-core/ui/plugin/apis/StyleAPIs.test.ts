@@ -10,8 +10,8 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.StyleAP
     describe("StyleCssGlobalAPIs", () => {
         it("add", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.style.css.add.info.fullName);
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).action).toEqual(StylingInterface.style.css.add.info.fullName);
+                expect((action as IInstanceAction<any>).params).toEqual({
                     key: "test",
                     link: "link",
                 });
@@ -24,8 +24,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.StyleAP
 
         it("remove", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.style.css.remove.info.fullName);
-                expect((action as IInstanceAction).params).toEqual("test");
+                expect((action as IInstanceAction<any>).action).toEqual(
+                    StylingInterface.style.css.remove.info.fullName,
+                );
+                expect((action as IInstanceAction<any>).params).toEqual("test");
 
                 done();
             });
@@ -37,10 +39,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.StyleAP
     describe("StyleGlobalAPIs", () => {
         it("set", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     StylingInterface.style.tianyuStyle.set.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     key: "test",
                     styling: {},
                     path: "path",
@@ -75,10 +77,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.StyleAP
 
         it("remove", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     StylingInterface.style.tianyuStyle.remove.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).params).toEqual({
                     key: "test",
                     path: "path",
                 });

@@ -23,7 +23,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.DialogA
             it("create success", async () => {
                 let layerId = "";
                 jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                    const actionInstance = action as IInstanceAction;
+                    const actionInstance = action as IInstanceAction<any>;
                     expect(actionInstance.action).toEqual(DialogExpose.layer.add.info.fullName);
                     layerId = actionInstance.params;
                 });
@@ -65,7 +65,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.DialogA
 
         it("switch", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(DialogExpose.layer.switch.info.fullName);
                 expect(actionInstance.params).toEqual("test_layer_id");
                 done();
@@ -76,7 +76,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.DialogA
 
         it("remove", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(DialogExpose.layer.remove.info.fullName);
                 expect(actionInstance.params).toEqual("test_layer_id");
                 done();
@@ -118,7 +118,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.DialogA
                 fnResolve = resolve;
             });
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 generatedDialogId = actionInstance.params.id;
                 expect(actionInstance.action).toEqual(DialogExpose.open.info.fullName);
                 expect(actionInstance.params.element).toEqual("test_dialog_element");
@@ -133,7 +133,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.DialogA
 
         it("close", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(DialogExpose.close.info.fullName);
                 expect(actionInstance.params).toEqual("test_dialog_id");
                 done();

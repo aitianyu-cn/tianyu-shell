@@ -13,7 +13,7 @@ async function languageLoader(proxy: string): Promise<void> {
     const languageData = await fetchData(remoteUrl);
 
     if (languageData) {
-        const aActions: IInstanceAction[] = [];
+        const aActions: IInstanceAction<any>[] = [];
         Array.isArray(languageData.pending) &&
             languageData.pending.length &&
             aActions.push(

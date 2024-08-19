@@ -10,7 +10,9 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Conso
     describe("ConsoleLog", () => {
         it("log", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(TianyuShellCoreInterface.console.log.info.fullName);
+                expect((action as IInstanceAction<any>).action).toEqual(
+                    TianyuShellCoreInterface.console.log.info.fullName,
+                );
                 done();
             });
 

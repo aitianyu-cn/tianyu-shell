@@ -10,7 +10,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Perfo
     describe("PerformanceCapture", () => {
         it("clean", async () => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.console.capture.action.clean.info.fullName,
                 );
             });
@@ -24,11 +24,11 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Perfo
                 fnResolve = resolve;
             });
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.console.capture.action.start.info.fullName,
                 );
-                expect((action as IInstanceAction).params.classify).toEqual("test");
-                expect((action as IInstanceAction).params.id).toEqual("t");
+                expect((action as IInstanceAction<any>).params.classify).toEqual("test");
+                expect((action as IInstanceAction<any>).params.id).toEqual("t");
 
                 fnResolve();
             });
@@ -41,10 +41,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Perfo
 
         it("end", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.console.capture.action.end.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual("123");
+                expect((action as IInstanceAction<any>).params).toEqual("123");
 
                 done();
             });
@@ -54,10 +54,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.impl.Perfo
 
         it("saveToFile", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.console.capture.action.donwload.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual("123");
+                expect((action as IInstanceAction<any>).params).toEqual("123");
 
                 done();
             });

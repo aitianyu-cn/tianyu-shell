@@ -16,10 +16,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
         it("setVerticalAlign", (done) => {
             const align = ITianyuShellUIVerticalAlignment.CENTER;
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     MessageInterface.helper.setVerticalAlign.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(align);
+                expect((action as IInstanceAction<any>).params).toEqual(align);
 
                 done();
             });
@@ -29,10 +29,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
 
         it("setVerticalRate", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     MessageInterface.helper.setVerticalRate.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(100);
+                expect((action as IInstanceAction<any>).params).toEqual(100);
 
                 done();
             });
@@ -43,10 +43,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
         it("setHorizontalAlign", (done) => {
             const align = ITianyuShellUIHorizontalAlignment.CENTER;
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     MessageInterface.helper.setHorizontalAlign.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(align);
+                expect((action as IInstanceAction<any>).params).toEqual(align);
 
                 done();
             });
@@ -56,10 +56,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
 
         it("setHorizontalRate", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     MessageInterface.helper.setHorizontalRate.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(100);
+                expect((action as IInstanceAction<any>).params).toEqual(100);
 
                 done();
             });
@@ -69,8 +69,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
 
         it("setTimestamp", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(MessageInterface.helper.setTimestamp.info.fullName);
-                expect((action as IInstanceAction).params).toEqual(100);
+                expect((action as IInstanceAction<any>).action).toEqual(
+                    MessageInterface.helper.setTimestamp.info.fullName,
+                );
+                expect((action as IInstanceAction<any>).params).toEqual(100);
 
                 done();
             });
@@ -142,7 +144,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
     describe("MessageGlobalAPIs", () => {
         it("post", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(MessageInterface.message.post.info.fullName);
+                expect((action as IInstanceAction<any>).action).toEqual(MessageInterface.message.post.info.fullName);
 
                 done();
             });
@@ -152,7 +154,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Message
 
         it("close", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(MessageInterface.message.close.info.fullName);
+                expect((action as IInstanceAction<any>).action).toEqual(MessageInterface.message.close.info.fullName);
 
                 done();
             });

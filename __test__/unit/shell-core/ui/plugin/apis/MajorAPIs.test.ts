@@ -10,7 +10,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
     describe("MajorHelperGlobalAPIs", () => {
         it("addClass", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.layer.addClass.info.fullName);
                 expect(actionInstance.params).toEqual(["1", "2"]);
                 done();
@@ -21,7 +21,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("addStyle", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.layer.addStyle.info.fullName);
                 expect(actionInstance.params).toEqual(["1", "2"]);
                 done();
@@ -32,7 +32,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("removeClass", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.layer.removeClass.info.fullName);
                 expect(actionInstance.params).toEqual("test_class");
                 done();
@@ -43,7 +43,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("resetStyle", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.layer.resetStyling.info.fullName);
                 done();
             });
@@ -53,7 +53,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("resetStyle", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.layer.reset.info.fullName);
                 done();
             });
@@ -65,7 +65,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
     describe("MajorGlobalAPIs", () => {
         it("append", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.major.append.info.fullName);
                 done();
             });
@@ -75,7 +75,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("appendInto", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.major.appendInto.info.fullName);
                 done();
             });
@@ -85,7 +85,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("remove", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.major.remove.info.fullName);
                 done();
             });
@@ -95,7 +95,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.MajorAP
 
         it("removeFrom", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                const actionInstance = action as IInstanceAction;
+                const actionInstance = action as IInstanceAction<any>;
                 expect(actionInstance.action).toEqual(MajorExpose.major.removeFrom.info.fullName);
                 done();
             });

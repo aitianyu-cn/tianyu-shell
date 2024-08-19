@@ -8,8 +8,8 @@ import { BackgroundInterface } from "shell-core/src/ui/plugin/interface/Backgrou
 describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.BackgroundAPIs", () => {
     it("setColor", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(BackgroundInterface.color.set.info.fullName);
-            expect((action as IInstanceAction).params).toEqual("#aaaaaa");
+            expect((action as IInstanceAction<any>).action).toEqual(BackgroundInterface.color.set.info.fullName);
+            expect((action as IInstanceAction<any>).params).toEqual("#aaaaaa");
 
             done();
         });
@@ -33,7 +33,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Backgro
 
     it("removeColor", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(BackgroundInterface.color.remove.info.fullName);
+            expect((action as IInstanceAction<any>).action).toEqual(BackgroundInterface.color.remove.info.fullName);
 
             done();
         });
@@ -45,8 +45,8 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Backgro
         const element = document.createElement("div");
 
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(BackgroundInterface.html.set.info.fullName);
-            expect((action as IInstanceAction).params).toEqual({
+            expect((action as IInstanceAction<any>).action).toEqual(BackgroundInterface.html.set.info.fullName);
+            expect((action as IInstanceAction<any>).params).toEqual({
                 element,
                 id: "test",
             });
@@ -59,7 +59,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Backgro
 
     it("removeElement", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(BackgroundInterface.html.clear.info.fullName);
+            expect((action as IInstanceAction<any>).action).toEqual(BackgroundInterface.html.clear.info.fullName);
 
             done();
         });
@@ -69,7 +69,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.Backgro
 
     it("clear", (done) => {
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(BackgroundInterface.control.reset.info.fullName);
+            expect((action as IInstanceAction<any>).action).toEqual(BackgroundInterface.control.reset.info.fullName);
 
             done();
         });

@@ -39,8 +39,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.ThemeAP
 
         it("remove", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.theme.user.remove.info.fullName);
-                expect((action as IInstanceAction).params).toEqual("test");
+                expect((action as IInstanceAction<any>).action).toEqual(
+                    StylingInterface.theme.user.remove.info.fullName,
+                );
+                expect((action as IInstanceAction<any>).params).toEqual("test");
 
                 done();
             });
@@ -50,7 +52,9 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.ThemeAP
 
         it("reset", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.theme.user.reset.info.fullName);
+                expect((action as IInstanceAction<any>).action).toEqual(
+                    StylingInterface.theme.user.reset.info.fullName,
+                );
 
                 done();
             });
@@ -109,8 +113,8 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.ThemeAP
 
         it("change", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.theme.change.info.fullName);
-                expect((action as IInstanceAction).params).toEqual({
+                expect((action as IInstanceAction<any>).action).toEqual(StylingInterface.theme.change.info.fullName);
+                expect((action as IInstanceAction<any>).params).toEqual({
                     theme: "test",
                     color: "dark",
                 });
@@ -124,7 +128,7 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.ui.plugin.apis.ThemeAP
 
         it("reset", (done) => {
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(StylingInterface.theme.reset.info.fullName);
+                expect((action as IInstanceAction<any>).action).toEqual(StylingInterface.theme.reset.info.fullName);
 
                 done();
             });

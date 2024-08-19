@@ -20,10 +20,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.Eve
     it("onHashChanged", (done) => {
         window.location.hash = "#test";
         jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-            expect((action as IInstanceAction).action).toEqual(
+            expect((action as IInstanceAction<any>).action).toEqual(
                 TianyuShellCoreInterface.event.action.onHaschange.info.fullName,
             );
-            expect((action as IInstanceAction).params).toEqual("test");
+            expect((action as IInstanceAction<any>).params).toEqual("test");
             done();
         });
     });
@@ -32,10 +32,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.Eve
         it("isMobile", (done) => {
             jest.spyOn(UserAgent, "getIsMobile").mockReturnValue(true);
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.event.action.onPageResize.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(100);
+                expect((action as IInstanceAction<any>).params).toEqual(100);
                 done();
             });
 
@@ -48,10 +48,10 @@ describe("aitianyu-cn.node-module.tianyu-shell.shell-core.core.plugin.helper.Eve
         it("not mobile", (done) => {
             jest.spyOn(UserAgent, "getIsMobile").mockReturnValue(false);
             jest.spyOn(getStore(), "dispatch").mockImplementation(async (action) => {
-                expect((action as IInstanceAction).action).toEqual(
+                expect((action as IInstanceAction<any>).action).toEqual(
                     TianyuShellCoreInterface.event.action.onPageResize.info.fullName,
                 );
-                expect((action as IInstanceAction).params).toEqual(100);
+                expect((action as IInstanceAction<any>).params).toEqual(100);
                 done();
             });
 
