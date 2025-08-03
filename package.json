@@ -1,6 +1,6 @@
 {
     "name": "@aitianyu.cn/tianyu-shell",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "description": "Web shell framework of aitianyu",
     "exports": {
         ".": {
@@ -134,7 +134,7 @@
         "webpack-dev-server": "^4.11.1"
     },
     "dependencies": {
-        "@aitianyu.cn/client-base": "^0.0.1",
+        "@aitianyu.cn/client-base": "^0.0.2",
         "@aitianyu.cn/theme": "^0.0.1",
         "@aitianyu.cn/tianyu-store": "^1.0.0-beta.1",
         "@aitianyu.cn/types": "0.0.13",
